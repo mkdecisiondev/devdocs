@@ -5,7 +5,7 @@ In order to effectively work on programming projects with a team of developers i
 1. [Code editor](tools/code-editor.md)
 	1. [Performance](tools/code-editor.md#performance)
 	2. [Features](tools/code-editor.md#features)
-	3. [Editor configuration](tools/code-editor.md#editor-configuration)
+	3. [Configuration](tools/code-editor.md#installation-and-configuration)
 2. Programming languages
 	1. [HTML](languages/html.md)
 	2. [CSS](languages/css.md)
