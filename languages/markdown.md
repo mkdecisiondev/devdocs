@@ -4,6 +4,11 @@ Markdown is a simple markup language for adding basic formatting to plain text. 
 
 Markdown has become widely adopted and is used for GitHub readmes, wikis, issues, and more. You should know the basics of Markdown and be aware of available reference documentation as well. Keep in mind that there are many variations of Markdown, so it is important that you know which variation is being used by the system you are working with.
 
+## VS Code
+
+* `Ctrl + Shift + V`: Open new tab with preview of current markdown file
+* `Ctrl + K, V`: Open a split view with preview of current markdown file
+
 ## Resources
 
 * [GitHub: Mastering Markdown](https://guides.github.com/features/mastering-markdown/)

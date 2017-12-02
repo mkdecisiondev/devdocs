@@ -4,3 +4,8 @@ If you don't know something, refer to the documentation. If you still don't know
 
 1. [DevDocs](http://devdocs.io/) is a compilation of a lot of web-related documentation
 1. [Mozilla Developer Network](https://developer.mozilla.org/en-US/) is an excellent source for a lot of web-related documentation (DevDocs actually pulls much of its info from here)
+
+## On-going learning resources
+
+* [JavaScript Weekly](http://javascriptweekly.com/)
+* [Frontend Focus](https://frontendfoc.us/)

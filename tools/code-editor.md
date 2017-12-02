@@ -28,10 +28,10 @@ All following instructions will be for VS Code. Any editor that does not have si
 ### Configuration
 
 1. indentation: tabs
-1. file encoding: utf-8
 1. line endings: Unix (linefeed, `\n`)
+1. file encoding: utf-8
 1. insert final newline: yes (ensure all files end with a blank line)
-1. trim trailing newlines: yes (ensure all files end with a single blank line, no more)
+1. trim final newlines: yes (ensure all files end with a single blank line, no more)
 1. trim trailing whitespace: yes (ensure all lines end with a non-whitespace character)
 
 You can press `Ctrl + ,` to open User Settings and paste the following in the right pane:
@@ -53,4 +53,5 @@ Click the extensions icon (bottom one of the 5 icons at the top left) and instal
 
 1. ESLint
 1. HTMLHint
-3. Git Blame
+1. Path Intellisense
+1. Git Blame
