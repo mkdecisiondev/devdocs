@@ -39,8 +39,8 @@ You can press `Ctrl + ,` to open User Settings and paste the following in the ri
 ```json
 {
     "editor.insertSpaces": false,
-    "files.eol": "\n",
     "files.encoding": "utf8",
+    "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
