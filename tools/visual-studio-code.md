@@ -11,3 +11,4 @@ It's important to know how to use your editor effectively and take advantage of 
 1. [Tips and tricks](https://code.visualstudio.com/docs/getstarted/tips-and-tricks)
 1. [Emmet](https://code.visualstudio.com/docs/editor/emmet)
 1. Go to 'Help' -> 'Keyboard Shortcut Reference'
+1. [VS Code documentation](https://code.visualstudio.com/docs/)
