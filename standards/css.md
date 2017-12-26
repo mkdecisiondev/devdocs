@@ -2,3 +2,4 @@
 
 1. Avoid unnecessary quotes, use single quotes when quotes are necessary
 1. Class names should be lowercase dasherized
+1. Use `hsl` for colors
