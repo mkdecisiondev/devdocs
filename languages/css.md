@@ -9,4 +9,5 @@ If you need to learn CSS from scratch, refer to these resources:
 
 ## Advanced topics
 
-* [Stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context)
+* [Stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context)\
+* [Grid](https://gridbyexample.com/)

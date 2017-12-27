@@ -12,7 +12,7 @@
 ## Tools and frameworks
 
 1. [Spike](advanced/spike.md)
-1. [Bootstrap](http://getbootstrap.com/)
+1. [Shoelace](advanced/shoelace.md)
 
 ## Accessibility
 
