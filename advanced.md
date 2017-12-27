@@ -11,7 +11,7 @@
 
 ## Tools and frameworks
 
-1. [Spike](https://www.spike.cf/)
+1. [Spike](advanced/spike.md)
 1. [Bootstrap](http://getbootstrap.com/)
 
 ## Accessibility
