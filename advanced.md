@@ -1,4 +1,4 @@
-# Advanced web development topics
+# Advanced topics
 
 ## Compression
 
