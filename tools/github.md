@@ -16,3 +16,61 @@
 	width: 1200px;
 }
 ```
+
+## GitHub workflow
+
+Using GitHub will be a daily process so it is very important that you understand it.
+
+1. Clone the main repository, e.g. `https://github.com/mkdecisiondev/project.git`
+	1. This step should create a remote named `origin` that points to `https://github.com/mkdecisiondev/project.git`
+1. [Create a fork](https://guides.github.com/activities/forking/) of the repository you will be working with
+1. Add a remote for your fork: `git remote add <GitHub username> https://github.com/<GitHub username>/project.git>`
+1. Create a new branch based off master: `git branch my-branch`
+1. Do your work and make some commits in "my-branch"
+1. When your work is done and you are ready to submit a [pull request](https://help.github.com/articles/about-pull-requests/), check if master has been updated
+1. If master has been updated you will need to rebase those changes into your branch:
+    1. `git checkout master`
+	1. `git pull origin master`
+    1. `git checkout my-branch`
+    1. `git rebase master`
+1. Rebasing rewrites history, which can cause confusion if multiple people are collaborating on a branch. If you are not the only person working on the branch, be sure to coordinate with others every time you rebase. You will have to force push to send your updates to GitHub: `git push -f`
+1. If there are conflicts during the rebase, you will have to resolve them - get help from a team member if you are not experienced with this process
+1. Once you have rebased on master and pushed your branch to your GitHub fork, you can create a pull request
+
+### Important concepts
+
+* `remote`: a URL from which a repository can be fetched.
+* `origin`: this is the default name for the primary remote for a repository. It should point to the repository under the `mkdecisiondev` organization.
+* `fork`: a copy of a repository on GitHub. A fork is a GitHub feature, not a Git concept. Typically you will only have read access to repositories on GitHub.
+	By creating a fork, you have a copy of the repository on GitHub that you have write access to which enables you to create pull requests to the main repository.
+	There is no automatic synchronization between the main repo and your fork. To update master, or any other branch on your fork you have to push from your local repo.
+* `rebase`: a Git procedure that inserts commits into history.
+
+ ### Rebase example
+
+ At the time you create the branch `new-feature` the history may look like this:
+ ```
+ Branch: master
+ A -> B -> C
+
+ Branch: new-feature
+ A -> B -> C -> D
+ ```
+
+ While work is being done in `new-feature`, updates are also made to `master`:
+ ```
+ Branch: master
+A -> B -> C -> E
+
+Branch: new-feature
+A -> B -> C -> D
+```
+
+To avoid creating merge commits, `new-feature` can be rebased on `master`:
+```
+Branch: new-feature
+A -> B -> C -> E -> D
+```
+
+Branches should ideally be short-lived and introduce a compact set of changes. If you are working in a branch for days or weeks, you should regularly check if you need to
+rebase on master. Waiting to merge a large set of changes will be complicated.
