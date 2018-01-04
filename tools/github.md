@@ -40,11 +40,21 @@ Using GitHub will be a daily process so it is very important that you understand
 ### Important concepts
 
 * `remote`: a URL from which a repository can be fetched.
-* `origin`: this is the default name for the primary remote for a repository. It should point to the repository under the `mkdecisiondev` organization.
+* `origin`: this is the default name for the primary remote for a repository. It should point to the repository under the "mkdecisiondev" organization.
 * `fork`: a copy of a repository on GitHub. A fork is a GitHub feature, not a Git concept. Typically you will only have read access to repositories on GitHub.
 	By creating a fork, you have a copy of the repository on GitHub that you have write access to which enables you to create pull requests to the main repository.
 	There is no automatic synchronization between the main repo and your fork. To update master, or any other branch on your fork you have to push from your local repo.
 * `rebase`: a Git procedure that inserts commits into history.
+
+### Naming remotes
+
+* `origin`: this should always be the primary team repository under the "mkdecisiondev" organization
+* `upstream`: don't use this naming scheme
+* `<username>`: for remotes pointing to your fork, or other team member's forks, name the remote the same as their GitHub user name
+
+### Managing remotes
+
+A good GUI like TortoiseGit makes this easy. If you prefer the CLI then learn how to use [`git remote`](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes). If you accidentally cloned from a fork, you will end up with `origin` pointing to the fork. Rename that remote and create a new `origin` that points to `mkdecisiondev`.
 
  ### Rebase example
 
