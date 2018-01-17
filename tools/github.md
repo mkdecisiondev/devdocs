@@ -56,20 +56,20 @@ Using GitHub will be a daily process so it is very important that you understand
 
 A good GUI like TortoiseGit makes this easy. If you prefer the CLI then learn how to use [`git remote`](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes). If you accidentally cloned from a fork, you will end up with `origin` pointing to the fork. Rename that remote and create a new `origin` that points to `mkdecisiondev`.
 
- ### Rebase example
+### Rebase example
 
- At the time you create the branch `new-feature` the history may look like this:
- ```
- Branch: master
- A -> B -> C
+At the time you create the branch `new-feature` the history may look like this:
+```
+Branch: master
+A -> B -> C
 
- Branch: new-feature
- A -> B -> C -> D
- ```
+Branch: new-feature
+A -> B -> C -> D
+```
 
- While work is being done in `new-feature`, updates are also made to `master`:
- ```
- Branch: master
+While work is being done in `new-feature`, updates are also made to `master`:
+```
+Branch: master
 A -> B -> C -> E
 
 Branch: new-feature
@@ -84,3 +84,9 @@ A -> B -> C -> E -> D
 
 Branches should ideally be short-lived and introduce a compact set of changes. If you are working in a branch for days or weeks, you should regularly check if you need to
 rebase on master. Waiting to merge a large set of changes will be complicated.
+
+### Creating a pull request
+
+1. PR title: should generally be the same as the issue title, e.g. "Create AmazingWidget component" or "Fix BuggyWidget issue"
+1. The PR should *only* address changes specified by its ticket - unrelated fixes/updates should not be squeezed in, they should go in separate PRs
+1. PR description: should describe what changes in the codebase are introduced by the PR. The last line of the PR should say "Closes/Resolves/Fixes #XX" where "XX" is the number of the related issue
