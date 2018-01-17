@@ -2,7 +2,7 @@
 
 1. If you don't already have one, create a [GitHub account](https://github.com/)
 1. Enable [two-factor authentication](https://github.com/blog/1614-two-factor-authentication)
-1. GitHub's appearance can easily be customized with [Sylish](https://chrome.google.com/webstore/detail/stylish-custom-themes-for/fjnbnpbmkenffdnngjfgmeleoegfcffe). If you just want to change tab width from 8 to 4, you may find [this extension](https://chrome.google.com/webstore/detail/tab-size-on-github/ofjbgncegkdemndciafljngjbdpfmbkn) convenient. With Stylish more customization is easy. You can create a new style and use the following to customize to your preference:
+1. GitHub's appearance can easily be customized with [Stylish](https://chrome.google.com/webstore/detail/stylish-custom-themes-for/fjnbnpbmkenffdnngjfgmeleoegfcffe). If you just want to change tab width from 8 to 4, you may find [this extension](https://chrome.google.com/webstore/detail/tab-size-on-github/ofjbgncegkdemndciafljngjbdpfmbkn) convenient. With Stylish more customization is easy. You can create a new style and use the following to customize to your preference:
 ```css
 /* affects source code blocks */
 .blob-code-inner,
@@ -24,6 +24,7 @@ Using GitHub will be a daily process so it is very important that you understand
 1. Clone the main repository, e.g. `https://github.com/mkdecisiondev/project.git`
 	1. This step should create a remote named `origin` that points to `https://github.com/mkdecisiondev/project.git`
 1. [Create a fork](https://guides.github.com/activities/forking/) of the repository you will be working with
+    1. Do not follow the instructions in that link to clone your fork - *always* clone from the main repo
 1. Add a remote for your fork: `git remote add <GitHub username> https://github.com/<GitHub username>/project.git>`
 1. Create a new branch based off master: `git checkout -b my-branch`
 1. Do your work and make some commits in "my-branch"
@@ -39,7 +40,7 @@ Using GitHub will be a daily process so it is very important that you understand
 
 ### Important concepts
 
-* `remote`: a URL from which a repository can be fetched.
+* `remote`: a URL from which a repository can be fetched (or pushed to).
 * `origin`: this is the default name for the primary remote for a repository. It should point to the repository under the "mkdecisiondev" organization.
 * `fork`: a copy of a repository on GitHub. A fork is a GitHub feature, not a Git concept. Typically you will only have read access to repositories on GitHub.
 	By creating a fork, you have a copy of the repository on GitHub that you have write access to which enables you to create pull requests to the main repository.
