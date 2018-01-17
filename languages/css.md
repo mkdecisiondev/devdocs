@@ -6,6 +6,7 @@ If you need to learn CSS from scratch, refer to these resources:
 
 * [MDN: Introduction to CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS)
 * [Learn to Code HTML & CSS](https://learn.shayhowe.com/html-css/getting-to-know-css/)
+* [CSS Reference](http://cssreference.io/) with visual examples
 
 ## Advanced topics
 
