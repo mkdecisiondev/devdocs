@@ -24,6 +24,8 @@ In order to effectively work on programming projects with a team of developers i
 	3. [CSS](standards/css.md)
 	4. [JavaScript](standards/javascript.md)
 1. Best practices
+	1. [JavaScript](bestpractices/javascript.md)
 	1. [CSS](bestpractices/css.md)
+	1. [Forms](bestpractices/forms.md)
 5. [Advanced topics](advanced.md)
 	1. [Accessibility](advanced.md#accessibility)
