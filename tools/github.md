@@ -91,3 +91,4 @@ rebase on master. Waiting to merge a large set of changes will be complicated.
 1. PR title: should generally be the same as the issue title, e.g. "Create AmazingWidget component" or "Fix BuggyWidget issue"
 1. The PR should *only* address changes specified by its ticket - unrelated fixes/updates should not be squeezed in, they should go in separate PRs
 1. PR description: should describe what changes in the codebase are introduced by the PR. The last line of the PR should say "Closes/Resolves/Fixes #XX" where "XX" is the number of the related issue
+1. To the right of the PR title and description there is a "Reviewers" option - assign a reviewer and post a message in the project's chat letting them know you've submitted a PR for review
