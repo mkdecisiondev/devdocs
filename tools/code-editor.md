@@ -44,6 +44,7 @@ You can press `Ctrl + ,` to open User Settings and paste the following in the ri
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
+    "window.newWindowDimensions": "inherit"
 }
 ```
 
