@@ -1,4 +1,4 @@
-# Setting Up to Update Lambda functions through the Repository
+# Setting Up Your Credentials
 
 ### By Eric Hendrickson
 
