@@ -38,11 +38,14 @@ In order to effectively work on programming projects with a team of developers i
 	1. The AWS Stack
 	2. IAM Explained
 	3. [Setting Up Your Credentials](aws/credentials-setup/credentials-setup.md)
+	4. Deployment Strategies
 2. AWS Lambda Development Tutorials
 	1. [Introduction to AWS Lambda](aws/introduction-to-lambda/introduction-to-lambda.md)
 	2. Hooking up a Lambda Function to API Gateway
 	3. Using Lambda to Transfer Files Between Buckets
-	4. Writing to a Table Using a Lambda Function
+	4. Writing to a DynamoDB Table Using a Lambda Function
+	5. Storing S3 Object Links in DynamoDB
+	6. Using SES and Lambda to Send Emails
 3. Advanced Topics
 	1. Mock Testing the AWS SDK
 	2. How to Pass a File Through API Gateway
