@@ -2,6 +2,7 @@
 
 In order to effectively work on programming projects with a team of developers it is important to know the relevant technologies and tools, and to follow standards and conventions that make it easier to collaborate.
 
+## Fundamental Technologies
 1. [Code editor](tools/code-editor.md)
 	1. [Performance](tools/code-editor.md#performance)
 	2. [Features](tools/code-editor.md#features)
@@ -23,9 +24,15 @@ In order to effectively work on programming projects with a team of developers i
 	2. [HTML](standards/html.md)
 	3. [CSS](standards/css.md)
 	4. [JavaScript](standards/javascript.md)
-1. Best practices
+5. Best practices
 	1. [JavaScript](bestpractices/javascript.md)
 	1. [CSS](bestpractices/css.md)
 	1. [Forms](bestpractices/forms.md)
-5. [Advanced topics](advanced.md)
+6. [Advanced topics](advanced.md)
 	1. [Accessibility](advanced.md#accessibility)
+
+## UI Documentation
+
+## Back End Documentation
+1. Introduction to AWS
+	1. Setting up Your Credentials
