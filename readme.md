@@ -35,4 +35,4 @@ In order to effectively work on programming projects with a team of developers i
 
 ## Back End Documentation
 1. Introduction to AWS
-	1. Setting up Your Credentials
+	1. [Setting up Your Credentials](aws/credentials-setup.md)
