@@ -35,10 +35,9 @@ In order to effectively work on programming projects with a team of developers i
 
 ## Back End Documentation
 1. Introduction to AWS
-	1. The AWS Stack
+	1. [The AWS Cloud](aws/aws-cloud.md)
 	2. IAM Explained
 	3. [Setting Up Your Credentials](aws/credentials-setup/credentials-setup.md)
-	4. Deployment Strategies
 2. AWS Lambda Development Tutorials
 	1. [Introduction to AWS Lambda](aws/introduction-to-lambda/introduction-to-lambda.md)
 	2. Hooking up a Lambda Function to API Gateway
@@ -49,3 +48,4 @@ In order to effectively work on programming projects with a team of developers i
 3. Advanced Topics
 	1. Mock Testing the AWS SDK
 	2. How to Pass a File Through API Gateway
+	3. Deployment Strategies
