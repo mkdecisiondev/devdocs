@@ -196,7 +196,7 @@ If you are submitting the information through a form and you have other non-bina
     statusCode:200,
     body: JSON.stringify(jsonObject)
   };
-  console.log('JSON, jsonComplete);
+  console.log('JSON', jsonComplete);
 })
 ```
 
