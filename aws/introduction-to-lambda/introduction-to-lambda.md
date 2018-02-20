@@ -2,12 +2,16 @@
 
 ### By Eric Hendrickson
 
+## Overview
+
 AWS Lambda is a framework that runs stateless, serverless code. This may sound confusing at first, but it really isn't. Let's define "stateless" and "serverless" before we continue:
 
 * "stateless": This is basically just a fancy way of saying that all Lambda does by itself is run code. That's it. When you trigger a Lambda function, Lambda creates a sandbox, runs the code in the function, and when it finishes, that sandbox is gone and nothing new is saved by default. To save or access data, you'd have to call other AWS services (for example, you can call RDS or DynamoDB for database storage).
 * "serverless": This is a bit of a misnomer, because Lambda code actually *does* run on a server. It's just not run on servers owned or operated by us, but rather servers that are specifically dedicated to running individual Lambda functions.
 
 Lambda is incredibly cost effective for us, because all we pay for is each time the code is run, instead of paying to operate a server that is running 24 hours a day 7 days a week. It's also convenient because we don't have to worry about load balancing when our system is busy; Amazon does all that work for us.
+
+## Tutorial: Setting Up a Basic Lambda Function
 
 At the same time, you may have already noticed that one of the downsides of Lambda is that you have to put in a lot more work hooking Lambda functions up to other services. Perhaps some readers are even feeling a little intimidated at this point, possibly asking questions like "But wait, how can I make an API endpoint?" Don't worry, those questions will be answered in time. For now, just focus on making a simple Lambda function.
 
