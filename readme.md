@@ -1,5 +1,3 @@
-testestest
-
 # MK Decision Developer Documentation
 
 In order to effectively work on programming projects with a team of developers it is important to know the relevant technologies and tools, and to follow standards and conventions that make it easier to collaborate.
