@@ -22,7 +22,7 @@ Upload a file into the source bucket to be copied.
 
 Lambda functions need to be provided a role to give then permissions to access other AWS services such as S3. Your technical supervisor may be providing you access to a role that will meet your function's needs, but if not you'll need to create it yourself.
 
-To create the role, open the AWS console for th IAM service. Permissions are provided to roles in the form of policies, so click the "Create Policy" button in the IAM console.
+To create the role, open the AWS console for the IAM service. Permissions are provided to roles in the form of policies, so click the "Create Policy" button in the IAM console.
 
 ![alt text](images/4.png)
 
