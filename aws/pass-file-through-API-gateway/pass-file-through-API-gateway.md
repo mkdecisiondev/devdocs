@@ -9,10 +9,10 @@ First create an API in API Gateway by clicking the “Create API” button in th
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![alt text](images/image1.png)
 
 
- After that, under the API name on the left side of the screen , click on settings.
+After that, under the API name on the left side of the screen , click on settings.
 
 
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![alt text](images/image2.png)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![alt text](images/image2.png)
 
 
 From there, you can add all files to the accepted binary media types by adding */* (we are allowing the API to accept all file types and can validate elsewhere such as in the Lambda function itself).
