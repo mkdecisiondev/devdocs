@@ -1,6 +1,6 @@
 # How to pass a file type through API Gateway
 
-### By: Tim Petrone
+### By Tim Petrone
 
 API Gateway now allows for the passing of binary media types (i.e. files). In this document, we will be showing you how to pass through a .PDF file.
 
