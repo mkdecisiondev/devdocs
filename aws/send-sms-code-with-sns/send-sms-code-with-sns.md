@@ -1,4 +1,6 @@
 Random 6 digit number generator that can start with zeros.
+Got the idea from this stackover flow link: https://stackoverflow.com/questions/21816595/generate-a-random-number-of-fixed-length-using-javascript
+
 
 ```
 exports.handler = (event, context, cb) => {
