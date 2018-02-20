@@ -47,5 +47,5 @@ In order to effectively work on programming projects with a team of developers i
 	6. Using SES and Lambda to Send Emails
 3. Advanced Topics
 	1. Mock Testing the AWS SDK
-	2. How to Pass a File Through API Gateway
+	2. [How to Pass a File Through API Gateway](aws/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
 	3. Deployment Strategies
