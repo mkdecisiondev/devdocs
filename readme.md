@@ -40,7 +40,7 @@ In order to effectively work on programming projects with a team of developers i
 	3. [Setting Up Your Credentials](aws/credentials-setup/credentials-setup.md)
 2. AWS Lambda Development Tutorials
 	1. [Introduction to AWS Lambda](aws/introduction-to-lambda/introduction-to-lambda.md)
-	2. Hooking up a Lambda Function to API Gateway
+	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-api-gateway/lambda-api-gateway.md)
 	3. Using Lambda to Transfer Files Between Buckets
 	4. Writing to a DynamoDB Table Using a Lambda Function
 	5. Storing S3 Object Links in DynamoDB
