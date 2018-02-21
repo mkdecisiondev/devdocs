@@ -52,4 +52,5 @@ In order to effectively work on programming projects with a team of developers i
 4. Advanced Topics
 	1. [Mock Testing the AWS SDK](aws/advanced-topics/aws-sdk-mock/aws-sdk-mock.md)
 	2. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
-	3. Deployment Strategies
+	3. Getting an S3 Key from Lambda and Uploading from the Front End
+	4. Deployment Strategies
