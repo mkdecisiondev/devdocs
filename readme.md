@@ -39,16 +39,17 @@ In order to effectively work on programming projects with a team of developers i
 	2. [IAM Explained](aws/introduction-to-aws/iam.md)
 	3. Setting Up Multi Factor Authentication
 	4. [Setting Up Your Credentials](aws/introduction-to-aws/credentials-setup/credentials-setup.md)
-2. AWS Lambda Development Tutorials
-	1. [Introduction to AWS Lambda](aws/lambda-development-tutorials/introduction-to-lambda/introduction-to-lambda.md)
-	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-development-tutorials/lambda-api-gateway/lambda-api-gateway.md)
-	3. [How to Assign Environmental Variables in Lambda]()
-	4. [Using Lambda to Transfer Files Between Buckets](aws/lambda-development-tutorials/lambda-transfer-buckets/lambda-transfer-buckets.md)
-	5. Writing to a DynamoDB Table Using a Lambda Function
-	6. Storing S3 Object Links in DynamoDB
-	7. Using SES and Lambda to Send Emails
-	8. Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
-3. Advanced Topics
+2. AWS Lambda and API Gateway
+	1. [Introduction to AWS Lambda](aws/lambda-and-api-gateway/introduction-to-lambda/introduction-to-lambda.md)
+	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-and-api-gateway/lambda-api-gateway/lambda-api-gateway.md)
+	3. [How to Assign Environmental Variables in Lambda](aws/lambda-and-api-gateway/env-variables.md)
+3. Using Lambda with Other AWS Services
+	1. [Using Lambda to Transfer Files Between Buckets](aws/lambda-with-other-services/lambda-transfer-buckets/lambda-transfer-buckets.md)
+	2. Writing to a DynamoDB Table Using a Lambda Function
+	3. Storing S3 Object Links in DynamoDB
+	4. Using SES and Lambda to Send Emails
+	5. Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
+4. Advanced Topics
 	1. [Mock Testing the AWS SDK](aws/advanced-topics/aws-sdk-mock/aws-sdk-mock.md)
 	2. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
 	3. Deployment Strategies
