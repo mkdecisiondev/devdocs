@@ -8,7 +8,7 @@ To do this, simply create a Lambda function and scroll down to the environmental
 
 To use this new variable in your code, simply type in `process.env.[variable name]` into your code. For instance, if you wanted to send an email to `example@mkdecision.com`, you might name an environmental variable something like `exampleEmail` and assign it the value `example@mkdecision.com`.
 
-![alt text](image1.png)
+![alt text](image.png)
 
 Then in your code, you might have a block of code that looks like this, where you can insert the new variable:
 
