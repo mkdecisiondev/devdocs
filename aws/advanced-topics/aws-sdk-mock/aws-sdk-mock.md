@@ -35,23 +35,25 @@ const AWS = require('aws-sdk-mock');
 
 This will grant access to the mocking library we have installed. We will then set up the skeleton of the chai testing function, including the describe/it functions and the remaining const variables.
 
-  const AWS = require('aws-sdk-mock');
-  const sampleTestData = require('./sampleTestData.js');
+```javascript
+const AWS = require('aws-sdk-mock');
+const sampleTestData = require('./sampleTestData.js');
 
-  // (Any dummy info you want to pass in goes here)
+// (Any dummy info you want to pass in goes here)
 
-  const uploadS3 = require('../lib/uploadS3.js');
+const uploadS3 = require('../lib/uploadS3.js');
 
-  //The upload file from above
-  const expect = require('chai').expect;
-  describe('aws-sdk-mock testing', function() {
-      it('should give a successful output of an S3 upload', function() {
-          let goodApple = sampleTestData;
-          return uploadS3('resume.pdf', buffer, goodApple).then(function (url) {
-              expect(url).to.be.a('string');
-          });
-      });
-  }
+//The upload file from above
+const expect = require('chai').expect;
+describe('aws-sdk-mock testing', function() {
+	it('should give a successful output of an S3 upload', function() {
+		let goodApple = sampleTestData;
+		return uploadS3('resume.pdf', buffer, goodApple).then(function (url) {
+			expect(url).to.be.a('string');
+		});
+	});
+}
+```
 
 The problem with this test file is that it needs to call on the AWS SDK’s S3 class’s `upload()` function to complete, but because it’s a test, we don’t actually want to call to call this function, because we aren’t really uploading anything. So how do we go about making that happen? Well, now that we have the AWS SDK mocking library we can use an `AWS.mock()` function within our describe function to mock the actions of a real S3 upload.
 
@@ -80,7 +82,7 @@ For more information on hooks, please see [here](https://medium.com/@kanyang/hoo
 For this example, one of these commands that these hooks run will be an `AWS.mock()`. This function takes in several parameters including: which AWS platform to mock (e.g. DynamoDB, S3, SNS, etc.), which action to take in that platform (e.g. `upload`, `putItem`, `publish`, etc.), and a function that can define additional details for use by the mock. A typical `AWS.mock()` function designed for an S3 upload will look like this:
 
 ```javascript
-AWS.mock(‘S3’, ‘upload’, function (params, callback) {
+AWS.mock('S3', 'upload', function (params, callback) {
   // additional details here
 });
 ```
