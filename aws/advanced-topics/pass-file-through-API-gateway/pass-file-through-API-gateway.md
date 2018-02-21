@@ -8,121 +8,89 @@ First create an API in API Gateway by clicking the “Create API” button in th
 
 ![alt text](images/image1.png)
 
-
 After that, under the API name on the left side of the screen, click on settings.
-
 
 ![alt text](images/image2.png)
 
-
 From there, you can add all files to the accepted binary media types by adding `*/*` (we are allowing the API to accept all file types and can validate elsewhere such as in the Lambda function itself).
-
 
 ![alt text](images/image3.png)
 
-
 Next, we need to link up our Lambda function to an API Gateway Resource. Create a resource by going to the Resources section under the API name on the left side of the screen, click on the “Actions” dropdown menu and select “Create Resource.”
-
 
 ![alt text](images/image4.png)
 
-
-Name your new resource and click “Create Resource”
-
-
-Next, select the new resource created, click the “Actions” drop-down menu again, and click “Create Method.”
-
+Name your new resource and click "Create Resource". Next, select the new resource created, click the “Actions” drop-down menu again, and click “Create Method.”
 
 ![alt text](images/image5.png)
 
-
 A dropdown field will appear below the resource. Click on the field and select “POST”. A “POST” section will appear below the resource.
-
 
 ![alt text](images/image6.png)
 
-
 Clicking on the “POST” section will provide you with the setup page to the right. Under Integration type select Lambda Function. Click the checkbox for Use Lambda Proxy integration. Under lambda region, select your AWS region (for MK it will be us-west-2). Once that is entered, another field will appear asking for the Lambda Function you will be connecting to the resource. If you have already made a function, enter the name and click Save.
-
 
 ![alt text](images/image7.png)
 
-
 Now, let’s take a look at our Lambda function we are linking to our API method.
 
-		exports.handler = (event, context, callback) => {
+	exports.handler = (event, context, callback) => {
 
-			const response = {
-		    statusCode: 200,
-		    body: ''
-			};
-
-		  callback(null, response);
+		const response = {
+	    statusCode: 200,
+	    body: ''
 		};
 
+		callback(null, response);
+	};
 
 This is a simple function for binary events. All binary event functions should have at least these two keys in the response:
 
-		{
-		  statusCode: ###,
-		  body: ''
-		}
+	{
+	  statusCode: ###,
+	  body: ''
+	}
 
 There are two other keys that may be required in the response for more complex requests. These are:
 
-		headers: {},
-		isBase64Encoded: true/false.
+	headers: {},
+	isBase64Encoded: true/false.
 
 To check if this is working with a real PDF, download and open Postman. While you are doing that, grab the URL of the method in API Gateway. First deploy the API by going to the Resources section, clicking the “Actions” drop-down button and selecting “Deploy API.”
 
-
 ![alt text](images/image8.png)
-
 
 Select the Deployment stage. If there is none, create a new deployment stage and name it “prod.”
 
 After the API has been deployed, go to the Stages section under the API name on the left side of the screen, click on your new deployment, click on your resource, and click on the POST method.
 
-
 ![alt text](images/image9.png)
-
 
 From there, grab the URL on the top of the new window.
 
-
 ![alt text](images/image10.png)
-
 
 Back in Postman, change the request to POST and input the URL provided by API Gateway you just grabbed above, go to the Body tab, select the form-data input, change the key to be a file type, and browse to choose your PDF test file. If you are not sending the PDF through a form, you can simply use the binary input option.
 
-
 ![alt text](images/image11.png)
-
 
 Press on the “Send” button in the top right. The response field should be empty. If there are any errors, they would show up in here. Some common errors I found while testing were 403: Missing Authentication Token, which means your URL is probably incorrect or  502: Internal server error, which means your Lambda function is probably not correct.
 
 To check if the PDF is actually being sent through, we can check the Cloudwatch logs. In the Cloudwatch service, click on the Logs section on the left side of the screen and choose the lambda function you have been using.
 
-
 ![alt text](images/image12.png)
-
 
 After that, click on the latest log stream which will be the first log on the top of the list.
 
-
 ![alt text](images/image13.png)
-
 
 In this log you will see all of the events that occured while running this lambda function. In one of the events you can see that the PDF file is being passed through.
 
-
 ![alt text](images/image14.png)
-
 
 If you have not made an S3 bucket yet, make one now. In the bucket, you will have to change the permissions to make the bucket public. To do this, click on your bucket in the S3 service, click on the permissions tab, click on the Bucket Policy section, and copy the following code into the IDE:
 
 (Please refer to the document “[AWS - Using Lambda to transfer file between buckets](https://docs.google.com/document/d/1awH_pgaMtY9g7kJUtBUNPY3ZCCmZJcdO--Z7Fr5lZ-o/edit)” for a more detailed explanation of how to set up buckets, if needed.)
-
 
 ![alt text](images/image15.png)
 
@@ -135,10 +103,9 @@ If you have not made an S3 bucket yet, make one now. In the bucket, you will hav
 	    		"Principal": "\*",
 	    		"Action": "s3GetObject",
 	    		"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
-	    	}
+	    }
 		]
 	}
-
 
 Now that we know the PDF is successful being passed through API Gateway and we have our S3 bucket setup, we need to parse the file data back to being usable so we can send it to S3 from the Lambda function. For this we will use a Node.js package called Busboy. We need to update our Lambda function as follows:
 
