@@ -32,7 +32,7 @@ The gist of this is that you need a third party app in order to continue setting
 
 <img src="images/phone1.png" width="40%" />
 
-As you can see, you're ready to sign a QR code. You're now ready to add your account. On your AWS console, click "Next Step". You'll see this:
+As you can see, you're ready to scan a QR code. You're now ready to add your account. On your AWS console, click "Next Step". You'll see this:
 
 ![alt text](images/6.png)
 
@@ -48,4 +48,4 @@ Click Finish. Congratulations. You've set up MFA on AWS! To verify, log out of A
 
 ![alt text](images/8.png)
 
-Look at your AWS account on Authy, and input the 6 digit code (quickly, before the code changes), and click "Submit". You'll see you have successfully logged in to your account. 
+Look at your AWS account on Authy, and input the 6 digit code (quickly, before the code changes), and click "Submit". You'll see you have successfully logged in to your account.
