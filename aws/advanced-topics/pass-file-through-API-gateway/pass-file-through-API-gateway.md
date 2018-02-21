@@ -125,14 +125,13 @@ Now that we know the PDF is successful being passed through API Gateway and we h
 		bb.on('file', function (fieldname, file, filename, encoding, mimetype) {
 			console.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
 
-		s3.upload({
-			Bucket: '<bucket name goes here>',
-			Key: filename,
-	    	Body: file
-		}).promise()
-		.then(function(){
-	    	callback(null, response);
-		});
+			s3.upload({
+				Bucket: '<bucket name goes here>',
+				Key: filename,
+		    	Body: file
+			}).promise().then(function() {
+		    		callback(null, response);
+			});
 		})
 		.on('field', (fieldname, val) => {
 			console.log('Field [%s]: value: %j', fieldname, val)
