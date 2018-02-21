@@ -36,9 +36,11 @@ exports.handler = (event, context, callback) => {
 
 This code is fine (it'll work), but for our purposes we are going to format it differently. Change it to this:
 
-    module.exports.handler = function (event, context, callback) {
-        callback(null, 'Hello from Lambda');
-    };
+```javascript
+module.exports.handler = function (event, context, callback) {
+  callback(null, 'Hello from Lambda');
+};
+```
 
 This fits with MK's backend coding standards. Click the "Save" button on the top right.
 

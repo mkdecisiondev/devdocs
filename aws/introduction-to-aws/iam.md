@@ -26,9 +26,9 @@ A policy is a JSON object that contains a permission. Take this policy for examp
         {
             "Effect": "Allow",
             "Action": [
-                "logs:\*"
+                "logs:*"
             ],
-            "Resource": "\*"
+            "Resource": "*"
         }
     ]
 }

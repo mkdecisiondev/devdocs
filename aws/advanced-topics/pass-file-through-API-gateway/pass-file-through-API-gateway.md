@@ -103,9 +103,9 @@ If you have not made an S3 bucket yet, make one now. In the bucket, you will hav
 		{
 			"Sid": "PublicReadGetObject",
 			"Effect": "Allow",
-			"Principal": "\*",
+			"Principal": "*",
 			"Action": "s3GetObject",
-			"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
+			"Resource": "arn:aws:s3:::<bucket name goes here>/*"
 		}
 	]
 }
@@ -162,7 +162,9 @@ If the Lambda function is not setup properly, you may experience a PDF being sav
 
 Now we must grab the S3 URL of the newly imported file so we can reference it later in a database, we can build the URL using the basic AWS S3 web link and the information we already have. It will look something like this:
 
-	let url = 'https://s3-us-west-2.amazonaws.com/' + s3Bucket + '/' + s3Key;
+```javascript
+let url = 'https://s3-us-west-2.amazonaws.com/' + s3Bucket + '/' + s3Key;
+```
 
 We have to update the Lambda function very slightly to build this URL. Add in and update the few missing variables in the given URL above.
 
