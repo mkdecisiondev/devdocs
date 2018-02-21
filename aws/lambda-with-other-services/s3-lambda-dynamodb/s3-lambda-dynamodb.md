@@ -39,12 +39,12 @@ As far as IAM is concerned, if you're working in the TFE Workspace and using `tf
     {
       "Effect": "Allow",
       "Action": "s3::GetObject",
-      "Resource": [your bucket ARN here]
+      "Resource": "[your bucket ARN here]"
     },
     {
       "Effect": "Allow",
       "Action": "dynamodb:PutItem",
-      "Resource": [your DynamoDB ARN here]
+      "Resource": "[your DynamoDB ARN here]"
     }
   ]
 }
@@ -144,8 +144,8 @@ module.exports.handler = function(event, context, callback) {
   let id = uuid4();
   const params = {
     Item: {
-      id: id,
-      url: url
+      ID: id,
+      URL: url
     },
     TableName: '[your table name]'
   }

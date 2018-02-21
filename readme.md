@@ -37,7 +37,7 @@ In order to effectively work on programming projects with a team of developers i
 1. Introduction to AWS
 	1. [The AWS Cloud](aws/introduction-to-aws/aws-cloud.md)
 	2. [IAM Explained](aws/introduction-to-aws/iam.md)
-	3. [Setting Up Multi Factor Authentication](aws/introduction-to-aws/mfa-setup/mfa.md)
+	3. [Setting Up Multi Factor Authentication](aws/introduction-to-aws/mfa-setup/mfa-setup.md)
 	4. [Setting Up Your Credentials](aws/introduction-to-aws/credentials-setup/credentials-setup.md)
 2. AWS Lambda and API Gateway
 	1. [Introduction to AWS Lambda](aws/lambda-and-api-gateway/introduction-to-lambda/introduction-to-lambda.md)
@@ -46,7 +46,7 @@ In order to effectively work on programming projects with a team of developers i
 3. Using Lambda with Other AWS Services
 	1. [Using Lambda to Transfer Files Between Buckets](aws/lambda-with-other-services/lambda-transfer-buckets/lambda-transfer-buckets.md)
 	2. Writing to a DynamoDB Table Using a Lambda Function
-	3. Storing S3 Object Links in DynamoDB
+	3. [Storing S3 Object Links in DynamoDB](aws/lambda-with-other-services/s3-lambda-dynamodb/s3-lambda-dynamodb.md)
 	4. [Using SES and Lambda to Send Emails](aws/lambda-with-other-services/ses-lambda/ses-lambda.md)
 	5. Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
 4. Advanced Topics
