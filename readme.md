@@ -37,7 +37,7 @@ In order to effectively work on programming projects with a team of developers i
 1. Introduction to AWS
 	1. [The AWS Cloud](aws/introduction-to-aws/aws-cloud.md)
 	2. [IAM Explained](aws/introduction-to-aws/iam.md)
-	3. Setting Up Multi Factor Authentication
+	3. [Setting Up Multi Factor Authentication](aws/introduction-to-aws/mfa-setup/mfa.md)
 	4. [Setting Up Your Credentials](aws/introduction-to-aws/credentials-setup/credentials-setup.md)
 2. AWS Lambda and API Gateway
 	1. [Introduction to AWS Lambda](aws/lambda-and-api-gateway/introduction-to-lambda/introduction-to-lambda.md)
