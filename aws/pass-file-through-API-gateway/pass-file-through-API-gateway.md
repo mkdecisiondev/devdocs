@@ -15,7 +15,7 @@ After that, under the API name on the left side of the screen, click on settings
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![alt text](images/image2.png)
 
 
-From there, you can add all files to the accepted binary media types by adding "\*/*" (we are allowing the API to accept all file types and can validate elsewhere such as in the Lambda function itself).
+From there, you can add all files to the accepted binary media types by adding `*/*` (we are allowing the API to accept all file types and can validate elsewhere such as in the Lambda function itself).
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![alt text](images/image3.png)
@@ -53,12 +53,12 @@ Now, let’s take a look at our Lambda function we are linking to our API method
 ```javascript
 exports.handler = (event, context, callback) => {
 
-  const response = {
-    statusCode: 200,
-    body: ''
-  };
+	const response = {
+    	statusCode: 200,
+    	body: ''
+	};
 
-  callback(null, response);
+	callback(null, response);
 };
 ```
 
@@ -132,16 +132,16 @@ If you have not made an S3 bucket yet, make one now. In the bucket, you will hav
 
 ```JSON
 {
-  "Version": "2008-10-17",
-  "Statement": [
-    {
-      "Sid": "PublicReadGetObject",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3GetObject",
-      "Resource": "arn:aws:s3:::<bucket name goes here>/*"
-    }
-  ]
+	"Version": "2008-10-17",
+	"Statement": [
+		{
+			"Sid": "PublicReadGetObject",
+    		"Effect": "Allow",
+    		"Principal": "*",
+    		"Action": "s3GetObject",
+    		"Resource": "arn:aws:s3:::<bucket name goes here>/*"
+    	}
+	]
 }
 ```
 
@@ -154,39 +154,39 @@ const busboy = require('busboy');
 
 exports.handler = (event, context, callback) => {
 
- const response = {
-   statusCode: 200,
-   body: ''
- };
+	const response = {
+		statusCode: 200,
+		body: ''
+	};
 
- let bb = new busboy({ headers: event.headers });
- console.log(bb);
- bb.on('file', function (fieldname, file, filename, encoding, mimetype) {
-   console.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
+	let bb = new busboy({ headers: event.headers });
+	console.log(bb);
+	bb.on('file', function (fieldname, file, filename, encoding, mimetype) {
+		console.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
 
-   s3.upload({
-     Bucket: '<bucket name goes here>',
-     Key: filename,
-     Body: file
-   }).promise()
-   .then(function(){
-     callback(null, response);
-   });
- })
- .on('field', (fieldname, val) => {
-   console.log('Field [%s]: value: %j', fieldname, val)
- })
- .on('finish', () => {
-   console.log('Done parsing form');
-   callback(null, response)
- })
- .on('error', err => {
-   console.log('failed', err);
-   callback(err)
- })
+	s3.upload({
+		Bucket: '<bucket name goes here>',
+		Key: filename,
+    	Body: file
+	}).promise()
+	.then(function(){
+    	callback(null, response);
+	});
+	})
+	.on('field', (fieldname, val) => {
+		console.log('Field [%s]: value: %j', fieldname, val)
+	})
+	.on('finish', () => {
+		console.log('Done parsing form');
+		callback(null, response)
+	})
+	.on('error', err => {
+		console.log('failed', err);
+		callback(err)
+	})
 
- bb.end(Buffer.from(event.body, 'base64'));
- console.log('event.body', event.body)
+	bb.end(Buffer.from(event.body, 'base64'));
+	console.log('event.body', event.body)
 }
 ```
 
@@ -207,18 +207,18 @@ We have to update the Lambda function very slightly to build this URL. Add in an
 If you are submitting the information through a form and you have other non-binary data that needs to be parsed out, we can do this by updating the "field" portion of the Busboy function. The way I did it was to define jsonObject and jsonComplete as empty objects outside of the Busboy function. After that you can make changes to the "field" portion like so:
 
 ```javascript
-...
-  .on('field', function (fieldname, val) {
-    jsonObject[fieldname]=val;
-    let url = 'https://s3-us-west-2.amazonaws.com/' + s3Bucket = '/' + s3Key;
-    jsonObject.resume = url;
-    jsonComplete = {
-      statusCode:200,
-      body: JSON.stringify(jsonObject)
-    };
-    console.log('JSON', jsonComplete);
-  })
-...
+	// ...
+	.on('field', function (fieldname, val) {
+		jsonObject[fieldname]=val;
+		let url = 'https://s3-us-west-2.amazonaws.com/' + s3Bucket = '/' + s3Key;
+		jsonObject.resume = url;
+		jsonComplete = {
+    		statusCode:200,
+    		body: JSON.stringify(jsonObject)
+		};
+	console.log('JSON', jsonComplete);
+	})
+	// ...
 ```
 
 This essentially will iterate every time the function sees an event key. The jsonObject[fieldname]=val; line is creating a new JSON object key every iteration and assigning all of the keys to be the correct name and, therefore, the correct value.
