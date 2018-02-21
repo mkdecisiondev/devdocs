@@ -37,8 +37,8 @@ Now, let’s take a look at our Lambda function we are linking to our API method
 	exports.handler = (event, context, callback) => {
 
 		const response = {
-	    statusCode: 200,
-	    body: ''
+			statusCode: 200,
+			body: ''
 		};
 
 		callback(null, response);
@@ -99,11 +99,11 @@ If you have not made an S3 bucket yet, make one now. In the bucket, you will hav
 		"Statement": [
 			{
 				"Sid": "PublicReadGetObject",
-	    		"Effect": "Allow",
-	    		"Principal": "\*",
-	    		"Action": "s3GetObject",
-	    		"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
-	    }
+	    			"Effect": "Allow",
+	    			"Principal": "\*",
+	    			"Action": "s3GetObject",
+	    			"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
+			}
 		]
 	}
 
