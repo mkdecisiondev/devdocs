@@ -47,7 +47,7 @@ In order to effectively work on programming projects with a team of developers i
 	1. [Using Lambda to Transfer Files Between Buckets](aws/lambda-with-other-services/lambda-transfer-buckets/lambda-transfer-buckets.md)
 	2. Writing to a DynamoDB Table Using a Lambda Function
 	3. Storing S3 Object Links in DynamoDB
-	4. Using SES and Lambda to Send Emails
+	4. [Using SES and Lambda to Send Emails](aws/lambda-with-other-services/ses-lambda/ses-lambda.md)
 	5. Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
 4. Advanced Topics
 	1. [Mock Testing the AWS SDK](aws/advanced-topics/aws-sdk-mock/aws-sdk-mock.md)
