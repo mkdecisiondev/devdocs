@@ -10,7 +10,7 @@ Register an email address by entering it into the AWS SES Email Address section 
 
 ![alt text](images/image1.png)
 
-Next, give your Lambda function permission to use SES. You’ll need to make a custom policy in AWS IAM. Go to the Roles section and click on the role to edit in. Create an inline policy and enter this JSON. For more information on how to configure permissions in SES, read the [documentation](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/control-user-access.html).
+Next, give your Lambda function permission to use SES. You’ll need to make a custom policy in AWS IAM. Go to the Roles section and click on the role to edit in. Create an inline policy and enter this JSON:
 
 ```json
 {
@@ -24,11 +24,9 @@ Next, give your Lambda function permission to use SES. You’ll need to make a c
  }
  ```
 
-![alt text](images/image3.png)
+For more information on how to configure permissions in SES, read the [documentation](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/control-user-access.html).
 
-![alt text](images/image2.png)
-
-There are two ways to write a Lambda function for this purpose. One is simple, but cannot include attachments. The other allows for attachments.
+There are two ways to write a Lambda function that calls SES to send an email. One is simple, but cannot include attachments. The other allows for attachments.
 
 ## The Simplest Way
 
