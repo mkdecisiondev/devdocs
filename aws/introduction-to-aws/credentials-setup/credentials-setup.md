@@ -30,7 +30,7 @@ Do not close the window, but type in your console `aws configure --profile mkdec
 
 Now, this is important: you cannot get your key again after you close the popup window. This means that if you delete or lose your secret key, you’ll need to generate a new AWS Access Key ID and start over with configuring your profiles.
 
-When you’ve finished that, you will need to switch your role to the TFE workspace. If you haven’t done this yet, ask the AWS administrator to send you a link to do this and make your name for the role “TFE Workspace”. After that, go to IAM within that role. You will no doubt notice that there are a lot less permissions now. Go to the Roles tab. You will see these roles:
+When you’ve finished that, you will need to switch your role to the TFE workspace. If you haven’t done this yet, ask the AWS administrator to send you a link to do this and make your name for the role “TFE Workspace”. Go to IAM within TFE Workspace. You will no doubt notice that there are a lot less permissions now. Go to the Roles tab. You will see these roles:
 
 ![alt text](images/image1.png)
 

@@ -37,7 +37,7 @@ In order to effectively work on programming projects with a team of developers i
 1. Introduction to AWS
 	1. [The AWS Cloud](aws/introduction-to-aws/aws-cloud.md)
 	2. [IAM Explained](aws/introduction-to-aws/iam.md)
-	3. Setting Up Multi Factor Authentication
+	3. [Setting Up Multi Factor Authentication](aws/introduction-to-aws/mfa-setup/mfa.md)
 	4. [Setting Up Your Credentials](aws/introduction-to-aws/credentials-setup/credentials-setup.md)
 2. AWS Lambda Development Tutorials
 	1. [Introduction to AWS Lambda](aws/lambda-development-tutorials/introduction-to-lambda/introduction-to-lambda.md)
@@ -46,6 +46,7 @@ In order to effectively work on programming projects with a team of developers i
 	4. Writing to a DynamoDB Table Using a Lambda Function
 	5. Storing S3 Object Links in DynamoDB
 	6. Using SES and Lambda to Send Emails
+	7. Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
 3. Advanced Topics
 	1. Mock Testing the AWS SDK
 	2. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
