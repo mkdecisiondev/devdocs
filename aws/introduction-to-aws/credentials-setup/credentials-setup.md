@@ -4,21 +4,19 @@
 
 This tutorial will teach you how to set up your AWS CLI keys in order to upload your Lambda functions within the repository. If you follow these instructions, you should in theory be able to upload to the TFE Workspace so long as you use `pnpm run package` and `pnpm run deploy`. Right now, this implementation will only work if you’re on a \*NIX system (OS X, Unix, or Linux) or if you’ve managed to get Bash to work on Windows.
 
-First, you must log into AWS with your MK Decision account. Assuming you signed in with your own account, log out, and when you’re given the option to log in again, look for the link that says "Sign in to a different account.” It should look like this:
+First, you must log into AWS with your MK Decision account. Assuming you signed in with your own account, log out, and when you’re given the option to log in again, look for the link that says "Sign in to a different account." It should look like this:
 
 ![alt text](images/image2.png)
 
-You’ll be brought to this page:
+Type in "mkdecision". When you hit "Next," you’ll be brought to a new login page where you can sign in using your MK Decision username and password. Once you’re logged in, go to IAM. On the left side of the page, click on "Users". Then select your username. You will be brought to this page:
 
 ![alt text](images/image5.png)
 
-Type in “mkdecision”. When you hit “Next,” you’ll be brought to a new login page where you can sign in using your username and password. Once you’re logged in, go to IAM and click on “Users”. Then select your username. You will be brought to this page:
-
-Click on the “Security Credentials” tab. You will see this.
+Click on the "Security Credentials" tab. You will see this.
 
 ![alt text](images/image4.png)
 
-You need to click “Create access key” (note: if you are unable to do so, that probably means that you haven’t enabled multi factor authentication, so get that done and then try this again). You will see a pop up with a column that says “Access key ID” and another that says Secret access key, which will be masked unless you click “Show” next to it.
+You need to click "Create access key" (note: if you are unable to do so, that probably means that you haven’t enabled multi factor authentication, so get that done and then try this again). You will see a pop up with a column that says "Access key ID" and another that says Secret access key, which will be masked unless you click "Show" next to it.
 
 Do not close the window, but type in your console `aws configure --profile mkdecision`. You will be asked to input your Access Key ID, Secret Access Key, default region, and default output format. You should input your data as follows:
 
@@ -30,7 +28,7 @@ Do not close the window, but type in your console `aws configure --profile mkdec
 
 Now, this is important: you cannot get your key again after you close the popup window. This means that if you delete or lose your secret key, you’ll need to generate a new AWS Access Key ID and start over with configuring your profiles.
 
-When you’ve finished that, you will need to switch your role to the TFE workspace. If you haven’t done this yet, ask the AWS administrator to send you a link to do this and make your name for the role “TFE Workspace”. Go to IAM within TFE Workspace. You will no doubt notice that there are a lot less permissions now. Go to the Roles tab. You will see these roles:
+When you’ve finished that, you will need to switch your role to the TFE workspace. If you haven’t done this yet, ask the AWS administrator to send you a link to do this and make your name for the role "TFE Workspace". Go to IAM within TFE Workspace. You will no doubt notice that there are a lot less permissions now. Go to the Roles tab. You will see these roles:
 
 ![alt text](images/image1.png)
 
@@ -38,7 +36,7 @@ Click on the role that says TFE. You will see this page.
 
 ![alt text](images/image6.png)
 
-Look at the row that says “Role ARN”. Copy this role. Then run `vim ~/.aws/config` or `nano ~/.aws/config` to update your profiles. Append this to the end of the file:
+Look at the row that says "Role ARN". Copy this role. Then run `vim ~/.aws/config` or `nano ~/.aws/config` to update your profiles. Append this to the end of the file:
 
     [profile TFEWorkspace]
     role_arn = [the ARN from earlier]

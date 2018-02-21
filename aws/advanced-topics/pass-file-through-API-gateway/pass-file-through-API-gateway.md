@@ -4,7 +4,7 @@
 
 API Gateway now allows for the passing of binary media types (i.e. files). In this document, we will be showing you how to pass through a PDF file.
 
-First create an API in API Gateway by clicking the “Create API” button in the top left of the screen and following the instruction to name and create the API.
+First create an API in API Gateway by clicking the "Create API" button in the top left of the screen and following the instruction to name and create the API.
 
 ![alt text](images/image1.png)
 
@@ -16,19 +16,19 @@ From there, you can add all files to the accepted binary media types by adding `
 
 ![alt text](images/image3.png)
 
-Next, we need to link up our Lambda function to an API Gateway Resource. Create a resource by going to the Resources section under the API name on the left side of the screen, click on the “Actions” dropdown menu and select “Create Resource.”
+Next, we need to link up our Lambda function to an API Gateway Resource. Create a resource by going to the Resources section under the API name on the left side of the screen, click on the "Actions" dropdown menu and select "Create Resource."
 
 ![alt text](images/image4.png)
 
-Name your new resource and click "Create Resource". Next, select the new resource created, click the “Actions” drop-down menu again, and click “Create Method.”
+Name your new resource and click "Create Resource". Next, select the new resource created, click the "Actions" drop-down menu again, and click "Create Method."
 
 ![alt text](images/image5.png)
 
-A dropdown field will appear below the resource. Click on the field and select “POST”. A “POST” section will appear below the resource.
+A dropdown field will appear below the resource. Click on the field and select "POST". A "POST" section will appear below the resource.
 
 ![alt text](images/image6.png)
 
-Clicking on the “POST” section will provide you with the setup page to the right. Under Integration type select Lambda Function. Click the checkbox for Use Lambda Proxy integration. Under lambda region, select your AWS region (for MK it will be us-west-2). Once that is entered, another field will appear asking for the Lambda Function you will be connecting to the resource. If you have already made a function, enter the name and click Save.
+Clicking on the "POST" section will provide you with the setup page to the right. Under Integration type select Lambda Function. Click the checkbox for Use Lambda Proxy integration. Under lambda region, select your AWS region (for MK it will be us-west-2). Once that is entered, another field will appear asking for the Lambda Function you will be connecting to the resource. If you have already made a function, enter the name and click Save.
 
 ![alt text](images/image7.png)
 
@@ -58,11 +58,11 @@ There are two other keys that may be required in the response for more complex r
 	headers: {},
 	isBase64Encoded: true/false.
 
-To check if this is working with a real PDF, download and open Postman. While you are doing that, grab the URL of the method in API Gateway. First deploy the API by going to the Resources section, clicking the “Actions” drop-down button and selecting “Deploy API.”
+To check if this is working with a real PDF, download and open Postman. While you are doing that, grab the URL of the method in API Gateway. First deploy the API by going to the Resources section, clicking the "Actions" drop-down button and selecting "Deploy API."
 
 ![alt text](images/image8.png)
 
-Select the Deployment stage. If there is none, create a new deployment stage and name it “prod.”
+Select the Deployment stage. If there is none, create a new deployment stage and name it "prod."
 
 After the API has been deployed, go to the Stages section under the API name on the left side of the screen, click on your new deployment, click on your resource, and click on the POST method.
 
@@ -76,7 +76,7 @@ Back in Postman, change the request to POST and input the URL provided by API Ga
 
 ![alt text](images/image11.png)
 
-Press on the “Send” button in the top right. The response field should be empty. If there are any errors, they would show up in here. Some common errors I found while testing were 403: Missing Authentication Token, which means your URL is probably incorrect or  502: Internal server error, which means your Lambda function is probably not correct.
+Press on the "Send" button in the top right. The response field should be empty. If there are any errors, they would show up in here. Some common errors I found while testing were 403: Missing Authentication Token, which means your URL is probably incorrect or  502: Internal server error, which means your Lambda function is probably not correct.
 
 To check if the PDF is actually being sent through, we can check the Cloudwatch logs. In the Cloudwatch service, click on the Logs section on the left side of the screen and choose the lambda function you have been using.
 
@@ -92,7 +92,7 @@ In this log you will see all of the events that occured while running this lambd
 
 If you have not made an S3 bucket yet, make one now. In the bucket, you will have to change the permissions to make the bucket public. To do this, click on your bucket in the S3 service, click on the permissions tab, click on the Bucket Policy section, and copy the following code into the IDE:
 
-(Please refer to the document “[AWS - Using Lambda to transfer file between buckets](https://docs.google.com/document/d/1awH_pgaMtY9g7kJUtBUNPY3ZCCmZJcdO--Z7Fr5lZ-o/edit)” for a more detailed explanation of how to set up buckets, if needed.)
+(Please refer to the document "[AWS - Using Lambda to transfer file between buckets](https://docs.google.com/document/d/1awH_pgaMtY9g7kJUtBUNPY3ZCCmZJcdO--Z7Fr5lZ-o/edit)" for a more detailed explanation of how to set up buckets, if needed.)
 
 ![alt text](images/image15.png)
 

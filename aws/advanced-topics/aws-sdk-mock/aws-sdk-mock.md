@@ -27,7 +27,7 @@ module.exports = function(filename, file, data) {
 
 To begin to use the AWS mocking library, we need to install it via the command line by typing in `pnpm install --save-dev aws-sdk-mock`. After the library finishes installing, we can start creating our testing file.
 
-At the top of our testing file, we will need to “require” the mocking library and assign it to a const variable:
+At the top of our testing file, we will need to "require" the mocking library and assign it to a const variable:
 
 ```javascript
 const AWS = require('aws-sdk-mock');
