@@ -30,7 +30,7 @@ With "A virtual MFA device" selected, click "Next Step". There will be another p
 
 The gist of this is that you need a third party app in order to continue setting up MFA. For that we can use [Authy](https://authy.com/), a mobile app that is available on both IOS and Android. Download Authy on your phone and create an account. Once that's done, click "Add an Account". You'll see this screen on your phone:
 
-![alt text](images/phone1.png)
+![alt text](images/phone1.png) <!-- .element height="50%" width="50%" -->
 
 As you can see, you're ready to sign a QR code. You're now ready to add your account. On your AWS console, click "Next Step". You'll see this:
 
