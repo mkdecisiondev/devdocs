@@ -6,15 +6,15 @@ This tutorial will teach you how to set up your AWS CLI keys in order to upload 
 
 First, you must log into AWS with your MK Decision account. Assuming you signed in with your own account, log out, and when you’re given the option to log in again, look for the link that says "Sign in to a different account." It should look like this:
 
-![alt text](images/image2.png)
+![alt text](images/1.png)
 
 Type in "mkdecision". When you hit "Next," you’ll be brought to a new login page where you can sign in using your MK Decision username and password. Once you’re logged in, go to IAM. On the left side of the page, click on "Users". Then select your username. You will be brought to this page:
 
-![alt text](images/image5.png)
+![alt text](images/2.png)
 
 Click on the "Security Credentials" tab. You will see this.
 
-![alt text](images/image4.png)
+![alt text](images/3.png)
 
 You need to click "Create access key" (note: if you are unable to do so, that probably means that you haven’t enabled multi factor authentication, so get that done and then try this again). You will see a pop up with a column that says "Access key ID" and another that says Secret access key, which will be masked unless you click "Show" next to it.
 
@@ -30,11 +30,11 @@ Now, this is important: you cannot get your key again after you close the popup 
 
 When you’ve finished that, you will need to switch your role to the TFE workspace. If you haven’t done this yet, ask the AWS administrator to send you a link to do this and make your name for the role "TFE Workspace". Go to IAM within TFE Workspace. You will no doubt notice that there are a lot less permissions now. Go to the Roles tab. You will see these roles:
 
-![alt text](images/image1.png)
+![alt text](images/4.png)
 
 Click on the role that says TFE. You will see this page.
 
-![alt text](images/image6.png)
+![alt text](images/5.png)
 
 Look at the row that says "Role ARN". Copy this role. Then run `vim ~/.aws/config` or `nano ~/.aws/config` to update your profiles. Append this to the end of the file:
 
