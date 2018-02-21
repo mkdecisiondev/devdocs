@@ -60,11 +60,13 @@ Click it and then select "Configure test events". You'll be brought to this popu
 
 You can keep the configuration as is, with two exceptions. Change "Event name" to "test1". In the code editor below, change this JSON
 
-    {
-      "key3": "value3",
-      "key2": "value2",
-      "key1": "value1"
-    }
+```json
+{
+  "key3": "value3",
+  "key2": "value2",
+  "key1": "value1"
+}
+```
 
 To be just `{}`. This reflects the fact that any event input is irrelevant, although it's good practice to get in the habit of ALWAYS passing in a JavaScript object. Save the test event. You will notice that "test1" is selected in the dropdown menu next to "Test". Now click "Test". You will notice that below the code editor you get output similar to this:
 
@@ -87,9 +89,11 @@ If you click "Details" within this box, you will see the same info that was belo
 
 Now change your function to this:
 
-    module.exports.handler = function (event, context, callback) {
-        callback('Random error', null);
-    };
+```javascript
+module.exports.handler = function (event, context, callback) {
+    callback('Random error', null);
+};
+```
 
 Save the function and click "Test" again. This time you should get output that looks something like this:
 
@@ -115,4 +119,10 @@ Like the green box before, you can see the same output from the console when you
 
 And that is it. One thing you should get used to thinking now is that you may not always be able to edit your Lambda function in the inline code editor. Sometimes Lambda functions get pretty big and this option is not available. In any case, you should learn how to deploy your code from the command line or at least uploading your code as a zip file.
 
-However, for now, this is really all it takes to create a Lambda function. The following tutorials will help you learn how to hook up Lambda functions with other AWS services.
+However, for now, this is really all it takes to create a Lambda function. The following tutorials will help you learn how to hook up Lambda functions with other AWS services. The next tutorial will help you link this Lambda function with API Gateway, so before you continue, change the Lambda function back to this:
+
+```javascript
+module.exports.handler = function (event, context, callback) {
+  callback(null, 'Hello from Lambda');
+};
+```
