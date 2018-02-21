@@ -35,18 +35,18 @@ In order to effectively work on programming projects with a team of developers i
 
 ## Back End Documentation
 1. Introduction to AWS
-	1. [The AWS Cloud](aws/aws-cloud.md)
-	2. [IAM Explained](aws/iam.md)
+	1. [The AWS Cloud](aws/introduction-to-aws/aws-cloud.md)
+	2. [IAM Explained](aws/introduction-to-aws/iam.md)
 	3. Setting Up Multi Factor Authentication
-	4. [Setting Up Your Credentials](aws/credentials-setup/credentials-setup.md)
+	4. [Setting Up Your Credentials](aws/introduction-to-aws/credentials-setup/credentials-setup.md)
 2. AWS Lambda Development Tutorials
-	1. [Introduction to AWS Lambda](aws/introduction-to-lambda/introduction-to-lambda.md)
-	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-api-gateway/lambda-api-gateway.md)
-	3. [Using Lambda to Transfer Files Between Buckets](aws/lambda-transfer-buckets/lambda-transfer-buckets.md)
+	1. [Introduction to AWS Lambda](aws/lambda-development-tutorials/introduction-to-lambda/introduction-to-lambda.md)
+	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-development-tutorials/lambda-api-gateway/lambda-api-gateway.md)
+	3. [Using Lambda to Transfer Files Between Buckets](aws/lambda-development-tutorials/lambda-transfer-buckets/lambda-transfer-buckets.md)
 	4. Writing to a DynamoDB Table Using a Lambda Function
 	5. Storing S3 Object Links in DynamoDB
 	6. Using SES and Lambda to Send Emails
 3. Advanced Topics
 	1. Mock Testing the AWS SDK
-	2. [How to Pass a File Through API Gateway](aws/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
+	2. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
 	3. Deployment Strategies
