@@ -47,8 +47,8 @@ Now, let’s take a look at our Lambda function we are linking to our API method
 This is a simple function for binary events. All binary event functions should have at least these two keys in the response:
 
 	{
-	  statusCode: ###,
-	  body: ''
+		statusCode: ###,
+		body: ''
 	}
 
 There are two other keys that may be required in the response for more complex requests. These are:
@@ -99,10 +99,10 @@ If you have not made an S3 bucket yet, make one now. In the bucket, you will hav
 		"Statement": [
 			{
 				"Sid": "PublicReadGetObject",
-	    			"Effect": "Allow",
-	    			"Principal": "\*",
-	    			"Action": "s3GetObject",
-	    			"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
+				"Effect": "Allow",
+				"Principal": "\*",
+				"Action": "s3GetObject",
+				"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
 			}
 		]
 	}
@@ -113,7 +113,7 @@ Now that we know the PDF is successful being passed through API Gateway and we h
 	const s3 = new AWS.S3();
 	const busboy = require('busboy');
 
-	exports.handler = (event, context, callback) => {
+	exports.handler = function(event, context, callback) {
 
 		const response = {
 			statusCode: 200,
@@ -148,7 +148,7 @@ Now that we know the PDF is successful being passed through API Gateway and we h
 
 		bb.end(Buffer.from(event.body, 'base64'));
 		console.log('event.body', event.body)
-	}
+	};
 
 This code uses Busboy to parse the incoming file. The .on is an event listener which recognizes when a file is present and executes certain commands. Busboy outputs a stream that we can use to upload to S3 by using the s3.upload function seen above. By the time Busboy ends, the file will be in the S3 bucket specified.
 
