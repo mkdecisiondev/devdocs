@@ -42,11 +42,12 @@ In order to effectively work on programming projects with a team of developers i
 2. AWS Lambda Development Tutorials
 	1. [Introduction to AWS Lambda](aws/lambda-development-tutorials/introduction-to-lambda/introduction-to-lambda.md)
 	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-development-tutorials/lambda-api-gateway/lambda-api-gateway.md)
-	3. [Using Lambda to Transfer Files Between Buckets](aws/lambda-development-tutorials/lambda-transfer-buckets/lambda-transfer-buckets.md)
-	4. Writing to a DynamoDB Table Using a Lambda Function
-	5. Storing S3 Object Links in DynamoDB
-	6. Using SES and Lambda to Send Emails
-	7. Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
+	3. [How to Assign Environmental Variables in Lambda]()
+	4. [Using Lambda to Transfer Files Between Buckets](aws/lambda-development-tutorials/lambda-transfer-buckets/lambda-transfer-buckets.md)
+	5. Writing to a DynamoDB Table Using a Lambda Function
+	6. Storing S3 Object Links in DynamoDB
+	7. Using SES and Lambda to Send Emails
+	8. Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
 3. Advanced Topics
 	1. [Mock Testing the AWS SDK](aws/advanced-topics/aws-sdk-mock/aws-sdk-mock.md)
 	2. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
