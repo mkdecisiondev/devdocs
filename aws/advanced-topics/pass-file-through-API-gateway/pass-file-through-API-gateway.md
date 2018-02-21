@@ -34,15 +34,17 @@ Clicking on the “POST” section will provide you with the setup page to the r
 
 Now, let’s take a look at our Lambda function we are linking to our API method.
 
-	exports.handler = (event, context, callback) => {
+```javascript
+module.exports.handler = function(event, context, callback) {
 
-		const response = {
-			statusCode: 200,
-			body: ''
-		};
-
-		callback(null, response);
+	const response = {
+		statusCode: 200,
+		body: ''
 	};
+
+	callback(null, response);
+};
+```
 
 This is a simple function for binary events. All binary event functions should have at least these two keys in the response:
 
@@ -94,60 +96,64 @@ If you have not made an S3 bucket yet, make one now. In the bucket, you will hav
 
 ![alt text](images/image15.png)
 
-	{
-		"Version": "2008-10-17",
-		"Statement": [
-			{
-				"Sid": "PublicReadGetObject",
-				"Effect": "Allow",
-				"Principal": "\*",
-				"Action": "s3GetObject",
-				"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
-			}
-		]
-	}
+```json
+{
+	"Version": "2008-10-17",
+	"Statement": [
+		{
+			"Sid": "PublicReadGetObject",
+			"Effect": "Allow",
+			"Principal": "\*",
+			"Action": "s3GetObject",
+			"Resource": "arn:aws:s3:::<bucket name goes here>/\*"
+		}
+	]
+}
+```
 
 Now that we know the PDF is successful being passed through API Gateway and we have our S3 bucket setup, we need to parse the file data back to being usable so we can send it to S3 from the Lambda function. For this we will use a Node.js package called Busboy. We need to update our Lambda function as follows:
 
-	const AWS = require('aws-sdk');
-	const s3 = new AWS.S3();
-	const busboy = require('busboy');
+```javascript
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+const busboy = require('busboy');
 
-	exports.handler = function(event, context, callback) {
+exports.handler = function(event, context, callback) {
 
-		const response = {
-			statusCode: 200,
-			body: ''
-		};
-
-		let bb = new busboy({ headers: event.headers });
-		console.log(bb);
-		bb.on('file', function (fieldname, file, filename, encoding, mimetype) {
-			console.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
-
-			s3.upload({
-				Bucket: '<bucket name goes here>',
-				Key: filename,
-		    	Body: file
-			}).promise().then(function() {
-		    		callback(null, response);
-			});
-		})
-		.on('field', (fieldname, val) => {
-			console.log('Field [%s]: value: %j', fieldname, val)
-		})
-		.on('finish', () => {
-			console.log('Done parsing form');
-			callback(null, response)
-		})
-		.on('error', err => {
-			console.log('failed', err);
-			callback(err)
-		})
-
-		bb.end(Buffer.from(event.body, 'base64'));
-		console.log('event.body', event.body)
+	const response = {
+		statusCode: 200,
+		body: ''
 	};
+
+	let bb = new busboy({ headers: event.headers });
+	console.log(bb);
+	bb.on('file', function (fieldname, file, filename, encoding, mimetype) {
+		console.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
+
+		s3.upload({
+			Bucket: '<bucket name goes here>',
+			Key: filename,
+	    	Body: file
+		}).promise().then(function() {
+	    		callback(null, response);
+		});
+	})
+	.on('field', (fieldname, val) => {
+		console.log('Field [%s]: value: %j', fieldname, val)
+	})
+	.on('finish', () => {
+		console.log('Done parsing form');
+		callback(null, response)
+	})
+	.on('error', err => {
+		console.log('failed', err);
+		callback(err)
+	})
+
+	bb.end(Buffer.from(event.body, 'base64'));
+	console.log('event.body', event.body)
+};
+```
 
 This code uses Busboy to parse the incoming file. The .on is an event listener which recognizes when a file is present and executes certain commands. Busboy outputs a stream that we can use to upload to S3 by using the s3.upload function seen above. By the time Busboy ends, the file will be in the S3 bucket specified.
 
@@ -163,18 +169,20 @@ We have to update the Lambda function very slightly to build this URL. Add in an
 
 If you are submitting the information through a form and you have other non-binary data that needs to be parsed out, we can do this by updating the "field" portion of the Busboy function. The way I did it was to define jsonObject and jsonComplete as empty objects outside of the Busboy function. After that you can make changes to the "field" portion like so:
 
-	// ...
-	.on('field', function (fieldname, val) {
-		jsonObject[fieldname]=val;
-		let url = 'https://s3-us-west-2.amazonaws.com/' + s3Bucket = '/' + s3Key;
-		jsonObject.resume = url;
-		jsonComplete = {
-    		statusCode:200,
-    		body: JSON.stringify(jsonObject)
-		};
-	console.log('JSON', jsonComplete);
-	})
-	// ...
+```javascript
+// ...
+.on('field', function (fieldname, val) {
+	jsonObject[fieldname]=val;
+	let url = 'https://s3-us-west-2.amazonaws.com/' + s3Bucket = '/' + s3Key;
+	jsonObject.resume = url;
+	jsonComplete = {
+  		statusCode:200,
+  		body: JSON.stringify(jsonObject)
+	};
+console.log('JSON', jsonComplete);
+})
+// ...
+```
 
 This essentially will iterate every time the function sees an event key. The jsonObject[fieldname]=val; line is creating a new JSON object key every iteration and assigning all of the keys to be the correct name and, therefore, the correct value.
 

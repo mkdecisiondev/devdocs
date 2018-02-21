@@ -27,10 +27,12 @@ Select "Author from scratch" and name your function `helloWorld`. At MK Decision
 
 You'll be brought to your Lambda function page. Scroll down and you'll see a section called "Function code". This code is below:
 
-    exports.handler = (event, context, callback) => {
-        // TODO implement
-        callback(null, 'Hello from Lambda');
-    };
+```javascript
+exports.handler = (event, context, callback) => {
+    // TODO implement
+    callback(null, 'Hello from Lambda');
+};
+```
 
 This code is fine (it'll work), but for our purposes we are going to format it differently. Change it to this:
 

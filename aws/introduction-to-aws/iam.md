@@ -19,18 +19,20 @@ Unless a user or a service is explicitly given a permission, it cannot do anythi
 
 A policy is a JSON object that contains a permission. Take this policy for example:
 
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "logs:\*"
-                ],
-                "Resource": "\*"
-            }
-        ]
-    }
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:\*"
+            ],
+            "Resource": "\*"
+        }
+    ]
+}
+```
 
 This policy, when added to a role, will allow whatever service that role is assigned to to write logs for anything. Its official name is CloudWatchLogsFullAccess. Let's break it down further:
 
