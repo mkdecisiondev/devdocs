@@ -51,14 +51,14 @@ Clicking on the “POST” section will provide you with the setup page to the r
 Now, let’s take a look at our Lambda function we are linking to our API method.
 
 ```javascript
-exports.handler = (event, context, cb) => {
+exports.handler = (event, context, callback) => {
 
   const response = {
     statusCode: 200,
     body: ''
   };
 
-  cb(null, response);
+  callback(null, response);
 };
 ```
 

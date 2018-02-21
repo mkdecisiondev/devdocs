@@ -23,7 +23,7 @@ Go ahead and click "Create a function". You'll come to this page:
 
 ![alt text](images/2.png)
 
-Select "Author from scratch" and name your function helloWorld. At MK Decisioning Systems, we use the Node.js 6.10 Runtime (although Lambda also offers other languages, like Java, Python, C#, or even Go). The tricky part is Role. For your purposes, on the TFE Workspace, you will select "Choose an existing role" and then select "tfe-lambda-role". If you're working on your AWS account though you may need to create a custom role (that falls under the scope of IAM, article to be added later). Click "Create function".
+Select "Author from scratch" and name your function `helloWorld`. At MK Decisioning Systems, we use the Node.js 6.10 Runtime (although Lambda also offers other languages, like Java, Python, C#, or even Go). The tricky part is Role. For your purposes, on the TFE Workspace, you will select "Choose an existing role" and then select "tfe-lambda-role". If you're working on your AWS account though you may need to create a custom role (that falls under the scope of IAM, article to be added later). Click "Create function".
 
 You'll be brought to your Lambda function page. Scroll down and you'll see a section called "Function code". This code is below:
 
@@ -34,17 +34,17 @@ You'll be brought to your Lambda function page. Scroll down and you'll see a sec
 
 This code is fine (it'll work), but for our purposes we are going to format it differently. Change it to this:
 
-    module.exports.handler = function (event, context, cb) {
-        cb(null, 'Hello from Lambda');
+    module.exports.handler = function (event, context, callback) {
+        callback(null, 'Hello from Lambda');
     };
 
 This fits with MK's backend coding standards. Click the "Save" button on the top right.
 
-This function's name, as you may have noticed, is "handler". In your code, you should always refer to it as such, because that's the best way to call your Lambda function. Take a good look at the parameters also. They are:
+This function's name, as you may have noticed, is `handler`. In your code, you should always refer to it as such, because that's the best way to call your Lambda function. Take a good look at the parameters also. They are:
 
 * **event**: This is the input from the event. If you call a Lambda function and put in an input, it can be accessed through this parameter. Examples of valid input are strings, the `null` keyword, and JSON.
-* **context**: This generally contains data about the Lambda runtime environment. In some tutorials you may see it omitted (along with callback/cb), but you should always input it.
-* **cb**: Stands for "callback," but we've shortened it to save time when coding. Lambda doesn't return anything in handlers. Instead, you are expected to input your response in a callback function. If your code is successful, you must finish your function with `cb(null, [value])`, and if it is unsuccessful and you want to callback an error, you must finish your function with `cb([error], null)`. Some tutorials will omit the callback function, but keep in mind that if you want your Lambda function to yield a response you must include the callback function.
+* **context**: This generally contains data about the Lambda runtime environment. In some tutorials you may see it omitted (along with callback), but you should always input it.
+* **callback**: Lambda doesn't return anything in handlers. Instead, you are expected to input your response in a callback function. If your code is successful, you must finish your function with `callback(null, [value])`, and if it is unsuccessful and you want to callback an error, you must finish your function with `callback([error], null)`. Some tutorials will omit the callback function, but keep in mind that if you want your Lambda function to yield a response you must include the callback function.
 
 At the top right of the page, you'll see a button entitled "Test". To the left of that is a dropdown that says "Select a test event."
 
@@ -83,8 +83,8 @@ If you click "Details" within this box, you will see the same info that was belo
 
 Now change your function to this:
 
-    module.exports.handler = function (event, context, cb) {
-        cb('Random error', null);
+    module.exports.handler = function (event, context, callback) {
+        callback('Random error', null);
     };
 
 Save the function and click "Test" again. This time you should get output that looks something like this:

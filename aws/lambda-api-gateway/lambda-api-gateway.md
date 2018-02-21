@@ -93,7 +93,7 @@ Note that if you're making endpoints that utilize other methods (e.g., PUT, POST
 
 ## How to Develop Lambda Functions that Interact with API Gateway
 
-When developing Lambda functions that API Gateway calls, it is important to think about what you're using in your callback. In general, it's best to not call back a string like in the Lambda function used in the example above (`cb(null, 'Hello from Lambda');`). Instead, you should callback a JSON response object, such as this:
+When developing Lambda functions that API Gateway calls, it is important to think about what you're using in your callback. In general, it's best to not call back a string like in the Lambda function used in the example above (`callback(null, 'Hello from Lambda');`). Instead, you should callback a JSON response object, such as this:
 
     const response = {
       statusCode: 200,
@@ -101,7 +101,7 @@ When developing Lambda functions that API Gateway calls, it is important to thin
         data: 'Hello from Lambda'
       })
     };
-    cb(null, response);
+    callback(null, response);
 
 Depending on whether or not this is a successful case, you can put in other status codes. [Refer to this page](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) to find a status code that is appropriate for your needs.
 

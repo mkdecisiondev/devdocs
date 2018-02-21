@@ -1,5 +1,3 @@
-testestest
-
 # MK Decision Developer Documentation
 
 In order to effectively work on programming projects with a team of developers it is important to know the relevant technologies and tools, and to follow standards and conventions that make it easier to collaborate.
@@ -26,7 +24,7 @@ In order to effectively work on programming projects with a team of developers i
 	2. [HTML](standards/html.md)
 	3. [CSS](standards/css.md)
 	4. [JavaScript](standards/javascript.md)
-5. Best practices
+1. Best practices
 	1. [JavaScript](bestpractices/javascript.md)
 	1. [CSS](bestpractices/css.md)
 	1. [Forms](bestpractices/forms.md)
@@ -38,8 +36,9 @@ In order to effectively work on programming projects with a team of developers i
 ## Back End Documentation
 1. Introduction to AWS
 	1. [The AWS Cloud](aws/aws-cloud.md)
-	2. IAM Explained
-	3. [Setting Up Your Credentials](aws/credentials-setup/credentials-setup.md)
+	2. [IAM Explained](aws/iam.md)
+	3. Setting Up Multi Factor Authentication
+	4. [Setting Up Your Credentials](aws/credentials-setup/credentials-setup.md)
 2. AWS Lambda Development Tutorials
 	1. [Introduction to AWS Lambda](aws/introduction-to-lambda/introduction-to-lambda.md)
 	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-api-gateway/lambda-api-gateway.md)

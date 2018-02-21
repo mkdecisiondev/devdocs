@@ -4,7 +4,7 @@
 
 ## Overview
 
-Unlike other set ups, like the MEAN, Ruby on Rails, or Django stacks, MK uses the Amazon Web Services (AWS) cloud. The AWS cloud is a set of services curated by Amazon, which when used together can store files, write to databases, create API endpoints, and more. At MK, we use the AWS cloud to host our web pages as well as orchestrate and host our back end.
+Unlike other setups, like the MEAN, Ruby on Rails, or Django stacks, MK uses the Amazon Web Services (AWS) cloud. The AWS cloud is a set of services curated by Amazon, which when used together can store files, write to databases, create API endpoints, and more. At MK, we use the AWS cloud to host our web pages as well as orchestrate and host our back end.
 
 AWS is very powerful and is utilized by myriad tech companies, so whether or not you use our implementation in the future it is nothing short of essential to learn if you want to have any career in software development. That being said, it is _incredibly_ complex and eccentric, so as a result it is intimidating at first. Do not let this phase you though. While the learning curve may initially be steep, it will not be long at all before you become reasonably comfortable with it. What follows is a brief tour of the services we use for the MK Decision backend.
 

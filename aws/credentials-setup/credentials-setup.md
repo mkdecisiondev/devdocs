@@ -4,7 +4,7 @@
 
 This tutorial will teach you how to set up your AWS CLI keys in order to upload your Lambda functions within the repository. If you follow these instructions, you should in theory be able to upload to the TFE Workspace so long as you use `pnpm run package` and `pnpm run deploy`. Right now, this implementation will only work if you’re on a \*NIX system (OS X, Unix, or Linux) or if you’ve managed to get Bash to work on Windows.
 
-First, you must log into AWS with your mkdecision account. Assuming you signed in with your own account, log out, and when you’re given the option to login again, look for the link that says "Sign in to a different account.” It should look like this:
+First, you must log into AWS with your MK Decision account. Assuming you signed in with your own account, log out, and when you’re given the option to log in again, look for the link that says "Sign in to a different account.” It should look like this:
 
 ![alt text](images/image2.png)
 
