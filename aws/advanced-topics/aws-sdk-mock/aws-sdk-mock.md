@@ -129,6 +129,6 @@ describe('aws-sdk mock testing', function() {
 });
 ```
 
-All there is left to do is run our test. For this example, we can use a simple $ mocha test in our command line, but with other project setups, you might need to run `pnpm run test`.
+All there is left to do is run our test. For this example, we can use a simple `mocha test` in our command line, but with other project setups, you might need to run `pnpm run test`.
 
 It cannot be said too often that there is a distinction between mock testing and regular unit testing. In regular unit testing, we need to account for everything that can go wrong in a process. However, in mock testing, we should always assume that the input we are receiving is absolutely correct. Mock testing should be reserved to only test the actual SDK’s expected behavior and nothing else. If there are any pitfalls before the actual mock is tested, then they should not be part of the actual testing of the mock. This is because in some cases, wrong information can be passed into a mocking test, yet result in a success. This is something to be aware of and consider with care. You should write any possible vanilla unit tests first to avoid any incorrect data being passed through a mock test.
