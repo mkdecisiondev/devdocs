@@ -16,9 +16,9 @@ Click on the "Security Credentials" tab. You will see this.
 
 ![alt text](images/3.png)
 
-You need to click "Create access key" (note: if you are unable to do so, that probably means that you haven’t enabled multi factor authentication, so get that done and then try this again). You will see a pop up with a column that says "Access key ID" and another that says Secret access key, which will be masked unless you click "Show" next to it.
+You need to click "Create access key" (note: if you are unable to do so, that probably means that you haven’t enabled multi factor authentication, so get that done and then try this again). You will see a pop up with a column that says "Access key ID" and another that says "Secret access key," which will be masked unless you click "Show" next to it.
 
-Do not close the window, but type in your console `aws configure --profile mkdecision`. You will be asked to input your Access Key ID, Secret Access Key, default region, and default output format. You should input your data as follows:
+Do not close the window, but type in your console `aws configure --profile mkdecision`. You will be asked to input your Access Key ID, Secret access key, default region, and default output format. You should input your data as follows:
 
 	$ aws configure --profile mkdecision
 	AWS Access Key ID [None]: [paste the access key ID you just created]
