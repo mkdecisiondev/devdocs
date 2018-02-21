@@ -42,7 +42,7 @@ In order to effectively work on programming projects with a team of developers i
 2. AWS Lambda and API Gateway
 	1. [Introduction to AWS Lambda](aws/lambda-and-api-gateway/introduction-to-lambda/introduction-to-lambda.md)
 	2. [Hooking up a Lambda Function to API Gateway](aws/lambda-and-api-gateway/lambda-api-gateway/lambda-api-gateway.md)
-	3. [How to Assign Environmental Variables in Lambda](aws/lambda-and-api-gateway/env-variables.md)
+	3. [How to Assign Environmental Variables in Lambda](aws/lambda-and-api-gateway/env-variables/env-variables.md)
 3. Using Lambda with Other AWS Services
 	1. [Using Lambda to Transfer Files Between Buckets](aws/lambda-with-other-services/lambda-transfer-buckets/lambda-transfer-buckets.md)
 	2. Writing to a DynamoDB Table Using a Lambda Function
