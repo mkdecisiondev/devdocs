@@ -34,7 +34,7 @@ Select the JSON tab to write out the policy. This JSON code will provide the nec
                 "dynamodb:PutItem"
             ],
             "Resource":[
-				"Table’s ARN goes here"
+		"Table’s ARN goes here"
             ]
         }
     ]
