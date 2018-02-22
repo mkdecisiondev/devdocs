@@ -64,7 +64,7 @@ The SDK allows us to create an instance of the DynamoDB document client inside t
 exports.handler = function(event, context, callback) {
 	const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 
-}
+};
 ```
 
 First we need to specify the parameters we will passing into the DynamoDB docClient method. This includes an `Item` object for the table entry itself. All entries must have an id as that is the primary key, and because it is a movies table each entry will have a name and a score. The id is created by calling the uuid function we have added, and the other two values will come from the event object. Besides `Item,` we also need a `TableName` key, the value of which will naturally be the name of our table.
@@ -81,7 +81,7 @@ exports.handler = function(event, context, callback) {
 		},
 		TableName: 'movies'
 	}
-}
+};
 ```
 
 Next we'll pass those params into the docClient method. In docClient we'll then call a function to handle the result. This is where the callback parameter of our main handler function comes into play. Callback() is a method available to Lambda functions that has two arguments: the first is an error, and the second is non-error data. Therefore, if docClient.put() returns an error, we call callback() with the error as the first parameter and the second as null. If there is no error, we have null as the first argument and the return as the second one.
@@ -95,6 +95,19 @@ docClient.put(params, function(error, data){
 	}
 });
 ```
+
+This is the way that the [AWS documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#putItem-property) on DynamoDB shows how to use this method. However, it is generally preferable to use promise chaining rather than passing a function as a parameter as it results in cleaner, more readable code.
+
+```javascript
+	const docClientPromise = docClient.put(params).promise();
+	docClientPromise.then(function(data){
+		callback(null, data);
+	}).catch(function(error){
+		callback(error, null);
+	});
+```
+
+To familiarize readers with both ways of doing this, we will use the AWS-documented method in our first iteration of `index.js`, and in our final version we will show the "promisified" version of this method in action.
 
 Here is the entirety of `index.js` as we have it so far:
 
@@ -121,7 +134,7 @@ exports.handler = function(event, context, callback) {
 			callback(null, data);
 		}
 	});
-}
+};
 ```
 
 Now we can deploy our function to Lambda. In the AWS Lambda console create a new Lambda function and assign it the new role we have created for it. The runtime setting should be Node.js 6.10.
@@ -185,25 +198,24 @@ Below the comiled schema we will add another constant called `valid` which runs 
 const valid = validate(event);
 ```
 
-Lastly we will modify the conditional statement at the end of the handler function, which writes the data to our table. This will now log any errors if the input is not valid, and only write to the table if it is valid.
+Lastly we will modify the conditional statement at the end of the handler function, which writes the data to our table. This will now log any errors if the input is not valid, and only write to the table if it is valid. Since we are changing this block of code anyway, we will also take this opportunity to change our implementation of docClient.put() to utilize promise chaining.
 
 ```javascript
 	if (!valid) {
 		console.log(validate.errors);
 	} else {
-		docClient.put(params, function(error, data){
-			if (error) {
-				callback(error, null);
-			} else {
-				callback(null, data);
-			}
+		const docClientPromise = docClient.put(params).promise();
+		docClientPromise.then(function(data){
+			callback(null, data);
+		}).catch(function(error){
+			callback(error, null);
 		});
 	}
 ```
 
-Note that we typically wouldn't use a `console.log` to handle our errors, but it will suffice for our function just to make sure everything is working. In a production environment we'd likely use another instance of `callback(error, null)`.
+Note that we typically wouldn't use a `console.log` to handle validation errors, it will suffice for our function just to make sure everything is working. In a production environment we'd likely implement another instance of `callback()` to return the error.
 
-Here is all of `index.js` as it stands with our new additions:
+Here is all of `index.js` as it stands with our new additions.:
 
 ```javascript
 
@@ -241,12 +253,11 @@ exports.handler = function(event, context, callback) {
 	if (!valid) {
 		console.log(validate.errors);
 	} else {
-		docClient.put(params, function(error, data){
-			if (error) {
-				callback(error, null);
-			} else {
-				callback(null, data);
-			}
+		const docClientPromise = docClient.put(params).promise();
+		docClientPromise.then(function(data){
+			callback(null, data);
+		}).catch(function(error){
+			callback(error, null);
 		});
 	}
 };
