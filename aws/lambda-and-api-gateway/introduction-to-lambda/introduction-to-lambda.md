@@ -1,7 +1,5 @@
 # Introduction to Lambda
 
-### By Eric Hendrickson
-
 ## Overview
 
 AWS Lambda is a framework that runs stateless, serverless code. This may sound confusing at first, but it really isn't. Let's define "stateless" and "serverless" before we continue:
