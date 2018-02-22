@@ -2,7 +2,7 @@
 
 ### By Tim Petrone
 
-AWS SNS is a cloud based web service that allows you to send and recieve SMS messages to individual or multiple devices. You can send text messages to mobile phones or SMS-enabled deivces. (e.g. Amazon Kindle) In this documentation, you will learn how to send a text message to an individual mobile phone with an auto generated verification code as the message.
+AWS SNS is a cloud based web service that allows you to send and recieve SMS messages to individual or multiple devices. You can send text messages to mobile phones or SMS-enabled devices. (e.g. Amazon Kindle) In this documentation, you will learn how to send a text message to an individual mobile phone with an auto generated verification code as the message.
 
 To start, create a lambda function and require the AWS software development kit at the top like so:
 
@@ -10,30 +10,22 @@ To start, create a lambda function and require the AWS software development kit 
 const AWS = require('aws-sdk');
 ```
 
-This allows for the use of Amazon Web Services' various platforms. In this case, we will be using AWS.SNS.
+This allows for the use of Amazon Web Services' various platforms. In this case, we will be using AWS SNS.
 
-Next, we can set up a function that will generate a verification code to send to our user once they input their information as shown below.
+Next, we can create a function outside the handler that will generate a verification code to send to our user once they input their information as shown below.
 
 ```javascript
-//...
-let smsCode = '';
-
 function generate(numDigits) {
-
 	let max = Math.pow(10, numDigits)*9-1;
 	let min = Math.pow(10, numDigits);
 
 	let number = Math.floor( Math.random() * max + min);
-	smsCode = ('' + number).substring(1);
+	let smsCode = ('' + number).substring(1);
+	return smsCode;
 }
-//...
 ```
 
-To do this, first set a variable called `smsCode` to an empty string outside of our `exports.handler` function. This variable will get redefined by our generate function and can be used later inside our params to be sent to the user.
-
-We want to generate a code with 6 digits and have them all be numeric characters. The parameter `numDigits` is the amount of digits we want to generate. We will call this function inside of the `exports.handler` later with a parameter of 6.
-
-The variable `max` is a formula that essentially boils down to the number 8,999,999 when the parameter is set to 6. The variable `min` boils down to 1,000,000. The amount of digits specified will always result in a min and max of that amount of digits plus one. This will help us later on.
+We want to generate a code with 6 digits and have them all be numeric characters. The parameter `numDigits` is the amount of digits we want to generate. The variable `max` is a formula that essentially boils down to the number 8,999,999 when the parameter is set to 6. The variable `min` boils down to 1,000,000. The amount of digits specified will always result in a min and max of that amount of digits plus one. This will help us later on.
 
 After those are set up, we will create a formula to generate a random number as seen above and in the excerpt below:
 
@@ -41,32 +33,28 @@ After those are set up, we will create a formula to generate a random number as 
 let number = Math.floor( Math.random() * max + min);
 ```
 
-Here we are multipling Math.random by our `max`. In this case, that would equal anywhere from 0 to 8,999,999. Then we add on our `min` variable, which will bring up our range to anywhere from 1,000,000 to 9,999,999. This is where our 7 digit number will help us out. As you can see, the last 6 digits of any number in that range is anywhere from 000,000 to 999,999. For this reason, we do not care what number is in the millions place. The 7th digit is only there so our 6 digit number can begin with a zero, therefore giving us a truely random 6 digit number. To finish, we redefine the variable `smsCode` by turning our 7 digit number into a string and then use the substring(1) function to only include the 2nd digit onwards. (e.g. The number 4092134 will return the string '092134') This code is shown above and in the excerpt below:
+Here we are multipling Math.random by our `max`. In this case, that would equal anywhere from 0 to 8,999,999. Then we add on our `min` variable, which will bring up our range to anywhere from 1,000,000 to 9,999,999. This is where our 7 digit number will help us out. As you can see, the last 6 digits of any number in that range is anywhere from 000,000 to 999,999. For this reason, we do not care what number is in the millions place. The 7th digit is only there so our 6 digit number can begin with a zero, therefore giving us a truely random 6 digit number. To finish, we define the variable `smsCode` by turning our 7 digit number into a string and then use the substring(1) function to only include the 2nd digit onwards (that is, the number 4092134 will return the string '092134'). We will then return `smsCode`. This code is shown above and in the excerpt below:
 
 ```javascript
-smsCode = ('' + number).substring(1);
+let smsCode = ('' + number).substring(1);
 ```
-Now that the text message verification code is being generated, we can begin writing the `exports.handler` function. The `event` parameter we will be passing into the `exports.handler` is a JSON object made with a person's information including: first name, last name, phone number, email, etc.
+Now that the text message verification code is being generated, we can begin writing the `exports.handler` function. The `event` parameter we will be passing into the `exports.handler` is a JSON object that should at least contain the key `phoneNumber` followed by a phone number as a string.
 
 Inside of the `exports.handler` function, include the SNS event. The `exports.handler` funtion should look like this:
 
 ```javascript
-//...
-exports.handler = (event, context, cb) => {
+exports.handler = function(event, context, callback) {
 	const SNS = new AWS.SNS();
 
 	//...
+}
 ```
-*(Note: all JavaScript code blocks in this document will now show the code that directly follows the preceding code block.)*
-
 This allows the function to use the SNS platform to send and receive SMS messages.
 
-Now that we are inside our `exports.handler` we can call the generate function above to generate our 6 digit verification code.
+Within our `exports.handler` we can call the generate function above to generate our 6 digit verification code.
 
 ```javascript
-	//...
-	generate(6);
-	//...
+let smsCode = generate(6);
 ```
 
 In order to send a text message, we will need to use a Publish action included within the SNS platform's inherent abilities. For JavaScript, the Publish action must take in at least a message and a phone number as parameters.
@@ -90,12 +78,12 @@ let params = {
 };
 ```
 
-These params can now be passed into our Publish action and be promisified which completes the set up. Also, we can add in the callback to complete the `exports.handler` function.
+These params can now be passed into our `publish()` action which has been promisified to complete the set up. We then add the callback to complete the `exports.handler` function.
 
 ```javascript
-	callback(null, smsCode);
+SNS.publish(params).promise();
 
-	return SNS.publish(params).promise();
+callback(null, smsCode);
 ```
 
 When we add all the pieces together, we get the following code:
@@ -106,18 +94,18 @@ const AWS = require('aws-sdk');
 let smsCode = '';
 
 function generate(numDigits) {
-
 	let max = Math.pow(10, numDigits)*9-1;
 	let min = Math.pow(10, numDigits);
 
 	let number = Math.floor( Math.random() * max + min);
-	smsCode = ('' + number).substring(1);
+	let smsCode = ('' + number).substring(1);
+	return smsCode;
 }
 
-exports.handler = (event, context, callback) => {
+exports.handler = function(event, context, callback) {
 	const SNS = new AWS.SNS();
 
-	generate(6);
+	let smsCode = generate(6);
 
 	let params = {
 		'Message': smsCode,
@@ -129,8 +117,8 @@ exports.handler = (event, context, callback) => {
 		}
 	};
 
-	callback(null, smsCode);
+	SNS.publish(params).promise();
 
-	return SNS.publish(params).promise();
+	callback(null, smsCode);
 };
 ```
