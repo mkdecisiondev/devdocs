@@ -6,9 +6,11 @@ In this tutorial we will demonstrate how to use an AWS Lambda function to transf
 
 ## The Table
 
-For this example we will use a table whose primary key is a unique string. Once the table has been created, copy down its Amazon Resource Name (ARN) as that will be used to give the Lambda function access to the table.
+For this example we will use a table whose primary key is a unique string.
 
 ![alt text](images/1.png)
+
+Once the table has been created, click on its name to see an overview of it. Copy down its Amazon Resource Name (ARN) from the "Table details" section as that will be used to give the Lambda function access to the table.
 
 ![alt text](images/2.png)
 
@@ -35,21 +37,19 @@ We will need to give our function permission to write to our table. All Lambda f
 
 ![alt text](images/4.png)
 
+For our function an appropriate role name might be "put-movies-dbtable-role."
+
 ## Creating the Lambda Function
 
 Recall that in our table, the primary key is a string that we have named "id". We will be generating these id's using a Node package. This means we will need to create the function locally and install the package to it before deploying it to Lambda.
 
 Create a directory for the function, open a terminal in the directory, and initialize the project using pnpm.
 
-We will be creating unique id's for the table using the node package [uuid](https://www.npmjs.com/package/uuid). A uuid is a [universally unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier), which is an encoded number generated based on unique components such as a timestamp, a random number, and network information about the host generating the uuid. Using uuid's is an effective way to ensure that we will be getting unique values, which is important for the primary key of a table. The terminal command to install the package to the project is:
+We will be creating unique id's for the table using the node package [uuid](https://www.npmjs.com/package/uuid). A uuid is a [universally unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier), which is an encoded number generated based on unique components such as a timestamp, a random number, and network information about the host generating the uuid. Using uuid's is an effective way to ensure that we will be getting unique values, which is important for the primary key of a table. The terminal command to install the package to the project is `$ pnpm install uuid`.
 
-```
-$ pnpm install uuid
-```
+Create index.js in the project and open it in your editor. This is where we will be writing the function itself.
 
-Create an index.js file in the project and open it in your editor. This is where we will be writing the function itself.
-
-First add the dependencies. We need to import the uuid package we've just installed. We also need to require the AWS SDK (which all Lambda functions have access to, so we don't have to install it). The SDK will then allow us to create an instance of the DynamoDB document client.
+First add the dependencies. We need to import the uuid package we've just installed. We also need to require the AWS SDK (which all Lambda functions have access to, so we don't have to install it locally). The SDK will then allow us to create an instance of the DynamoDB document client.
 
 ```javascript
 const AWS = require('aws-sdk');
@@ -128,7 +128,9 @@ Now we can deploy our function to Lambda. In the AWS Lambda console create a new
 
 ![alt text](images/10.png)
 
-Once you have created the function in the AWS console, deploy it. At MK Decision you will typically deploy using the terminal command `pnpm package && deploy`; however, setting up your stack to deploy to Lambda automatically with these commands is beyond the scope of this tutorial.
+Once you have created the function in the AWS console, deploy it. At MK Decision you will typically deploy using the terminal command `pnpm run package && pnpm run deploy`; however, setting up your stack to deploy to Lambda automatically with these commands is beyond the scope of this tutorial. For the purposes of our project, we can simply compress the contents of our project directory into a zip file and use the AWS console to upload it.
+
+![alt text](images/9.png)
 
 ## Testing the Function
 
@@ -154,14 +156,14 @@ Please note that if you are writing a function that will eventually be called us
 
 As the JSON schema requires another npm package, we will be installing it locally using the command line and redeploying the function.
 
-We will be using a package called [ajv](https://github.com/epoberezkin/ajv). You can install it to your function using the terminal command `pnpm install ajav`.
+We will be using a package called [ajv](https://github.com/epoberezkin/ajv). You can install it to your function using the terminal command `pnpm install ajv`.
 
 Now in index.js outside of the handler we need to require the package, use it to create a validator instance, and add a meta-schema to that instance (see the ajv docs for more info about meta-schemas).
 
 ```javascript
 const Ajv = require('ajv');
 const ajv = new Ajv();
-ajv. addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 ```
 
 Inside the handler we can now add the schema itself in JSON format. For this example we will require that the movie's name be a string, the score be an integer, and that both values be present. We have also required that the id be a string, but of course we already have another package taking care of this for us. We will have ajv compile the schema and we can store it as a constant at the top of the handler.
@@ -199,7 +201,7 @@ Lastly we will modify the conditional statement at the end of the handler functi
 	}
 ```
 
-Note that we typically wouldn't use a `console.log` to handle our errors, but it will suffice for our function just to make sure everything is working.
+Note that we typically wouldn't use a `console.log` to handle our errors, but it will suffice for our function just to make sure everything is working. In a production environment we'd likely use another instance of `callback(error, null)`.
 
 Here is all of index.js as it stands with our new additions:
 
