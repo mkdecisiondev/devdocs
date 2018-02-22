@@ -156,7 +156,7 @@ Now we can deploy our function to Lambda. In the AWS Lambda console create a new
 
 ![alt text](images/10.png)
 
-Once you have created the function in the AWS console, deploy it. At MK Decision you will typically deploy using the terminal command ```pnpm package && deploy```; however, setting up your stack to deploy to Lambda automatically with these commands is beyond the scope of this tutorial.
+Once you have created the function in the AWS console, deploy it. At MK Decision you will typically deploy using the terminal command ```$ pnpm package && deploy```; however, setting up your stack to deploy to Lambda automatically with these commands is beyond the scope of this tutorial.
 
 ## Testing the Function
 
@@ -182,7 +182,7 @@ Please note that if you are writing a function that will eventually be called us
 
 As the JSON schema requires another npm package, we will be installing it locally using the command line and redeploying the function.
 
-We will be using a package called [ajv](https://github.com/epoberezkin/ajv). You can install it to your function using the terminal command ```pnpm install ajav```.
+We will be using a package called [ajv](https://github.com/epoberezkin/ajv). You can install it to your function using the terminal command ```$ pnpm install ajav```.
 
 Now in index.js outside of the handler we need to require the package, use it to create a validator instance, and add a meta-schema to that instance (see the ajv docs for more info about meta-schemas).
 
