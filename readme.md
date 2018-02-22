@@ -45,7 +45,7 @@ In order to effectively work on programming projects with a team of developers i
 	3. [How to Assign Environmental Variables in Lambda](aws/lambda-and-api-gateway/env-variables/env-variables.md)
 3. Using Lambda with Other AWS Services
 	1. [Using Lambda to Transfer Files Between Buckets](aws/lambda-with-other-services/lambda-transfer-buckets/lambda-transfer-buckets.md)
-	2. [Writing to a DynamoDB Table Using a Lambda Function](aws/lambda/lambda-with-other-services/lambda-dynamodb.md)
+	2. [Writing to a DynamoDB Table Using a Lambda Function](aws/lambda-with-other-services/lambda-dynamodb/lambda-dynamodb.md)
 	3. [Storing S3 Object Links in DynamoDB](aws/lambda-with-other-services/s3-lambda-dynamodb/s3-lambda-dynamodb.md)
 	4. [Using SES and Lambda to Send Emails](aws/lambda-with-other-services/ses-lambda/ses-lambda.md)
 	5. [Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message](aws/lambda-with-other-services/send-sms-code-with-sns/send-sms-code-with-sns.md)
