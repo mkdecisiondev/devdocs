@@ -203,6 +203,7 @@ Lastly we will modify the conditional statement at the end of the handler functi
 ```javascript
 	if (!valid) {
 		console.log(validate.errors);
+		callback('invalid params', null);
 	} else {
 		const docClientPromise = docClient.put(params).promise();
 		docClientPromise.then(function(data){
@@ -213,7 +214,7 @@ Lastly we will modify the conditional statement at the end of the handler functi
 	}
 ```
 
-Note that we typically wouldn't use a `console.log` to handle validation errors, it will suffice for our function just to make sure everything is working. In a production environment we'd likely implement another instance of `callback()` to return the error.
+in our block to handle invalid parameters, we are using the callback() function to return a string notifying us that the parameters are invalid, and we are logging the details of the error to the console.
 
 Here is all of `index.js` as it stands with our new additions.:
 
@@ -252,6 +253,7 @@ exports.handler = function(event, context, callback) {
 	const valid = validate(event);
 	if (!valid) {
 		console.log(validate.errors);
+		callback('invalid params', null);
 	} else {
 		const docClientPromise = docClient.put(params).promise();
 		docClientPromise.then(function(data){
