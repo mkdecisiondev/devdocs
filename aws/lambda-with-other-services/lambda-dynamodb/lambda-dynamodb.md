@@ -47,7 +47,7 @@ Create a directory for the function, open a terminal in the directory, and initi
 
 We will be creating unique id's for the table using the node package [uuid](https://www.npmjs.com/package/uuid). A uuid is a [universally unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier), which is an encoded number generated based on unique components such as a timestamp, a random number, and network information about the host generating the uuid. Using uuid's is an effective way to ensure that we will be getting unique values, which is important for the primary key of a table. The terminal command to install the package to the project is `$ pnpm install uuid`.
 
-Create index.js in the project and open it in your editor. This is where we will be writing the function itself.
+Create `index.js` in the project and open it in your editor. This is where we will be writing the function itself.
 
 First add the dependencies. We need to import the uuid package we've just installed. We also need to require the AWS SDK (which all Lambda functions have access to, so we don't have to install it locally).
 
@@ -96,7 +96,7 @@ docClient.put(params, function(error, data){
 });
 ```
 
-Here is the entirety of index.js as we have it so far:
+Here is the entirety of `index.js` as we have it so far:
 
 ```javascript
 const AWS = require('aws-sdk');
@@ -158,7 +158,7 @@ As the JSON schema requires another npm package, we will be installing it locall
 
 We will be using a package called [ajv](https://github.com/epoberezkin/ajv). You can install it to your function using the terminal command `pnpm install ajv`.
 
-Now in index.js outside of the handler we need to require the package, use it to create a validator instance, and add a meta-schema to that instance (see the ajv docs for more info about meta-schemas).
+Now in `index.js` outside of the handler we need to require the package, use it to create a validator instance, and add a meta-schema to that instance (see the ajv docs for more info about meta-schemas).
 
 ```javascript
 const Ajv = require('ajv');
@@ -203,7 +203,7 @@ Lastly we will modify the conditional statement at the end of the handler functi
 
 Note that we typically wouldn't use a `console.log` to handle our errors, but it will suffice for our function just to make sure everything is working. In a production environment we'd likely use another instance of `callback(error, null)`.
 
-Here is all of index.js as it stands with our new additions:
+Here is all of `index.js` as it stands with our new additions:
 
 ```javascript
 
