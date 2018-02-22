@@ -36,7 +36,7 @@ In order to effectively work on programming projects with a team of developers i
 ## Back End Documentation
 1. Introduction to AWS
 	1. [The AWS Cloud](aws/introduction-to-aws/aws-cloud.md)
-	2. [IAM Explained](aws/introduction-to-aws/iam.md)
+	2. [IAM Explained](aws/introduction-to-aws/iam/iam.md)
 	3. [Setting Up Multi Factor Authentication](aws/introduction-to-aws/mfa-setup/mfa-setup.md)
 	4. [Setting Up Your Credentials](aws/introduction-to-aws/credentials-setup/credentials-setup.md)
 2. AWS Lambda and API Gateway
