@@ -1,7 +1,5 @@
 # Writing to a DynamoDB Table Using a Lambda Function
 
-### By Andrew Levy
-
 In this tutorial we will demonstrate how to use an AWS Lambda function to transfer a file from one S3 bucket to another.
 
 ## The Table
