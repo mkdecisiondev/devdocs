@@ -14,15 +14,7 @@ For this example we will use a table whose primary key is a unique string. Once 
 
 ## Permissions For Lambda
 
-We will need to give our function permission to write to our table. We do this by giving the function a role. Your technical supervisor may provide you a role, but if not you will need to create one. However, even if you are not creating the role yourself, it is still important to understand how roles and permissions work in AWS.
-
-To create the role, go to the console for the AWS IAM service. Select the "Policies" tab, and then click the "Create policy" button.
-
-![alt text](images/3.png)
-
-In keeping with best practices, we will give the function the fewest permissions necessary to complete its intended task. It will only be able to write to DynamoDB (via the PutItem function), and only the one table that we specify.
-
-Select the JSON tab to write out the policy. This JSON code will provide the necessary access:
+We will need to give our function permission to write to our table. All Lambda functions must be assigned a role, and we give the function permissions by attaching policies to that role using the AWS IAM service. Your technical supervisor may provide you a role with the necessary policies. For example, the role used for Lambda functions in the TFE Workspace should have all the needed policies already. However, even if you are not creating the role yourself, it is still important to understand how roles and permissions work in AWS. For more information on using IAM to create a role and/or add policies to it, please see MK Decision's IAM documentation [here](../../introduction-to-aws/iam/iam.md#creating-a-role-and-adding-policies-to-it). The below JSON is the policy we will be attaching to our function's role to give it permission to write to the table.
 
 ```json
 {
@@ -42,26 +34,6 @@ Select the JSON tab to write out the policy. This JSON code will provide the nec
 ```
 
 ![alt text](images/4.png)
-
-Click "Review Policy," give the policy a name and description, and click "Create Policy."
-
-![alt text](images/5.png)
-
-Next we'll need to create the function's role and attach the policy we've just created. Select the "Roles" tab on the side navbar and click "Create role."
-
-![alt text](images/6.png)
-
-Select Lambda as the service that will use this role and click "Next: Permissions."
-
-![alt text](images/7.png)
-
-Search for the policy you've just created in the search box, check the box next to it, and click "Next: Review."
-
-![alt text](images/8.png)
-
-Give the role a name and description, and click the button to create the role.
-
-![alt text](images/9.png)
 
 ## Creating the Lambda Function
 
@@ -87,7 +59,7 @@ const uuid4 = require('uuid/v4');
 
 This docClient instance is a standard way to target DynamoDB. It provides a simple way to create JavaScript sets. As we are specifying a region here, our function will be able to write to the table even if they are in different AWS regions.
 
-Now for the function itself. As with all Lambda functions, we will use an ```exports.handler``` function that has three arguments: event, context, and callback.
+Now for the function itself. As with all Lambda functions, we will use an `exports.handler` function that has three arguments: event, context, and callback.
 
 ```javascript
 exports.handler = function(event, context, callback) {
@@ -96,7 +68,7 @@ exports.handler = function(event, context, callback) {
 }
 ```
 
-First we need to specify the parameters we will passing into the DynamoDB docClient method. This includes an ```Item``` object for the table entry itself. All entries must have an id as that is the primary key, and because it is a movies table each entry will have a name and a score. The id is created by calling the uuid function we have added, and the other two values will come from the event object. Besides ```Item,``` we also need a ```TableName``` key, the value of which will naturally be the name of our table.
+First we need to specify the parameters we will passing into the DynamoDB docClient method. This includes an `Item` object for the table entry itself. All entries must have an id as that is the primary key, and because it is a movies table each entry will have a name and a score. The id is created by calling the uuid function we have added, and the other two values will come from the event object. Besides `Item,` we also need a `TableName` key, the value of which will naturally be the name of our table.
 
 ```javascript
 exports.handler = function(event, context, callback) {
@@ -156,11 +128,11 @@ Now we can deploy our function to Lambda. In the AWS Lambda console create a new
 
 ![alt text](images/10.png)
 
-Once you have created the function in the AWS console, deploy it. At MK Decision you will typically deploy using the terminal command ```pnpm package && deploy```; however, setting up your stack to deploy to Lambda automatically with these commands is beyond the scope of this tutorial.
+Once you have created the function in the AWS console, deploy it. At MK Decision you will typically deploy using the terminal command `pnpm package && deploy`; however, setting up your stack to deploy to Lambda automatically with these commands is beyond the scope of this tutorial.
 
 ## Testing the Function
 
-As mentioned before, we will run the docClient() function with our ```params``` object, which has three properties: id, name, and score. Id is generated by our uuid package, and the other two are passed in from the Lambda function's ```event``` parameter. Therefore, to test the function we'll need to create a test event with a name and a score.
+As mentioned before, we will run the docClient() function with our `params` object, which has three properties: id, name, and score. Id is generated by our uuid package, and the other two are passed in from the Lambda function's `event` parameter. Therefore, to test the function we'll need to create a test event with a name and a score.
 
 Let's write a test that will create an object with these properties.
 
@@ -182,7 +154,7 @@ Please note that if you are writing a function that will eventually be called us
 
 As the JSON schema requires another npm package, we will be installing it locally using the command line and redeploying the function.
 
-We will be using a package called [ajv](https://github.com/epoberezkin/ajv). You can install it to your function using the terminal command ```pnpm install ajav```.
+We will be using a package called [ajv](https://github.com/epoberezkin/ajv). You can install it to your function using the terminal command `pnpm install ajav`.
 
 Now in index.js outside of the handler we need to require the package, use it to create a validator instance, and add a meta-schema to that instance (see the ajv docs for more info about meta-schemas).
 
@@ -205,7 +177,7 @@ const schema = {
 };
 const validate = ajv.compile(schema);
 ```
-Below the comiled schema we will add another constant called ```valid``` which runs the validate function on our handler function's ```event``` argument. This will assign a boolean value to ```valid``` that will indicate whether or not the input is valid per the schema.
+Below the comiled schema we will add another constant called `valid` which runs the validate function on our handler function's `event` argument. This will assign a boolean value to `valid` that will indicate whether or not the input is valid per the schema.
 
 ```javascript
 const valid = validate(event);
@@ -227,7 +199,7 @@ Lastly we will modify the conditional statement at the end of the handler functi
 	}
 ```
 
-Note that we typically wouldn't use a ```console.log``` to handle our errors, but it will suffice for our function just to make sure everything is working.
+Note that we typically wouldn't use a `console.log` to handle our errors, but it will suffice for our function just to make sure everything is working.
 
 Here is all of index.js as it stands with our new additions:
 
