@@ -1,7 +1,5 @@
 # Using Lambda to Transfer Files Between Buckets
 
-### By Andrew Levy
-
 In this tutorial we will demonstrate how to use an AWS Lambda function to transfer a file from one S3 bucket to another.
 
 ## Setting Up S3
@@ -47,7 +45,7 @@ Select the JSON tab to enter the permissions statement as a JSON object. Typical
                 "s3:PutObject"
             ],
             "Resource": [
-                "<Your Destination Bucket ARN>/*"
+                "[Your Destination Bucket ARN]/*"
             ]
         }
     ]
