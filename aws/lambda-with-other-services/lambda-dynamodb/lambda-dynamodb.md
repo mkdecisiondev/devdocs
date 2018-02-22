@@ -28,7 +28,7 @@ We will need to give our function permission to write to our table. All Lambda f
                 "dynamodb:PutItem"
             ],
             "Resource":[
-				"Table’s ARN goes here"
+	    	"Table’s ARN goes here"
             ]
         }
     ]
