@@ -4,7 +4,7 @@
 
 “Sometimes people don't understand the promises they're making when they make them." --John Green, _The Fault in Our Stars_
 
-Promises are constructs which were introduced to reduce the complexity of asynchronous JavaScript code. They're also can be a little difficult for a novice coder to utilize effectively. This chapter is meant to clarify what Promises are and how you should use them.
+Promises are constructs which were introduced to reduce the complexity of asynchronous JavaScript code. They can be a little difficult for a novice coder to understand and utilize effectively. This chapter is meant to clarify what Promises are and how you should use them.
 
 From Mozilla’s [official documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#Description): "A Promise is a proxy for a value not necessarily known when the promise is created. It allows you to associate handlers to an asynchronous action's eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of the final value, the asynchronous method returns a promise for the value at some point in the future." In simpler words: a Promise is a word taken for some action, the other party who gave the Promise might fulfill it or deny it. In the case of fulfilling, the promise gets resolved, and in another case, it gets rejected.
 
