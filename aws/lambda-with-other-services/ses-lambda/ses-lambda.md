@@ -1,6 +1,6 @@
 # Using SES and Lambda to Send Emails
 
-### By Cole Halsell
+Note: Read about [Promises](languages/javascript-promises/javascript-promises.md) if you haven't already before reading this.
 
 This tutorial aims to explain how to create a Lambda function to send email using SES. Please note that to send email to unverified addresses you must be using a business account that has requested permissions to AWS because of their anti-spam restrictions. To do that read the documentation [here](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html).
 

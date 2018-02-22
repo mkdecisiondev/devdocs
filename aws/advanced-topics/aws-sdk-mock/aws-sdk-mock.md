@@ -1,7 +1,5 @@
 # Mock Testing the AWS SDK
 
-### By Tim Petrone
-
 Testing is an important part of the development of a project. It provides reliability to the end product. Sometimes while testing, your functions will have a few dependencies, usually from an outside source, that can make the unit testing phase a bit tricky. In certain cases, running a unit test with dependencies can be impractical or impossible. For these cases, there is a method we can use to overcome these obstacles. This method is called "mocking".
 
 Mocking simulates complex dependencies for use in testing. This avoids triggering actual live dependencies or having to meet specific criteria in order to execute your function. The mocking libraries are usually defined as variables at the top of the testing file with some exceptions we will go over later. For this example, we will be going over the mocking library for Amazon Web Services software development kit. (i.e. `aws-sdk`)

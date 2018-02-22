@@ -1,5 +1,7 @@
 # Writing to a DynamoDB Table Using a Lambda Function
 
+Note: Read about [Promises](languages/javascript-promises/javascript-promises.md) if you haven't already before reading this.
+
 In this tutorial we will demonstrate how to use an AWS Lambda function to transfer a file from one S3 bucket to another.
 
 ## The Table

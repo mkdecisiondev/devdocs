@@ -1,6 +1,6 @@
 # Storing S3 Object Links in DynamoDB
 
-### By Andrew Levy
+Note: Read about [Promises](languages/javascript-promises/javascript-promises.md) if you haven't already before reading this.
 
 This chapter will show you how to create a Lambda function which detects when an object is uploaded to an S3 bucket and automatically writes an entry to a DynamoDB table with a link to that object.
 

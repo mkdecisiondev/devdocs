@@ -1,6 +1,6 @@
 # Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message
 
-### By Tim Petrone
+Note: Read about [Promises](languages/javascript-promises/javascript-promises.md) if you haven't already before reading this.
 
 AWS SNS is a cloud based web service that allows you to send and recieve SMS messages to individual or multiple devices. You can send text messages to mobile phones or SMS-enabled devices. (e.g. Amazon Kindle) In this documentation, you will learn how to send a text message to an individual mobile phone with an auto generated verification code as the message.
 

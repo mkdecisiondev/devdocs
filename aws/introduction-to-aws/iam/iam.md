@@ -1,7 +1,5 @@
 # IAM Explained
 
-### By Eric Hendrickson
-
 ## Overview
 
 Identity and Access Management, or IAM, is the way that AWS regulates the scope of an entity's abilities. By "entity," I mean users and services, like Lambda functions. IAM can also configure multi factor authentication for users signing into the AWS console. IAM is also directly involved in the creation of keys so a user in a remote development environment can deploy a project on AWS.

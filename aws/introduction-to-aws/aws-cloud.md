@@ -1,7 +1,5 @@
 # The AWS Cloud
 
-### By Eric Hendrickson
-
 ## Overview
 
 Unlike other setups, like the MEAN, Ruby on Rails, or Django stacks, MK uses the Amazon Web Services (AWS) cloud. The AWS cloud is a set of services curated by Amazon, which when used together can store files, write to databases, create API endpoints, and more. At MK, we use the AWS cloud to host our web pages as well as orchestrate and host our back end.

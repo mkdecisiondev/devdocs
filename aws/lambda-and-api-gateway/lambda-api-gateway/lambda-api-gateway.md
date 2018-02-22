@@ -1,7 +1,5 @@
 # Hooking up a Lambda Function to API Gateway
 
-### By Eric Hendrickson
-
 ## Overview
 
 You have now successfully created a Lambda function. Now what? How do I hook it up so users can access it, say, on a web page?
