@@ -69,7 +69,7 @@ Recall that in our table, the primary key is a string that we have named "id". W
 
 Create a directory for the function, open a terminal in the directory, and initialize the project using pnpm.
 
-We will be created unique id's for the table using the node package [uuid](https://www.npmjs.com/package/uuid). A uuid is a [universally unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier), which is an encoded number generated based on unique components such as a timestamp, a random number, and network information about the host generating the uuid. Using uuid's is an effective way to ensure that we will be getting unique values, which is important for the primary key of a table. The terminal command to install the package to the project is:
+We will be creating unique id's for the table using the node package [uuid](https://www.npmjs.com/package/uuid). A uuid is a [universally unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier), which is an encoded number generated based on unique components such as a timestamp, a random number, and network information about the host generating the uuid. Using uuid's is an effective way to ensure that we will be getting unique values, which is important for the primary key of a table. The terminal command to install the package to the project is:
 
 ```
 $ pnpm install uuid
@@ -232,13 +232,14 @@ Note that we typically wouldn't use a ```console.log``` to handle our errors, bu
 Here is all of index.js as it stands with our new additions:
 
 ```javascript
+
 const Ajv = require('ajv');
 const ajv = new Ajv();
-ajv. addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
-
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 const uuid4 = require('uuid/v4');
+
+ajv. addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 
 exports.handler = function(event, context, callback) {
 
