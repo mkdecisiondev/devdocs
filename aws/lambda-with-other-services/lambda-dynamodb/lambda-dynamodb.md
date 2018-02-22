@@ -49,22 +49,21 @@ We will be creating unique id's for the table using the node package [uuid](http
 
 Create index.js in the project and open it in your editor. This is where we will be writing the function itself.
 
-First add the dependencies. We need to import the uuid package we've just installed. We also need to require the AWS SDK (which all Lambda functions have access to, so we don't have to install it locally). The SDK will then allow us to create an instance of the DynamoDB document client.
+First add the dependencies. We need to import the uuid package we've just installed. We also need to require the AWS SDK (which all Lambda functions have access to, so we don't have to install it locally).
 
 ```javascript
 const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 const uuid4 = require('uuid/v4');
 ```
 
-This docClient instance is a standard way to target DynamoDB. It provides a simple way to create JavaScript sets. As we are specifying a region here, our function will be able to write to the table even if they are in different AWS regions.
-
 Now for the function itself. As with all Lambda functions, we will use an `exports.handler` function that has three arguments: event, context, and callback.
+
+The SDK allows us to create an instance of the DynamoDB document client inside the handler. This docClient instance is a standard way to target DynamoDB. It provides a simple way to create JavaScript sets. As we are specifying a region here, our function will be able to write to the table even if they are in different AWS regions.
 
 ```javascript
 exports.handler = function(event, context, callback) {
+	const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 
-	}
 }
 ```
 
@@ -72,6 +71,7 @@ First we need to specify the parameters we will passing into the DynamoDB docCli
 
 ```javascript
 exports.handler = function(event, context, callback) {
+	const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 	const uuid = uuid4();
 	const params = {
 		Item: {
@@ -100,10 +100,10 @@ Here is the entirety of index.js as we have it so far:
 
 ```javascript
 const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 const uuid4 = require('uuid/v4');
 
 exports.handler = function(event, context, callback) {
+	const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 	const uuid = uuid4();
 	const params = {
 		Item: {
@@ -210,12 +210,12 @@ Here is all of index.js as it stands with our new additions:
 const Ajv = require('ajv');
 const ajv = new Ajv();
 const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 const uuid4 = require('uuid/v4');
 
 ajv. addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 
 exports.handler = function(event, context, callback) {
+	const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 
 	const schema = {
 		"properties": {
