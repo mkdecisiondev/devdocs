@@ -19,5 +19,4 @@
 	1. [JavaScript](standards/javascript.md)
 1. Best practices
 	1. [JavaScript](bestpractices/javascript.md)
-1. [Advanced topics](advanced.md)
-	1. [Accessibility](advanced.md#accessibility)
+1. [Miscellaneous](miscellaneous.md)
