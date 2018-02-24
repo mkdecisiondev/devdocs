@@ -1,6 +1,6 @@
 # npm
 
-npm is the default package manager for Node.js. It is not well designed and should only be used a single time, to install [pnpm](https://pnpm.js.org/):
+:poop: npm is the default package manager for Node.js. It is not well designed and should only be used a single time, to install [pnpm](https://pnpm.js.org/):
 ```
 npm install --global pnpm
 ```
