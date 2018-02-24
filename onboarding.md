@@ -11,3 +11,12 @@
 ## Development basics
 
 1. [Using GitHub](tools/github.md)
+1. :bookmark_tabs: Familiarize yourself with coding standards
+	1. [Common](standards/common.md)
+	1. [JavaScript](standards/javascript.md)
+1. :bookmark_tabs: Familiarize yourself with [JavaScript best practices](bestpractices/javascript.md)
+1. :books: Learn [fundamental JavaScript concepts](languages/javascript.md#fundamental-concepts)
+
+## UI development
+
+1. [Material design](https://material.io/guidelines/)
