@@ -1,5 +1,15 @@
 # JavaScript
 
+## Fundamental concepts
+
+1. Variables and scope
+1. `let` and `const`
+1. Promises
+1. XMLHttpRequest (XHR)
+1. Events
+1. Errors and `try/catch`
+1. JSON
+
 * [The Modern JavaScript Tutorial](http://javascript.info/)
 * [Exploring JS](http://exploringjs.com/)
 * [Eloquent JavaScript](http://eloquentjavascript.net/)
