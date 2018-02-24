@@ -31,7 +31,7 @@ git config --global gui.tabsize 4
 
 VS Code has built-in support for Git that is very useful.
 
-**NOTE**: NEVER click the "Synchronize Changes" icon at the left of VS Code's bottom status bar. This will sometimes
+:no_entry: NEVER click the "Synchronize Changes" icon at the left of VS Code's bottom status bar. This will sometimes
 create completely unnecessary merge commits.
 
 ## Git basics
