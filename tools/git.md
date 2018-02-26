@@ -3,17 +3,28 @@
 ## Installation
 
 1. Install [Git](https://git-scm.com/)
+	1. Destination location: default is fine
+	1. Components: defaults are fine
+	1. Start Menu Folder: default is fine
+	1. Adjusting your PATH: "Use Git from the Windows Command Prompt" recommended
+	1. HTTPS - SSL/TLS library: "Use the OpenSSL library" recommended
+	1. Line-ending conversions: "Checkout as-is, commit as-is"
+	1. Terminal emulator for Git Bash: "Use Windows' default console window" recommended
+	1. Extra options: recommended to select all
+		1. Enable file system caching
+		1. Enable Git Credential Manager
+		1. Enable symbolic links
 1. Configure Git
-    1. `git config --global user.name <your name>`
+	1. `git config --global user.name <your name>`
 	1. `git config --global user.email <your email>`
-	    1. Use the same e-mail address associated with your GitHub account
+		1. Use the same e-mail address associated with your GitHub account
 	1. `git config --global gui.encoding utf-8`
 	1. `git config --global core.autocrlf false`
 	1. `git config --global core.safecrlf false`
 	1. `git config --global pull.rebase true`
 	1. `git config --global branch.autosetuprebase always`
 1. GUIs (optional)
-    1. (Windows) [TortoiseGit](https://tortoisegit.org/)
+	1. (Windows) [TortoiseGit](https://tortoisegit.org/)
 	1. (Windows) [Git Extensions](https://gitextensions.github.io/)
 	1. (Mac, Windows) [Sourcetree](https://www.sourcetreeapp.com/)
 
