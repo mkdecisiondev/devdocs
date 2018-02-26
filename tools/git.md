@@ -5,6 +5,7 @@
 1. Install [Git](https://git-scm.com/)
 	1. Destination location: default is fine
 	1. Components: defaults are fine
+	1. Default editor: "Use VisualStudioCode as Git's default editor"
 	1. Start Menu Folder: default is fine
 	1. Adjusting your PATH: "Use Git from the Windows Command Prompt" recommended
 	1. HTTPS - SSL/TLS library: "Use the OpenSSL library" recommended
