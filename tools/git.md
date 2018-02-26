@@ -15,6 +15,8 @@
 		1. Enable file system caching
 		1. Enable Git Credential Manager
 		1. Enable symbolic links
+1. Generate an SSH key
+	1. [guide](https://confluence.atlassian.com/bitbucketserver/creating-ssh-keys-776639788.html)
 1. Configure Git
 	1. `git config --global user.name <your name>`
 	1. `git config --global user.email <your email>`
