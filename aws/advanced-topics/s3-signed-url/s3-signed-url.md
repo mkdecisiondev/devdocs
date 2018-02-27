@@ -116,11 +116,56 @@ Note the `headers` object nested in the response object. Setting these values is
 
 At the bottom of our `.then()` block we have our callback function returning the response object, which will be the function's output. We also of course have a `.catch()` block to log any errors.
 
-Once we deploy the function to Lambda, we can test it there. The default Lambda "Hello World" test will suffice).
+Here is the completed Lambda function in full:
+
+```javascript
+const AWS = require('aws-sdk');
+const uuid4 = require('uuid/v4');
+exports.handler = function(event, context, callback) {
+	const s3 = new AWS.S3();
+	const uuid = uuid4();
+
+	const signedUrlPromise = new Promise(function(resolve, reject) {
+        s3.getSignedUrl('putObject', {
+            Bucket: 's3-post-test',
+            Key: `${uuid}.txt`,
+            Expires: 10000,
+            ContentType: 'application/octet-stream'
+        }, function(err, url) {
+            if (err) {
+            	reject(err);
+            } else {
+            	resolve(url);
+            }
+        });
+    });
+
+    signedUrlPromise
+	.then(function(url){
+		console.log(url);
+		const response = {
+			body: JSON.stringify({
+				url: url
+			}),
+			headers: {
+				'Access-Control-Allow-Credentials': true,
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'application/json',
+			},
+			statusCode: 200
+		};
+		callback(null, response);
+	}).catch(function(err){
+		callback(err, null);
+	});
+};
+```
+
+Once we deploy the function to Lambda, we can test it there. The default Lambda "Hello World" test will suffice.
 
 ![alt text](images/2.png)
 
-We can see that our test has run without error. Furthermore, as expected we have a body object containing our URL.
+We can see that our test has run without error. Furthermore, as expected our return has a body object containing our URL.
 
 <!-->
 ## Setting Up the API
