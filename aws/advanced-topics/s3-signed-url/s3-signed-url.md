@@ -6,7 +6,7 @@ In this tutorial we will demonstrate how to set up a function in AWS Lambda to g
 
 To get started, we will need to configure our S3 bucket to allow us to perform the necessary actions on it.
 
-Something we will need to be mindful of is a mechanism called Cross-Origin Resource Sharing, or CORS. From the Mozilla Development Network [reference]((https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) on CORS:
+Something we will need to be mindful of is a mechanism called Cross-Origin Resource Sharing, or CORS. From the Mozilla Development Network [reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) on CORS:
 > Cross-Origin Resource Sharing (CORS) is a mechanism that uses additional HTTP headers to let a user agent gain permission to access selected resources from a server on a different origin (domain) than the site currently in use. A user agent makes a cross-origin HTTP request when it requests a resource from a different domain, protocol, or port than the one from which the current document originated.
 
 This is applicable to us as it's one thing to obtain our S3 URL to upload an object, but in order to allow script in the browser to make use of the URL we must be be sure to allow requests from different origins.
