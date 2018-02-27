@@ -33,7 +33,7 @@ It is also important to make sure that the Lambda function has a role that allow
 
 ## Lambda Function - s3.getSignedUrl()
 
-As already mentioned, the AWS SDK method we will be using in our Lambda function is `s3.getSignedUrl()`.  This method returns a URL. When this URL is called by an http request, it will contain all the information and authorization needed to upload a file to an S3 bucket.
+As already mentioned, the AWS SDK method we will be using in our Lambda function is `s3.getSignedUrl()`.  This method returns a URL. When this URL is called by an HTTP request, it will contain all the information and authorization needed to upload a file to an S3 bucket.
 
 We want the objects in our bucket to have unique filenames. For that, we'll be using a package to create universally unique identifiers. After we've initialized our function locally using [pnpm](https://github.com/pnpm/pnpm), we need to open the project in the command line and run `pnpm install uuid`. We can then use the uuid as the s3 object's key parameter, which S3 uses to create its filename.
 
@@ -69,7 +69,7 @@ s3.getSignedUrl('putObject', {
 * `Expires` is how long the created URL is good for, in milliseconds. After that time has elapsed, the URL expires and is no longer usable. In general we want to set this number as low as possible. However, since when we first make this function we'll be testing it using Postman, we need to give ourselves some time to copy the generated URL from Lambda and paste it into Postman. When we actually call the URL via a front end function, we can shorten the time.
 * `ContentType` is the format in which the uploaded file will be sent to S3. `octet-stream` designates that it will be encoded as binary. It is necessary to have this set in the Lambda function and in the front end function or else we will receive a "403 Forbidden" error when we try to call the URL on the front end.
 
-Now that we've set up our function to generate a URL, we are going to wrap it in a promise. The reason for doing this is that when we return information to the front end, it needs to be in the valid syntax of a response to an http request. We want to make sure our Lambda function does not create this response object until `getSignedUrl()` resolves and the URL exists. Here's what the "promisified" function looks like:
+Now that we've set up our function to generate a URL, we are going to wrap it in a promise. The reason for doing this is that when we return information to the front end, it needs to be in the valid syntax of a response to an HTTP request. We want to make sure our Lambda function does not create this response object until `getSignedUrl()` resolves and the URL exists. Here's what the "promisified" function looks like:
 
 ```javascript
 const signedUrlPromise = new Promise(function(resolve, reject) {
@@ -206,3 +206,9 @@ We can see that we are getting the 200 status code that we specified for success
 We won't get a response body from this request, but when we check our bucket, we can see that the file was uploaded correctly with the key that we specified: the `<uuid>.txt.`
 
 ## Front End and Axios
+
+Create a directory for the front-end. For our purposes we'll just need an html file for our file upload form, and a Javascript file to contain the function that will be called when the form is submitted.
+
+Our front end function will be making two HTTP requests, which will mirror the ones we just made in Postman: the first will call the API to trigger our Lambda function and will return a URL. The second will make a PUT request with the URL and the file.
+
+For our HTTP requests we will be using a tool called [Axios](https://www.npmjs.com/package/axios) in our script. Axios allows us to make HTTP requests using promise syntax, so we can easily write code that makes our first request, returns the URL, and then passes the URL into the parameters of the second request.
