@@ -1,6 +1,6 @@
 # Getting a Signed S3 URL from Lambda and Uploading from the Front End
 
-In this tutorial we will demonstrate how to set up a function in AWS Lambda to generate a signed URL, which can be used to upload a file into a designated S3 bucket. We will then create a front end that obtains and uses these URL's to upload a file from an HTML form directly into the bucket.
+In this tutorial we will demonstrate how to set up a function in AWS Lambda to generate a signed URL, which can be used to upload a file into a designated S3 bucket. We will then create a front end function that obtains and uses these URL's to upload a file from an HTML form directly into the bucket.
 
 ## Set Up
 
@@ -66,10 +66,10 @@ s3.getSignedUrl('putObject', {
 
 * `Bucket` is obviously the name of the bucket we are uploading to.
 * `Key` is the name of the file that will appear in the bucket. We are setting its name as our uuid instance and setting it as a .txt file.
-* `Expires` is how long the created URL is good for, in milliseconds. After that time has elapsed, the URL expires and is no longer usable. In general we want to set this number as low as possible. However, since when we first make this function we'll be testing it using Postman, we need to give ourselves some time to copy the generated URL from Lambda and paste it into Postman. When we actually call the URL via a front end function, we can shorten the time.
-* `ContentType` is the format in which the uploaded file will be sent to S3. `octet-stream` designates that it will be encoded as binary. It is necessary to have this set in the Lambda function and in the front end function or else we will receive a "403 Forbidden" error when we try to call the URL on the front end.
+* `Expires` is how long the created URL is good for, in milliseconds. After that time has elapsed, the URL expires and is no longer usable. In general we want to set this number as low as possible. However, since when we first make this function we'll be testing it using Postman, we need to give ourselves some time to copy the generated URL from Lambda and paste it into Postman. When we are ready to actually call the URL via a the browser, we can shorten the time.
+* `ContentType` is the format in which the uploaded file will be sent to S3. `octet-stream` designates that it will be encoded as binary. It is necessary to have this set in the Lambda function and in the front end function or else we will receive a "403 Forbidden" error when we try to call the URL from the browser.
 
-Now that we've set up our function to generate a URL, we are going to wrap it in a promise. The reason for doing this is that when we return information to the front end, it needs to be in the valid syntax of a response to an HTTP request. We want to make sure our Lambda function does not create this response object until `getSignedUrl()` resolves and the URL exists. Here's what the "promisified" function looks like:
+Now that we've set up our function to generate a URL, we are going to wrap it in a promise. The reason for doing this is that when we return information to the client, it needs to be in the valid syntax of a response to an HTTP request. We want to make sure our Lambda function does not create this response object until `getSignedUrl()` resolves and the URL exists. Here's what the "promisified" function looks like:
 
 ```javascript
 const signedUrlPromise = new Promise(function(resolve, reject) {
@@ -205,13 +205,15 @@ We can see that we are getting the 200 status code that we specified for success
 
 We won't get a response body from this request, but when we check our bucket, we can see that the file was uploaded correctly with the key that we specified: the `<uuid>.txt.`
 
+Now that we've finished testing the API and generated URL, we can go back to the Lambda function and lower the `Expires` parameter for `getSignedUrl()` to 3000. That should still be enough time for the URL to be used when the requests are done from the browser.
+
 ## Front End and Axios
 
 Create a directory for the front-end. For our purposes we'll just need an html file for our file upload form, and a JavaScript file to contain the function that will be called when the form is submitted.
 
 Our front end function will be making two HTTP requests, which will mirror the ones we just made in Postman: the first will call the API to trigger our Lambda function and will return a URL. The second will make a PUT request with the URL and the file.
 
-For our HTTP requests we will be using a tool called [Axios](https://www.npmjs.com/package/axios) in our script. Axios allows us to make HTTP requests using promise syntax, so we can easily write code that makes our first request, returns the URL, and then passes the URL into the parameters of the second request.
+For our HTTP requests we will be using a tool called [Axios](https://www.npmjs.com/package/axios) in our script. Axios allows us to make HTTP requests using promise syntax, so we can easily write code that makes our first request, returns the URL, and then passes the URL into the parameters of the second request. An introduction to the basics of using Axios can be found [here](https://medium.com/codingthesmartway-com-blog/getting-started-with-axios-166cb0035237).
 
 If we were using a front end framework such as Spike, we would install Axios as a dependency. Luckily for our simple project, Axios also has a CDN that we can link in our HTML file.
 
@@ -238,7 +240,7 @@ In our `index.html` file, we'll create a form that is nothing more than a file i
 </html>
 ```
 
-Then in `main.js` we'll add an event listener for when the form is submitted.
+Then in `main.js` we'll add an event listener for when the form is submitted. All of our code will be inside this function.
 
 ```javascript
 const form = document.getElementById('postForm');
@@ -251,8 +253,84 @@ We need to make the file we're uploading available to the rest of the function. 
 ```javascript
 const formdata = new FormData(event.target);
 ```
-Next we can target specifically the contents of the file submission field using the [FormData.get()](https://developer.mozilla.org/en-US/docs/Web/API/FormData/get) method on that field.
+We can now specifically target the contents of the file submission field using the [FormData.get()](https://developer.mozilla.org/en-US/docs/Web/API/FormData/get) method on that field.
 
 ```javascript
 const file = formdata.get('file');
 ```
+
+Next we need to prevent the default behavior of the form submission so the page doesn't reload.
+
+```javascript
+event.preventDefault();
+```
+
+The next step is to make a POST request of our API, which will return a signed URL. Using the promise syntax made available by Axios, we can pass the resulting URL into our next request once the first request is resolved.
+
+```javascript
+axios.post(' https://pq0zc1n3kk.execute-api.us-west-2.amazonaws.com/dev/get-key', JSON.stringify({'data': 'data'}))
+	.then(function(response) {
+		return response.data.url;
+	})
+	//next request will go here
+});
+```
+
+The stringified data object parameter isn't actually being used by anything, but is an example of how to pass additional data in case we had a more complicated Lambda function that needed the data for something else.
+
+The request to upload the file to S3 will be a PUT request. For its parameters we'll use:
+* the URL we've just obtained
+* the `file` constant which is the file to upload
+* a `headers` object with the same `'content-type': 'application/octet-stream'` property we used in the Lambda function. Again, this is to stop us from getting a "403 - Forbidden" error when we make our request.
+
+
+```javascript
+.then(function(url) {
+	return axios.put(url, file, {
+		headers: {
+			'content-type': 'application/octet-stream'
+		}
+	});
+})
+```
+
+Finally after our last `.then()` block we'll add a `.catch()` block to log any errors to the console.
+
+```javascript
+.catch(function(error){
+		console.log(error);
+	});
+```
+
+And that will close out our event listener function. Here is the completed JavaScript file:
+
+```javascript
+const form = document.getElementById('postForm');
+form.addEventListener('submit', function(event){
+	const formdata = new FormData(event.target);
+	const file = formdata.get('file');
+	event.preventDefault();
+	axios.post(' https://pq0zc1n3kk.execute-api.us-west-2.amazonaws.com/dev/get-key', JSON.stringify({'data': 'data'}))
+	.then(function(response) {
+		return response.data.url;
+	})
+	.then(function(url) {
+		return axios.put(url, file, {
+			headers: {
+				'content-type': 'application/octet-stream'
+			}
+		});
+	})
+	.catch(function(error){
+		console.log(error);
+	});
+});
+```
+
+When we load the page in our browser we can see our form. From there we can choose our test text file to load, and submit the form.
+
+We're not logging any errors, so let's check the bucket.
+
+![alt text](images/13.png)
+
+We can see that we have successfully uploaded a second file to the bucket, this time from the browser, and so our task is completed.
