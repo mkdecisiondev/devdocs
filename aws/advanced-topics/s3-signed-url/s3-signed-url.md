@@ -33,26 +33,45 @@ The CORS configuration is written in XML format. We are going to set our bucket 
 
 It is also important to make sure that the Lambda function has a role that allows appropriate access to the bucket. Your technical supervisor may provide you this role, or you may need to create it. The AWS SDK methods we will be using are [s3.putObject](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property) and [s3.getSignedUrl](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property), so if you are creating the role in AWS IAM make sure that it grants permission to perform both of these methods on the bucket you are using.
 
-<!--
-## Lambda Function - s3.CreatePresignedPost()
 
-In order for our front end to upload a file as an S3 object, we must first generate a key for the object that will be created. For this, we will be using the s3.createPresignedPost() method.
+## Lambda Function - s3.getSignedUrl()
 
-A presigned post gives a user write access to our S3 bucket without giving them actual AWS credentials. We will write a Lambda function to create the presigned post with a key that we assign, then return this key to the front end. We can then create an HTML form that uses this key to upload a file to the bucket directly.
+The AWS SDK method we will be using in our Lambda function, as already mentioned, is `s3.getSignedUrl`, which returns a URL. The URL will contain all the information the front end function needs to put the file in the bucket, and will also contain any needed authorization.
 
-In this example we will be using the node package [uuid](https://www.npmjs.com/package/uuid) to generate our keys as universally unique identifiers. After we've initialized our function locally using [pnpm](https://github.com/pnpm/pnpm), we need to open the project in the command line and run:
+When we upload files to our S3 bucket, we want them to have unique filenames. For that, we'll be using a package to create universally unique identifiers. After we've initialized our function locally using [pnpm](https://github.com/pnpm/pnpm), we need to open the project in the command line and run `pnpm install uuid`. We can then use the uuid as the s3 object's key parameter, which S3 uses to create its filename.
 
-```
-pnpm install uuid
-```
-
-Next we can create our function's entry point (index.js) and import the uuid package. We will also import the AWS SDK but don't need to install it as all functions have access to the SDK once they are uploaded to Lambda.
+Let's create our function's entry point (index.js) and import the uuid package. We will also import the AWS SDK but don't need to install it as all functions have access to the SDK once they are uploaded to Lambda.
 
 ```javascript
 const AWS = require('aws-sdk');
 const uuid4 = require('uuid/v4');
 ```
 
+Next we create our exports.handler function. We'll create an S3 instance to give us access to the getSignedUrl() method, and a uuid instance to serve as our key.
+
+```javascript
+exports.handler = function(event, context, callback) {
+	const s3 = new AWS.S3();
+	const uuid = uuid4();
+}
+```
+
+ Now for `s3.getSignedUrl()`. This method takes two parameters: an S3 method, and an object. The method is whatever S3 method we want to make available to the front end, in this case s3.putObject. The object will be a set of parameters that the method will be used to construct the URL, which the Lambda function will return via the callback method.
+
+```javascript
+s3.getSignedUrl('putObject', {
+        Bucket: 's3-post-test',
+        Key: `${uuid}.txt`,
+        Expires: 10000,
+        ContentType: 'application/octet-stream'
+```
+
+*`Bucket` is obviously the name of the bucket we are uploading to.
+*`Key` is the name of the file that will appear in the bucket. We are setting its name as our uuid instance and setting it as a .txt file.
+*`Expires` is how long the created URL is good for, in milliseconds. After that time has elapsed, the URL expires and is no longer usable. In general we want to set this number as low as possible. However, since when we first make this function we'll be testing it using Postman, we need to give ourselves some time to copy the generated URL from Lambda and paste it into Postman. When we actually call the URL via a front end function, we can shorten the time.
+*`ContentType` is the format in which the uploaded file will be sent to S3. `octet-stream` designates that it will be encoded as binary. It is necessary to have this set in the Lambda function and in the front end function or else we will receive a "403 Forbidden" error when we try to call the URL on the front end.
+
+<!-->
 Next we create our exports.handler function. We'll create an S3 instance to give us access to the createPresignedPost() method, and a uuid instance to serve as our key.
 
 The createPresignedPost() method takes parameters that must include the bucket we are using, and returns a data object that includes a large fields object. This object includes information such as our region and the bucket that we have passed as a parameter. We will also add a Key property to this object and assign it our uuid as this is what we want to return to the front end.
