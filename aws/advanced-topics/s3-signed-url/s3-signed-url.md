@@ -167,54 +167,42 @@ Once we deploy the function to Lambda, we can test it there. The default Lambda 
 
 We can see that our test has run without error. Furthermore, as expected our return has a body object containing our URL.
 
-<!-->
-## Setting Up the API
+
+## Setting Up and Testing the API
 
 We will be covering just the basics of setting up and testing the API. For more information on API Gateway, see MK Decision's [documentation](file:///Users/andrewlevy/Desktop/mk/devdocs/aws/pass-file-through-API-gateway/pass-file-through-API-gateway.md) on the subject.
 
-First create the API.
-
-![alt text](images/2.png)
-
-Next, in the API's settings, add all files to the accepted binary media types with:
-```
-*/*
-```
+Create the API, then in the settings add all files to the accepted binary media types with `*/*`.
 
 ![alt text](images/3.png)
 
-Then link the function to an API Gateway Resource. First create the resource.
+Then link the function to an API Gateway Resource. Create the resource and add a POST method.
+
+The integration type is "Lambda Function." Select "Use Lambda Proxy integration," select the function's region, and specify the function.
 
 ![alt text](images/4.png)
 
-![alt text](images/5.png)
-
-Create a POST method in the resource.
-
-![alt text](images/6.png)
-
-![alt text](images/7.png)
-
-The integration type is "Lambda Function." Select "Use Lambda Proxy integration," select your region, and specify the function.
-
-![alt text](images/8.png)
-
 After saving the method, deploy the API.
 
-![alt text](images/9.png)
-
-![alt text](images/10.png)
+![alt text](images/5.png)
 
 Obtain the URL for the POST method, and we'll test it out by invoking it in Postman.
 
-![alt text](images/11.png)
+![alt text](images/6.png)
+
 
 Create a POST request in Postman with the method's URL and select form-data for the body. We'll try running it with a dummy file as the event.
 
-![alt text](images/12.png)
+![alt text](images/7.png)
 
-![alt text](images/13.png)
+Send the request and check the response.
 
-We can see that we are getting the 201 status code that we specified for success, and that our body object correctly contains the data object with a uuid key. We're now ready to set up a front end to call the API.
+![alt text](images/8.png)
 
-## Front End and Axios --> -->
+We can see that we are getting the 200 status code that we specified for success, and that our body object correctly contains our URL. This URL is good for exactly one use and lasts as long as the "expires" value we passed into the function that created it. We can then test the URL by making a PUT request in Postman with the URL that was returned. Make sure your request body contains your dummy .txt file as the URL will upload that to the bucket.
+
+![alt text](images/9.png)
+
+We won't get a response body from this request, but when we check our bucket, we can see that the file was uploaded correctly with the key that we specified: the `<uuid>.txt.`
+
+## Front End and Axios
