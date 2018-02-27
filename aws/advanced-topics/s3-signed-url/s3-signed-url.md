@@ -29,22 +29,22 @@ S3 CORS configuration is written in XML format. We are going to set our bucket t
 </CORSConfiguration>
 ```
 
-It is also important to make sure that the Lambda function has a role that allows appropriate access to the bucket. Your technical supervisor may provide you this role, or you may need to create it. The AWS SDK methods we will be using are [s3.putObject()](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property) and [s3.getSignedUrl()](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property), so if you are creating the role in AWS IAM make sure that it grants permission to perform both of these methods on the bucket you are using.
+It is also important to make sure that the Lambda function has a role that allows appropriate access to the bucket. Your technical supervisor may provide you this role, or you may need to create it. The AWS SDK functions we will be using are [s3.putObject()](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property) and [s3.getSignedUrl()](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property), so if you are creating the role in AWS IAM make sure that it grants permission to perform both of these functions on the bucket you are using.
 
 ## Lambda Function
 
-As already mentioned, the AWS SDK method we will be using in our Lambda function is `s3.getSignedUrl`.  This method returns a URL. When this URL is used to make an HTTP request, it will contain all the information and authorization needed to upload a file to an S3 bucket.
+As already mentioned, the AWS SDK function we will be using in our Lambda function is `s3.getSignedUrl()`.  This function returns a URL. When this URL is used to make an HTTP request, it will contain all the information and authorization needed to upload a file to an S3 bucket.
 
 We want the objects in our bucket to have unique filenames. For that, we'll be using a package to create universally unique identifiers. After we've initialized our function locally using [pnpm](https://github.com/pnpm/pnpm), we need to open the project in the command line and run `pnpm install uuid`. We can then use the uuid as the S3 object's key parameter, which S3 uses to create its filename.
 
-Let's create our function's entry point (index.js) and import the uuid package. We will also import the AWS SDK, which the function will have access to once it is uploaded to Lambda.
+Let's create our function's entry point (`index.js`) and require the uuid package. We will also require the AWS SDK, which the function will have access to once it is uploaded to Lambda.
 
 ```javascript
 const AWS = require('aws-sdk');
 const uuid4 = require('uuid/v4');
 ```
 
-Next we create our handler function. We'll create an S3 instance to give us access to the `getSignedUrl` method, and a uuid instance to serve as our key.
+Next we create our handler function. We'll create an S3 instance to give us access to the `getSignedUrl()` function, and a uuid instance to serve as our key.
 
 ```javascript
 exports.handler = function(event, context, callback) {
@@ -53,7 +53,7 @@ exports.handler = function(event, context, callback) {
 }
 ```
 
- Now for `s3.getSignedUrl`. It takes two parameters: an S3 method and an object. The method is whatever S3 method we want to make available to the front end, in this case `putObject`. The object will be a set of parameters that the method will be used to construct the URL, which the Lambda function will return via its callback method.
+Now for `s3.getSignedUrl()`. It takes two parameters: an S3 function and an object. The function is whatever S3 function we want to make available to the front end, in this case `putObject()`. The object will be a set of parameters that the function will be used to construct the URL, which the Lambda function will return via its callback function.
 
 ```javascript
 s3.getSignedUrl('putObject', {
@@ -69,7 +69,7 @@ s3.getSignedUrl('putObject', {
 * `Expires` is how long the created URL is good for, in milliseconds. After that time has elapsed, the URL is no longer usable. In general we want to set this number as low as possible so as to still be useful. However, since after we first deploy this function we'll be testing it using Postman, we need to give ourselves some time to copy the generated URL from our response and paste it into Postman for a new request. When we are ready to actually call the URL via a the browser, we can shorten the time.
 * `ContentType` is the format in which the uploaded file will be sent to S3. `octet-stream` designates that it will be encoded as binary. It is necessary to have this set in the Lambda function and in the front end function or else we will receive a "403 Forbidden" error when we try to call the URL from the browser.
 
-Now that we've set up our function to generate a URL, we are going to wrap it in a promise. The reason for doing this is that when we return information to the client, it needs to be in the valid syntax of a response to an HTTP request. We want to make sure our Lambda function does not create this response object until `getSignedUrl` resolves and the URL exists. Here's what the "promisified" function looks like:
+Now that we've set up our function to generate a URL, we are going to wrap it in a Promise. The reason for doing this is that when we return information to the client, it needs to be in the valid syntax of a response to an HTTP request. We want to make sure our Lambda function does not create this response object until `getSignedUrl()` resolves and the URL exists. Here's what the "promisified" function looks like:
 
 ```javascript
 const signedUrlPromise = new Promise(function(resolve, reject) {
@@ -122,26 +122,25 @@ Here is the completed Lambda function in full:
 const AWS = require('aws-sdk');
 const uuid4 = require('uuid/v4');
 exports.handler = function(event, context, callback) {
-	const s3 = new AWS.S3();
+  	const s3 = new AWS.S3();
 	const uuid = uuid4();
 
 	const signedUrlPromise = new Promise(function(resolve, reject) {
-        s3.getSignedUrl('putObject', {
-            Bucket: 's3-post-test',
-            Key: `${uuid}.txt`,
-            Expires: 10000,
-            ContentType: 'application/octet-stream'
-        }, function(err, url) {
-            if (err) {
-            	reject(err);
-            } else {
-            	resolve(url);
-            }
-        });
-    });
+    		s3.getSignedUrl('putObject', {
+        			Bucket: 's3-post-test',
+        			Key: `${uuid}.txt`,
+        			Expires: 10000,
+        			ContentType: 'application/octet-stream'
+      			}, function(err, url) {
+        			if (err) {
+          				reject(err);
+        			} else {
+          				resolve(url);
+        			}
+    		});
+  	});
 
-    signedUrlPromise
-	.then(function(url){
+  	signedUrlPromise.then(function(url){
 		console.log(url);
 		const response = {
 			body: JSON.stringify({
@@ -170,13 +169,9 @@ We can see that our test has run without error. Furthermore, as expected our ret
 
 ## Setting Up and Testing the API
 
-We will be covering just the basics of setting up and testing the API. For more information on API Gateway, see MK Decision's [documentation](file:///Users/andrewlevy/Desktop/mk/devdocs/aws/pass-file-through-API-gateway/pass-file-through-API-gateway.md) on the subject.
+We will be covering just the basics of setting up and testing the API. For more information on API Gateway, see MK Decision's [documentation](aws/pass-file-through-API-gateway/pass-file-through-API-gateway.md) on the subject.
 
-Create the API, then in the settings add all files to the accepted binary media types with `*/*`.
-
-![alt text](images/3.png)
-
-Then link the function to an API Gateway Resource. Create the resource and add a POST method.
+Create an API and link the function to an API Gateway Resource. Create the resource and add a POST method.
 
 The integration type is "Lambda Function." Select "Use Lambda Proxy integration," select the function's region, and specify the function.
 
@@ -190,7 +185,6 @@ Obtain the URL for the POST method, and we'll test it out by invoking it in Post
 
 ![alt text](images/6.png)
 
-
 Create a POST request in Postman with the method's URL and select form-data for the body. We'll try running it with a dummy text file as the event.
 
 ![alt text](images/7.png)
@@ -199,7 +193,7 @@ Send the request and check the response.
 
 ![alt text](images/8.png)
 
-We can see that we are getting the 200 status code that we specified for success, and that our body object correctly contains our URL. This URL is good for exactly one use and lasts as long as the "expires" value we passed into the function that created it. We can then test the URL by making a PUT request in Postman with the new URL. Make sure your request body contains your dummy .txt file as the URL will upload that to the bucket.
+We can see that we are getting the 200 status code that we specified for success, and that our body object correctly contains our URL. This URL is good for exactly one use and lasts as long as the "expires" value we passed into the function that created it. We can then test the URL by making a PUT request in Postman with the new URL. Make sure your request body contains your dummy `.txt` file as the URL will upload that to the bucket.
 
 ![alt text](images/9.png)
 
@@ -211,7 +205,7 @@ Now that we've finished testing the API and generated URL, we can go back to the
 
 ## Front End and Axios
 
-Create a directory for the front-end. For our purposes we'll just need an html file for our file upload form, and a JavaScript file to contain the function that will be called when the form is submitted.
+Create a directory for the front-end. For our purposes we'll just need an HTML file for our file upload form, and a JavaScript file to contain the function that will be called when the form is submitted.
 
 Our front end function will be making two HTTP requests, which will mirror the ones we just made in Postman: the first will be a POST request that will call the API to trigger our Lambda function and will return a URL. The second will be a PUT request with the URL and the file.
 
@@ -255,7 +249,7 @@ We need to make the file we're uploading available so it can be included in our 
 ```javascript
 const formdata = new FormData(event.target);
 ```
-We can now specifically target the contents of the file submission field using the [FormData.get](https://developer.mozilla.org/en-US/docs/Web/API/FormData/get) method on that field.
+We can now specifically target the contents of the file submission field using the [FormData.get()](https://developer.mozilla.org/en-US/docs/Web/API/FormData/get) function on that field.
 
 ```javascript
 const file = formdata.get('file');
