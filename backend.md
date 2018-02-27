@@ -18,5 +18,5 @@
 1. Advanced Topics
 	1. [Mock Testing the AWS SDK](aws/advanced-topics/aws-sdk-mock/aws-sdk-mock.md)
 	1. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
-	1. Getting an S3 Key from Lambda and Uploading from the Front End
+	1. [Getting an S3 Key from Lambda and Uploading from the Front End](aws/advanced-topics/s3-signed-url/s3-signed-url.md)
 	1. Deployment Strategies
