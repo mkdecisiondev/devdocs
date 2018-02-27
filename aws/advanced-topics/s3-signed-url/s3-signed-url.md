@@ -207,8 +207,52 @@ We won't get a response body from this request, but when we check our bucket, we
 
 ## Front End and Axios
 
-Create a directory for the front-end. For our purposes we'll just need an html file for our file upload form, and a Javascript file to contain the function that will be called when the form is submitted.
+Create a directory for the front-end. For our purposes we'll just need an html file for our file upload form, and a JavaScript file to contain the function that will be called when the form is submitted.
 
 Our front end function will be making two HTTP requests, which will mirror the ones we just made in Postman: the first will call the API to trigger our Lambda function and will return a URL. The second will make a PUT request with the URL and the file.
 
 For our HTTP requests we will be using a tool called [Axios](https://www.npmjs.com/package/axios) in our script. Axios allows us to make HTTP requests using promise syntax, so we can easily write code that makes our first request, returns the URL, and then passes the URL into the parameters of the second request.
+
+If we were using a front end framework such as Spike, we would install Axios as a dependency. Luckily for our simple project, Axios also has a CDN that we can link in our HTML file.
+
+In our `index.html` file, we'll create a form that is nothing more than a file input and submit button. At the bottom of the body tag, we'll link the Axios CDN and our JavaScript file.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Page Title</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<form enctype="multipart/form-data" id="postForm" name="postForm">
+		<input type="file" id="fileUpload" name="file">
+		<br />
+		<button type="submit">Submit</button>
+	</form>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="./main.js"></script>
+</body>
+</html>
+```
+
+Then in `main.js` we'll add an event listener for when the form is submitted.
+
+```javascript
+const form = document.getElementById('postForm');
+form.addEventListener('submit', function(event){
+
+});
+```
+
+We need to make the file we're uploading available to the rest of the function. To do this we'll be creating a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object. We'll base this object off the contents of the form at the time it is submitted - as the form submission is the trigger of the event and the form itself is the target, we can signify the form's contents using `event.target` and use it as the basis of the FormData object.
+```javascript
+const formdata = new FormData(event.target);
+```
+Next we can target specifically the contents of the file submission field using the [FormData.get()](https://developer.mozilla.org/en-US/docs/Web/API/FormData/get) method on that field.
+
+```javascript
+const file = formdata.get('file');
+```
