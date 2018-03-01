@@ -1,6 +1,6 @@
 # Spike
 
-[Spike](https://www.spike.cf/) is a static site generator that creates HTML/JS/CSS from data and templates.
+[Spike](https://www.spike.cf/) is a [static site generator](https://www.sitepoint.com/7-reasons-use-static-site-generator/) that creates HTML/JS/CSS from data and templates.
 
 ## Templating: reshape
 
