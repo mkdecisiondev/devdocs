@@ -13,6 +13,7 @@ Names should be descriptive, but do try to keep them concise. Do not use short a
        Use your judgment and don't be shy to discuss with team members.
 1. Start names with the main identifying information, then add any necessary modifiers
     1. e.g. `personHeight` not `heightOfPerson`
+1. [Some guidance on naming variables](https://www.codewithjason.com/variable-name-anti-patterns/)
 
 ## Formatting
 
