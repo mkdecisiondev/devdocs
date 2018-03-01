@@ -9,6 +9,7 @@ Spike uses [reshape](https://reshape.ml/) ([GitHub](https://github.com/reshape/r
 We are using the features provided by the following plugins:
 
 1. [include](https://github.com/reshape/include)
+1. [component](https://github.com/mkdecisiondev/reshape-component)
 1. [layouts](https://github.com/reshape/layouts)
 1. [expressions](https://github.com/reshape/expressions)
 
@@ -25,3 +26,7 @@ We are using the features provided by the following plugins:
 1. [import](https://github.com/postcss/postcss-import)
 1. [nesting](https://github.com/jonathantneal/postcss-nesting)
 1. [responsive-type](https://github.com/seaneking/postcss-responsive-type)
+
+## MK Decision Spike template
+
+Our projects are based on [mk-spike-template](https://github.com/mkdecisiondev/mk-spike-template). Read its [documentation](https://github.com/mkdecisiondev/mk-spike-template#readme) to understand the project structure.
