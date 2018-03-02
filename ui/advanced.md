@@ -21,6 +21,4 @@
 1. [Web Content Accessibility Guidelines](https://24ways.org/2017/wcag-for-people-who-havent-read-them/)
 1. [Tip: labels](https://developer.paciellogroup.com/blog/2017/07/short-note-on-aria-label-aria-labelledby-and-aria-describedby/)
 
-## User Experience
-
-1. [Google Developers - Mobile UX](https://developers.google.com/web/fundamentals/design-and-ux/principles/)
+## [User Experience](../ux)
