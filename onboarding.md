@@ -3,7 +3,7 @@
 ## Development environment setup
 
 1. [Install git](tools/git.md)
-1. [Install brew](https://www.howtogeek.com/211541/homebrew-for-os-x-easily-installs-desktop-apps-and-terminal-utilities/) (OS X only)
+1. [Install brew](tools/brew.md) (Mac OS X only)
 1. [Install Node.js](tools/nodejs.md)
 1. [Install pnpm](tools/npm.md)
 1. [Install Visual Studio Code](tools/code-editor.md#installation-and-configuration)
