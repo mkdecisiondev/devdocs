@@ -1,6 +1,17 @@
 # Setting Up Your Credentials
 
-This tutorial will teach you how to set up your AWS CLI keys in order to upload your Lambda functions within the repository. If you follow these instructions, you should in theory be able to upload to the TFE Workspace so long as you use `pnpm run package` and `pnpm run deploy`. Right now, this implementation will only work if you’re on a \*NIX system (OS X, Unix, or Linux) or if you’ve managed to get Bash to work on Windows.
+## Overview
+
+This tutorial will teach you how to set up your AWS CLI keys in order to upload your Lambda functions within the repository. If you follow these instructions, you should in theory be able to upload to the TFE Workspace so long as you use `pnpm run package` and `pnpm run deploy`.
+
+## Installing the AWS CLI
+
+To be able to access AWS from your own command line, you will first need the AWS CLI.
+* If you're a Windows user, you should follow the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-windows.html). You should use the MSI installer.
+* If you're an OS X user, you should use `brew` (as you should with any tool). Assuming you have brew installed, enter `brew install awscli` in your console, and then you'll be good to go.
+* If you're a Linux user, you should use the bundled installer. Instructions are [here](https://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html).
+
+## Configuring Your Credentials
 
 First, you must log into AWS with your MK Decision account. Assuming you signed in with your own account, log out, and when you’re given the option to log in again, look for the link that says "Sign in to a different account." It should look like this:
 
@@ -43,6 +54,14 @@ Look at the row that says "Role ARN". Copy this role. Then run `vim ~/.aws/confi
     output = json
 
 Notice that this profile inherits from the mkdecision profile and that the ARN is your TFE role’s ARN. Keep in mind that you generally should not be touching this file. Use `aws configure --profile [somename]` to create roles. However, in this case, you need to update the file because without the role you won’t be able to run `pnpm run package` and `pnpm run deploy`. Note also that you MUST have a default region and unless otherwise specified that will be us-west-2.
+
+## Note to Windows Users
+
+Right now, MK's implementation will only work if you’re on a \*NIX system (OS X, Unix, or Linux) or if you’ve managed to get Bash to work on Windows. If you have not set up Bash, you should set it up using Git (you may need to reinstall Git to get it to work, tutorial to come later).
+
+When you get Bash installed, type `which bash` in your Bash console. This tells you where your Bash binary is. If you installed using Git, it will probably print out `/usr/bin/bash`. After this, type in `npm config set script-shell /usr/bin/bash` (or whatever path your Bash binary is).
+
+## Basic Deployment
 
 At this point, if you have the repository, you should be able to run `pnpm run package` and `pnpm run deploy`. When you run either of these commands, a bash script is called that checks if the CloudFormation stack name and the profile name are present in files in the repository directory called `.stackname` and `.profilename` respectively. If they’re not, then it will ask you to input whichever of these values are missing, like so:
 
