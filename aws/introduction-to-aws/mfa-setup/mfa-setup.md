@@ -4,7 +4,9 @@
 
 ## Overview
 
-At MK Decision, security is key. Multi Factor Authentication, or MFA for short, is a great way to ensure that no one except you can get access to your account. In this chapter, you will learn how to set up MFA on the MK Decision master account.
+At MK Decision, security is key. Multi Factor Authentication, or MFA for short, is a great way to ensure that no one except you can get access to your account. In this chapter, you will learn how to set up MFA on the MK Decision master AWS account.
+
+**NOTE:** From this point on, our documentation will assume that you are working on the MK Decision Master AWS account, although you can work on your own accounts if you want to practice.
 
 ## Signing into the Master Account
 
