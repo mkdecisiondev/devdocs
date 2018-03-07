@@ -19,6 +19,14 @@
 	1. Convenient to install: `pnpm i -g http-serve`
 	1. Minimal to no configuration; run on-demand; conveniently make any folder the server root
 
+### Online tools
+
+1. [W3C Markup Validation Service](https://validator.w3.org/)
+1. [RegExr](https://regexr.com/)
+1. [Regex Tester](https://www.regextester.com/)
+1. [Code Beautify](https://codebeautify.org/)
+1. [FreeFormatter](https://www.freeformatter.com/)
+
 ## Accessibility
 
 1. [Google Developers - Accessibility](https://developers.google.com/web/fundamentals/accessibility/)
