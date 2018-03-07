@@ -10,3 +10,9 @@ If you don't know something, refer to the documentation. If you still don't know
 * [JavaScript Weekly](http://javascriptweekly.com/)
 * [Frontend Focus](https://frontendfoc.us/)
 * [DevTips](https://umaar.com/dev-tips/)
+
+## Reading time!
+
+Things to peruse when you have some time.
+
+* [Front-end case studies](https://github.com/andrew--r/frontend-case-studies#readme)
