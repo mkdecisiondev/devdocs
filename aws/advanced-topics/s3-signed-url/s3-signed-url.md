@@ -361,29 +361,29 @@ We can see that a number of settings have become enabled. Two indicators are sho
 
 ```javascript
 }).catch(function(err){
-		callback(err, null);
-	});
+	callback(err, null);
+});
 ```
 
 Here is the `catch` block from our Lambda function. We need to add headers and a status code to the error response in the same way we did to the successful response.
 
 ```javascript
 }).catch(function(err) {
-		const errResponse = {
-			body: JSON.stringify({
-				message: err.message
-			}),
-			headers: {
-				'Access-Control-Allow-Credentials': true,
-				'Access-Control-Allow-Origin': '*',
-				'Content-Type': 'application/json'
-			},
-			statusCode: 500
-		};
-		callback(null, errResponse);
-	});
+	const errResponse = {
+		body: JSON.stringify({
+			message: err.message
+		}),
+		headers: {
+			'Access-Control-Allow-Credentials': true,
+			'Access-Control-Allow-Origin': '*',
+			'Content-Type': 'application/json'
+		},
+		statusCode: 500
+	};
+	callback(null, errResponse);
+});
 ```
 
-Note that we are calling back the response as the second argument to the callback function. However, our statusCode of 500 will notify the client that this response is of an error.
+Note that we are calling back the response as the second argument to the callback function. However, our statusCode of 500 will notify the client that this response is of an error. An unfortunate side effect of this is that you will no longer be able to see 500 errors in CloudWatch logs, so it would be a good idea to put the error messages in `console.log()` statements if you want to see them there.
 
 Now if we use the same form and same script in a Spike project (or one from another front end framework), we can run localhost, and as long as the first post request in the script is calling the correct API endpoint and everything is configured as above, we will have the same successful result when we submit the form.
