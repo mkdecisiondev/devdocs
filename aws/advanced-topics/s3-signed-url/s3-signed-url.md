@@ -341,7 +341,7 @@ We can see that we have successfully uploaded a second file to the bucket, this 
 
 ## Using Localhost
 
-Since it may be necessary to use a front end framework to upload to S3, we will now demonstrate the extra steps that must be taken to obtain our presigned URL while running localhost.
+Since it may be necessary to use a front end framework to upload to S3, we will now demonstrate the extra steps that must be taken to obtain our signed URL while running localhost.
 
 we must configure our API to enable CORS. Before we do that, we must make sure our API has an `Empty` model. If you created your API using the AWS console in your browser, this step will have been done automatically. However, if you set up CloudFormation to create the API when the function is deployed, you will need to do this step yourself.
 
