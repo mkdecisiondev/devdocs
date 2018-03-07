@@ -211,7 +211,7 @@ Our front end function will be making two HTTP requests, which will mirror the o
 
 For our HTTP requests we will be using a tool called [Axios](https://www.npmjs.com/package/axios) in our script. Axios allows us to make HTTP requests using promise syntax, so we can easily write code that makes our first request, returns the URL, and then passes the URL into the parameters of the second request. An introduction to the basics of using Axios can be found [here](https://medium.com/codingthesmartway-com-blog/getting-started-with-axios-166cb0035237).
 
-If we were using a front end framework such as Spike, we would install Axios as a dependency. Luckily for our simple project, Axios also has a CDN that we can link in our HTML file.
+Axios is available as a node package. Luckily for our simple project, Axios also has a CDN that we can link in our HTML file.
 
 In our `index.html` file, we'll create a form that is nothing more than a file input and submit button. At the bottom of the body tag, we'll link the Axios CDN and our JavaScript file.
 
@@ -264,7 +264,11 @@ event.preventDefault();
 Now we can make a POST request of our API, which will return a signed URL. Using the promise syntax made available by Axios, we can pass the resulting URL into our next request once the first request is resolved.
 
 ```javascript
-axios.post('https://pq0zc1n3kk.execute-api.us-west-2.amazonaws.com/dev/get-key', JSON.stringify({'data': 'data'}))
+axios.post('https://pq0zc1n3kk.execute-api.us-west-2.amazonaws.com/dev/get-key', JSON.stringify({'data': 'data'}), {
+	headers: {
+		'Content-Type': 'application/json'
+	}
+})
 	.then(function(response) {
 		return response.data.url;
 	})
@@ -272,7 +276,7 @@ axios.post('https://pq0zc1n3kk.execute-api.us-west-2.amazonaws.com/dev/get-key',
 });
 ```
 
-The stringified data object parameter isn't actually being used by anything, but is an example of how to pass additional data in case we had a more complicated Lambda function that needed the data for something else.
+The stringified data object parameter isn't actually being used by anything, but is an example of how to pass additional data in case we had a more complicated Lambda function that needed the data for something else. We have also added a headers object to the request to signal that this data is being sent in JSON format.
 
 The request to upload the file to S3 will be a PUT request. For its parameters we'll use:
 * the URL we've just obtained
@@ -306,9 +310,10 @@ form.addEventListener('submit', function(event){
 	const formdata = new FormData(event.target);
 	const file = formdata.get('file');
 	event.preventDefault();
-	axios.post('https://pq0zc1n3kk.execute-api.us-west-2.amazonaws.com/dev/get-key', JSON.stringify({'data': 'data'}))
-	.then(function(response) {
-		return response.data.url;
+	axios.post('https://pq0zc1n3kk.execute-api.us-west-2.amazonaws.com/dev/get-key', JSON.stringify(data), {
+		headers: {
+			'Content-Type': 'application/json'
+		}
 	})
 	.then(function(url) {
 		return axios.put(url, file, {
@@ -333,3 +338,52 @@ We're not logging any errors, so let's check the bucket.
 ![alt text](images/13.png)
 
 We can see that we have successfully uploaded a second file to the bucket, this time from the browser, and so our task is completed.
+
+## Using Localhost
+
+Since it may be necessary to use a front end framework to upload to S3, we will now demonstrate the extra steps that must be taken to obtain our signed URL while running localhost.
+
+we must configure our API to enable CORS. Before we do that, we must make sure our API has an `Empty` model. If you created your API using the AWS console in your browser, this step will have been done automatically. However, if you set up CloudFormation to create the API when the function is deployed, you will need to do this step yourself.
+
+Select the API in the API Gateway console, click "Models" in the side nav, and click the "Create" button. We will be creating a model called `Empty`, with a content type of `application/json`, and the model schema should be an empty set of curly braces, `{}`.
+
+![alt text](images/15.png)
+
+Once the model is there, we will enable CORS. Click "Resources" in the side nav under the API's name, click the name of the API resource, click the "Actions" button, and click "Enable CORS."
+
+On the interface that comes up, check both of the DEFAULT boxes for Gateway Responses (leave the "Methods" boxes checked as well), and click the "Enable CORS and replace existing CORS headers button.
+
+![alt text](images/16.png)
+
+![alt text](images/17.png)
+
+We can see that a number of settings have become enabled. Two indicators are showing us that some settings have not been applied, but this is fine. All this means is that we have to make sure that the right headers and a status code are present in any response that is returned to the front end. That is something we can add to the Lambda function.
+
+```javascript
+}).catch(function(err){
+	callback(err, null);
+});
+```
+
+Here is the `catch` block from our Lambda function. We need to add headers and a status code to the error response in the same way we did to the successful response.
+
+```javascript
+}).catch(function(err) {
+	const errResponse = {
+		body: JSON.stringify({
+			message: err.message
+		}),
+		headers: {
+			'Access-Control-Allow-Credentials': true,
+			'Access-Control-Allow-Origin': '*',
+			'Content-Type': 'application/json'
+		},
+		statusCode: 500
+	};
+	callback(null, errResponse);
+});
+```
+
+Note that we are calling back the response as the second argument to the callback function. However, our statusCode of 500 will notify the client that this response is of an error. An unfortunate side effect of this is that you will no longer be able to see 500 errors in CloudWatch logs, so it would be a good idea to put the error messages in `console.log()` statements if you want to see them there.
+
+Now if we use the same form and same script in a Spike project (or one from another front end framework), we can run localhost, and as long as the first post request in the script is calling the correct API endpoint and everything is configured as above, we will have the same successful result when we submit the form.
