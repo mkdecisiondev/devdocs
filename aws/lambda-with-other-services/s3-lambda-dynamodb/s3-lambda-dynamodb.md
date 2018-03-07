@@ -102,7 +102,7 @@ const params = {
 These parameters will write entries containing an id and the url of the picture. After `params`, write the code below:
 
 ```javascript
-let writeToDb = docClient.putItem(params).promise();
+let writeToDb = docClient.put(params).promise();
 writeToDb.then(function (data) {
   callback(null, data);
 }).catch(function (err) {
@@ -110,10 +110,10 @@ writeToDb.then(function (data) {
 });
 ```
 
-This code creates a promise for S3's `putItem()` function. It then runs that promise, and in the `then()` block (successful case) calls the handler callback inputting data and in the `catch()` block (unsuccessful case) calls the handler callback inputting the error. At MK Decision we use promisified AWS SDK functions as much as possible, but a different way (the way the [AWS SDK documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#putItem-property) uses) would be something like this:
+This code creates a promise for S3's `put()` function. It then runs that promise, and in the `then()` block (successful case) calls the handler callback inputting data and in the `catch()` block (unsuccessful case) calls the handler callback inputting the error. At MK Decision we use promisified AWS SDK functions as much as possible, but a different way (the way the [AWS SDK documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#putItem-property) uses) would be something like this:
 
 ```javascript
-docClient.putItem(params, function (err, data) {
+docClient.put(params, function (err, data) {
 	if (err) {
 		callback(err, null);
 	} else {
@@ -151,7 +151,7 @@ module.exports.handler = function(event, context, callback) {
   }
 
 
-  let writeToDb = docClient.putItem(params).promise();
+  let writeToDb = docClient.put(params).promise();
   writeToDb.then(function (data) {
     callback(null, data);
   }).catch(function (err) {
