@@ -1,11 +1,11 @@
 # npm
 
-:poop: npm is the default package manager for Node.js. It is not well designed and should only be used a single time, to install [pnpm](https://pnpm.js.org/):
+:poop: npm is the default package manager for Node.js. It is not well designed so [pnpm](https://pnpm.js.org/) should typically be used instead:
 ```
 npm install --global pnpm
 ```
 
-Once pnpm is installed you should use it in place of `npm` - any time you would use `npm`, type `pnpm` instead.
+Once pnpm is installed you should use it in place of `npm` - any time you would use `npm`, type `pnpm` instead. The exception is for global modules - when you are installing something globally ([eslint](https://www.npmjs.com/package/eslint), [htmlhint](https://www.npmjs.com/package/htmlhint), [http-serve](https://www.npmjs.com/package/http-serve)) you should use `npm i -g <module>` to install or update it.
 
 # MK npm registry
 
