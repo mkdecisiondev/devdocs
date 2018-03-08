@@ -25,6 +25,8 @@ All following instructions will be for VS Code. Any editor that does not have si
 1. Install [HTMLHint](http://htmlhint.com/): `npm i -g htmlhint`
 1. Install [VS Code](https://code.visualstudio.com/Download)
 
+You should occasionally update these. VS Code auto-updates, for the others you have to do it manually. Hold off on major Node.js updates until discussing with your team, but install minor updates as they are released. Global npm modules can be installed and updated with npm (instead of pnpm). To update, just run the same command as above for initial installation.
+
 ### Configuration
 
 1. indentation: tabs
