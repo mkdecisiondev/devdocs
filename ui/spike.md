@@ -34,15 +34,15 @@ We use [cssnano](http://cssnano.co/optimisations/) to optimise CSS for deploymen
 Example:
 ```
 assets/
-	css/
-		_common.css
-		_fonts.css
-		_global.css
-		_variables.css
-		main.css
+    css/
+        _common.css
+        _fonts.css
+        _global.css
+        _variables.css
+        main.css
 src/
-	index.html
-	index.css
+    index.html
+    index.css
 ```
 
 `_common.css:`
