@@ -98,7 +98,7 @@ exports.handler = function(event, context, callback) {
 };
 ```
 
-(`lambda.invoke()` can be make into a promise by simply adding `.promise()` to the end when it is called. We know this syntax is valid because in the AWS SDK documentation for `.invoke()`, it is shown to return an AWS request. See [here](languages/javascript-promises/javascript-promises.md) for more information about using promises in general as well as with AWS SDK functions in particular).
+(`lambda.invoke()` can be make into a promise by simply adding `.promise()` to the end when it is called. We know this syntax is valid because in the AWS SDK documentation for `.invoke()`, it is shown to return an AWS request. See [here](../../languages/javascript-promises/javascript-promises.md) for more information about using promises in general as well as with AWS SDK functions in particular).
 
 Let's test out the function. Since `LambdaInvokeTrigger` as it's currently implemented doesn't make use of its own event object, it doesn't matter what we pass in. The default test will do just fine.
 
