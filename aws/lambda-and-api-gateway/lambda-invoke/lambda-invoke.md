@@ -108,13 +108,13 @@ When we test the function, we get the return we specified for after `lambda.invo
 
 ![alt text](images/2.png)
 
-We can see that `LambdaInvokeEvent` has successfully logged the contents of `invoke()`'s `payload` parameter from `LambdaInvokeTrigger`.
+We can see that `LambdaInvokeEvent` has successfully logged the contents of `invoke()`'s `Payload` parameter from `LambdaInvokeTrigger`.
 
 ## Invoking a Lambda Function and Requesting a Response
 
 The next example will demonstrate how to use `invoke()` to call a Lambda function and have that second function return information to the first one.
 
-We're going to alter `LambdaInvokeEvent` so that it modifies the information it receives and then calls it back so it returned to `LambdaInvokeTrigger`.
+We're going to alter `LambdaInvokeEvent` so that it modifies the information it receives in its event message and then calls it back so it returned to `LambdaInvokeTrigger`.
 
 ```javascript
 exports.handler = function(event, context, callback) {
@@ -181,6 +181,6 @@ exports.handler = function(event, context, callback) {
 };
 ```
 
-Since the response we are looking for is now in the function we are testing, we can verify we're getting the correct result right in the Lambda console after running the test. Here is the result:
+Since the response we are looking for is now in the function we are testing, we can verify we're getting the correct result right in the Lambda console after running the test. Here is the result when running `LambdaInvokeTrigger`:
 
 ![alt text](images/4.png)
