@@ -105,6 +105,46 @@ callback(null, response);
 
 Depending on whether or not this is a successful case, you can put in other status codes. [Refer to this page](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) to find a status code that is appropriate for your needs.
 
+## CloudWatch Logs
+
+As you get further into development, there may be times where you can no longer check the Lambda console or the API gateway testing environment to view your results. This might be because you are calling a backend function through the UI to see if it is working as intended with the added layer of complexity. In these situations, you will need a way to check the Lambda function's console logs, or more importantly, their error messages.
+
+CloudWatch is another AWS resource that we can utilize in scenarios like this one. CloudWatch keeps a record of all the events from start to finish that a Lambda function goes through when it is called. Here you can see any console logs or errors thrown by the function to determine the status of the function you are trying to test.
+
+In the example above, we created a simple "Hello, World!" Lambda function and hooked it up to API Gateway. Now let us locate the phrase "Hello from Lambda" in the CloudWatch logs.
+
+If you navigate to the CloudWatch console in AWS, you will see a menu on the left hand side. If you click on the "Logs" section, you will see a list of log groups which are essentially all of the Lambda functions that have had activity in whichever AWS region you are currently logged into. Locate the log group for the helloWorld Lambda function in that list.
+
+![alt text](images/18.png)
+
+After clicking on the helloWorld log group, you will see a list of log streams. Each one of these streams is one iteration of the helloWorld function. Each stream logs all events for all of the times the function has been called. A new stream is created every time the Lambda function gets updated. Below you can see this function is on its fourth iteration. The iterations are logged from most recent to least recent by default.
+
+![alt text](images/19.png)
+
+So far, if you were to test your function through API gateway, the Lambda console, or Postman, you would only see one stream. That stream would be almost empty. If you clicked on the stream you would see that it only contains START, END, and REPORT logs.
+
+![alt text](images/20.png)
+
+That is because we do not have any `console.log`s in our code just yet. Right now, the function is running and resolving but not showing any output in our logs. In the Lambda function, we can add a line of code above the `callback` function. Let's make it simple for now:
+
+```javascript
+console.log(response);
+```
+
+If we now test the function and check our logs, we will see a second log stream that gives us more information inside. Here we can see the entire object that is getting called back. It contains the status code and the body containing the data "Hello from Lambda."
+
+![alt text](images/21.png)
+
+Now, let's try to get the words "Hello from Lambda" by themselves. To do this, we will have to drill down into the object and extract the data from the body. If your first thought was to change the `console.log` to:
+
+```javascript
+console.log(response.body.data);
+```
+
+you would be close, but incorrect. This would return an `undefined` value. This is because the data key was stringified using `JSON.stringify()` above. This is the cause of undefined responses fairly often while fixing bugs, so be aware of where you are stringifying data and where you are parsing data. We could `JSON.parse()` the data key to fix this error, but lets just take the `JSON.stringify()` out for now as to not over complicate things. Now when you test your function again, you will end up with a log that is just the words "Hello from Lambda" in your CloudWatch logs.
+
+ ![alt text](images/22.png)
+
 ## Conclusion
 
 Hopefully by now you have some grasp at how to use API Gateway to trigger Lambda functions. Lambda functions can be used to read from and write to databases, send text messages or email, and many, many other things. The following tutorials will mostly focus on Lambda functions with the assumption that you can later on trigger these functions with API Gateway.
