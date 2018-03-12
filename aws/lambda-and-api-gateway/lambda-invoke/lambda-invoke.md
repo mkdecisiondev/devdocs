@@ -36,7 +36,7 @@ exports.handler = function(event, context, callback) {
 };
 ```
 
-`lambda.invoke()` will take a set of parameters. The way we configure these parameters will depend on the manner in which we want to call the function.
+`lambda.invoke()` takes an object of parameters. The way we configure these parameters will depend on the manner in which we want to call the function.
 
 We need to define a set of params to pass into the `invoke()` function.
 
@@ -58,7 +58,7 @@ Next we use our Lambda instance to call `invoke()`, pass in our params object, a
 
 ```javascript
 lambda.invoke(params);
-callback(null, 'finished');
+callback(null, 'Finished');
 ```
 
 Here is the `LambdaInvokeTrigger` function so far.
@@ -74,11 +74,11 @@ exports.handler = function(event, context, callback) {
 	    Payload: Buffer.from(JSON.stringify({message: 'Hello World'}))
     };
     lambda.invoke(params);
-    callback(null, 'finished');
+    callback(null, 'Finished');
 };
 ```
 
-Lastly, let's make `lambda.invoke()` into a promise so we can callback our completion string once `invoke()` has finished or callback an error in a `.catch()` block if it fails.
+Lastly, let's make `lambda.invoke()` into a promise so we can callback our "Finished" string once `invoke()` has wrapped up or callback an error in a `.catch()` block if it fails.
 
 ```javascript
 const AWS = require('aws-sdk');
@@ -104,7 +104,7 @@ Let's test out the function. Since `LambdaInvokeTrigger` as it's currently imple
 
 ![alt text](images/1.png)
 
-When we test the function, we get the return we specified for after `lambda.invoke()` has wrapped up. However, to test whether `LambdaInvokeEvent` has run properly, we need to check its logs in AWS CloudWatch.
+When we test the function, we get the return we specified for after `lambda.invoke()` has wrapped up. However, to test whether `LambdaInvokeEvent` has run properly after being invoked, we need to check its logs in AWS CloudWatch.
 
 ![alt text](images/2.png)
 
@@ -161,7 +161,7 @@ We are logging an object containing a `Payload` property, the value of which is 
 callback(null, JSON.parse(response.Payload));
 ```
 
-Here's `LambdaInvokeTrigger` with our final changes:
+Here's the whole of `LambdaInvokeTrigger` with our final changes:
 
 ```javascript
 const AWS = require('aws-sdk');
@@ -181,6 +181,6 @@ exports.handler = function(event, context, callback) {
 };
 ```
 
-And here is the result when we run it:
+Since the response we are looking for is now in the function we are testing, we can verify we're getting the correct result right in the Lambda console after running the test. Here is the result:
 
 ![alt text](images/4.png)
