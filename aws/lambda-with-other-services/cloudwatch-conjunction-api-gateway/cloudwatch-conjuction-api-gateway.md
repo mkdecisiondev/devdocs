@@ -1,0 +1,5 @@
+# Using Cloudwatch in Conjunction with API Gateway
+
+The Amazon Web Services (AWS) service Cloudwatch is a one-stop shop for monitoring all the other AWS services you might be utalizing. On the left hand menu in the Cloudwatch console, you can see the different features Cloudwatch comes equiped with. (Dashboards, Alarms, Events, Logs, and Metrics)
+
+One of the most used features on Cloadwatch are the Logs. This feature logs all of the events and outputs of a Lambda function in order from the time the function gets called to the time the function finishes or exits. In these logs you can see certain pieces of data that you have console logged in your code. This is also the place where you can see any errors that have arisen. This is especially important for backend development when the programmers are using an API in the API Gateway that is calling a Lambda function. This is essentially the console for backend developers where they can follow the flow of the function and see if and where any problems occur.
