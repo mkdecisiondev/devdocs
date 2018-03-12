@@ -14,16 +14,16 @@ The first example we will look at is how to make our function "fire and forget,"
 
 ```javascript
 exports.handler = function(event, context, callback) {
-    try {
-        if (event.message) {
-            console.log(event.message);
-            callback(null, 'Finished');
-        } else {
-            throw new Error('Invalid params');
-        }
-    } catch(err) {
-        callback(err, null);
-    }
+	try {
+		if (event.message) {
+			console.log(event.message);
+			callback(null, 'Finished');
+		} else {
+			throw new Error('Invalid params');
+	} catch(err) {
+		callback(err, null);
+	}
+}
 ```
 
 For `LambdaInvokeTrigger`, we need to first require the AWS SDK, and then create a Lambda instance to give the function access to `invoke()`.
@@ -78,24 +78,23 @@ exports.handler = function(event, context, callback) {
 };
 ```
 
-Lastly, let's make `lambda.invoke()` into a promise, wrap it in a `try()` block, and callback any errors in a `catch()` block. This will allow us to see if there are any problems with the invocation.
+Lastly, let's make `lambda.invoke()` into a promise so we can callback our completion string once `invoke()` has finished or callback an error in a `.catch()` block if it fails.
 
 ```javascript
 const AWS = require('aws-sdk');
 
 exports.handler = function(event, context, callback) {
     const lambda = new AWS.Lambda();
-    try {
-        const params = {
-            FunctionName: 'LambdaInvokeEvent',
-            InvocationType: 'Event',
-    	    Payload: Buffer.from(JSON.stringify({message: 'Hello World'}))
-        };
-        lambda.invoke(params).promise();
-        callback(null, 'Finished');
-    } catch(err) {
-        callback(err);
-    }
+	const params = {
+		FunctionName: 'LambdaInvokeEvent',
+		InvocationType: 'Event',
+		Payload: Buffer.from(JSON.stringify({message: 'Hello World'}))
+	};
+    lambda.invoke(params).promise().then(function() {
+		callback(null, 'Finished');
+	}).catch(function(err) {
+		callback(err, null);
+	});
 };
 ```
 
@@ -110,3 +109,78 @@ When we test the function, we get the return we specified for after `lambda.invo
 ![alt text](images/2.png)
 
 We can see that `LambdaInvokeEvent` has successfully logged the contents of `invoke()`'s `payload` parameter from `LambdaInvokeTrigger`.
+
+## Invoking a Lambda Function and Requesting a Response
+
+The next example will demonstrate how to use `invoke()` to call a Lambda function and have that second function return information to the first one.
+
+We're going to alter `LambdaInvokeEvent` so that it modifies the information it receives and then calls it back so it returned to `LambdaInvokeTrigger`.
+
+```javascript
+exports.handler = function(event, context, callback) {
+    try {
+        if (event.message) {
+            const reversedMessage = event.message.split(' ').reverse().join(' ');
+            callback(null, reversedMessage);
+        } else {
+            throw new Error('Invalid params');
+        }
+    } catch(err) {
+        callback(err);
+    }
+};
+```
+
+Now, unless there's an error caused by invalid parameters, the function will reverse the word order of its `event.message` parameter and callback the result.
+
+In `LambdaInvokeTrigger`, we need to change the parameters we pass into `lambda.invoke()` so the `InvocationType` is `'RequestResponse'`. This signifies that when we call `lambda.invoke()`, it is expecting some sort of return from the invoked function.
+
+```javascript
+    const params = {
+            FunctionName: 'LambdaInvokeEvent',
+            InvocationType: 'RequestResponse',
+    	    Payload: Buffer.from(JSON.stringify({message: 'Hello World'}))
+    };
+```
+
+`lambda.invoke()` should now be returning whatever is called back from `LambdaInvokeEvent`. Let's see what it looks like when we log that response.
+
+```javascript
+lambda.invoke(params).promise().then(function(response) {
+        console.log(response);
+    }).catch(function(err) {
+        callback(err, null);
+    });
+```
+
+![alt text](images/3.png)
+
+We are logging an object containing a `Payload` property, the value of which is the reversed string we are expecting. Now all we need to do is parse this value and call it back in our `then()` block.
+
+```javascript
+callback(null, JSON.parse(response.Payload));
+```
+
+Here's `LambdaInvokeTrigger` with our final changes:
+
+```javascript
+const AWS = require('aws-sdk');
+
+exports.handler = function(event, context, callback) {
+    const lambda = new AWS.Lambda();
+    const params = {
+            FunctionName: 'LambdaInvokeEvent',
+            InvocationType: 'RequestResponse',
+    	    Payload: Buffer.from(JSON.stringify({message: 'Hello World'}))
+    };
+    lambda.invoke(params).promise().then(function(response) {
+        callback(null, JSON.parse(response.Payload));
+    }).catch(function(err) {
+        callback(err, null);
+    });
+};
+```
+
+And here is the result when we run it:
+
+![alt text](images/4.png)
