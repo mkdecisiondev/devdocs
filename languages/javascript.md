@@ -18,3 +18,4 @@
 * [MDN JavaScript Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference)
 * [MDN Browser and DOM Reference](https://developer.mozilla.org/en-US/docs/Web/API)
 * [Promises](javascript-promises/javascript-promises.md)
+* [JSON Schema](https://spacetelescope.github.io/understanding-json-schema/)
