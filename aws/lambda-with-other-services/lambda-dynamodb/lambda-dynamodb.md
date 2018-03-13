@@ -304,7 +304,7 @@ It's time to create a new Lambda function to handle this task. If we need to cre
             "Effect": "Allow",
             "Action": [
                 "dynamodb:UpdateItem",
-				"dynamodb:GetItem"
+		"dynamodb:GetItem"
             ],
             "Resource":[
 	    	"Table’s ARN goes here"
@@ -320,7 +320,7 @@ We're going to create a Lambda function that uses event parameters of an id and 
 const AWS = require('aws-sdk');
 
 exports.handler = function(event, context, callback) {
-    const DocumentClient = new AWS.DynamoDB.DocumentClient({
+	const DocumentClient = new AWS.DynamoDB.DocumentClient({
 		region: 'us-west-2'
 	});
 };
@@ -352,7 +352,7 @@ const updateEntryPromise = function(tableEntry, tableInfo) {
 
 At the end of this function we'll return a Promise of the `DocumentClient.update()` function. The parameters of `DocumentClient.update()` must be an object in the particular format specified in the AWS SDK [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#update-property). The object should look something like this:
 
-```json
+```javascript
 {
 	TableName: /table name/,
 	Key: {
@@ -416,14 +416,14 @@ exports.handler = function(event, context, callback) {
 	const DocumentClient = new AWS.DynamoDB.DocumentClient({
 		region: 'us-west-2'
 	});
-    const tableParams = {
-        TableName: 'movies',
-        Key: {
-            id: event.id
-        }
-    };
-    const getEntryPromise = DocumentClient.get(tableParams).promise();
-    const updateEntryPromise = function(tableInfo) {
+	const tableParams = {
+        	TableName: 'movies',
+		Key: {
+			id: event.id
+		}
+	};
+	const getEntryPromise = DocumentClient.get(tableParams).promise();
+	const updateEntryPromise = function(tableInfo) {
 		const item = {
 			TableName: tableInfo.TableName,
 			Key: {
