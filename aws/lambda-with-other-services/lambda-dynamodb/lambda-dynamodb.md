@@ -326,7 +326,7 @@ exports.handler = function(event, context, callback) {
 };
 ```
 
-Now inside our handler, we're going to create an object containing the info the `DocumentClient.get()` function needs to get the right entry from the right table.
+Now inside our handler, we're going to create an object containing the info the `DocumentClient.get()` function needs to get the right entry from the right table. Along with the table's name, these params must include a `Key` property with one of the table's keys.
 
 ```javascript
 const tableParams = {
@@ -457,10 +457,8 @@ Let's run the function. Here are the params we'll pass in as an event object for
 }
 ```
 
-Here come the test results.
-
 ![alt text](images/5.png)
 
-We're getting no errors, so let's check the table.
+We're getting no errors when we run the test, so let's check the table.
 
 ![alt text](images/6.png)
