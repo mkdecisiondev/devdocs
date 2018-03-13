@@ -2,7 +2,7 @@
 
 Note: Read about [Promises](languages/javascript-promises/javascript-promises.md) if you haven't already before reading this.
 
-In this tutorial we will demonstrate how to use an AWS Lambda function to transfer a file from one S3 bucket to another.
+In this tutorial we will demonstrate how to use an AWS Lambda function to write to a DynamoDB table.
 
 ## The Table
 
@@ -96,7 +96,7 @@ docClient.put(params, function(error, data){
 });
 ```
 
-This is the way that the [AWS documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#putItem-property) on DynamoDB shows how to use this method. However, it is generally preferable to use promise chaining rather than passing a function as a parameter as it results in cleaner, more readable code.
+This is the way that the [AWS documentation](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#putItem-property) on DynamoDB shows how to use this method. However, it is generally preferable to use Promise chaining rather than passing a function as a parameter as it results in cleaner, more readable code.
 
 ```javascript
 	const docClientPromise = docClient.put(params).promise();
@@ -198,7 +198,7 @@ Below the comiled schema we will add another constant called `valid` which runs 
 const valid = validate(event);
 ```
 
-Lastly we will modify the conditional statement at the end of the handler function, which writes the data to our table. This will now log any errors if the input is not valid, and only write to the table if it is valid. Since we are changing this block of code anyway, we will also take this opportunity to change our implementation of docClient.put() to utilize promise chaining.
+Lastly we will modify the conditional statement at the end of the handler function, which writes the data to our table. This will now log any errors if the input is not valid, and only write to the table if it is valid. Since we are changing this block of code anyway, we will also take this opportunity to change our implementation of docClient.put() to utilize Promise chaining.
 
 ```javascript
 	if (!valid) {
@@ -283,3 +283,182 @@ However, if we run a test with valid input…
 And when we check our table, we see that the function has successfully written the new event to our table, meaning the schema is working as intended.
 
 ![alt text](images/18.png)
+
+## Updating an Existing Table Entry
+
+To update an existing table entry in DynamoDB, we will be using the `documentClient.update()` function. This is generally similar to the `documentClient.put()` function we used above, but requires a different set of params. [here](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#update-property) is the documentation on `update()`.
+
+Here's a new entry we've added to our movies table:
+
+![alt text](images/3.png)
+
+Let's say we are not happy with this entry and want to change its name because this is clearly not the movie we intended to give a score of 10.
+
+It's time to create a new Lambda function to handle this task. If we need to create a role for this new function, our IAM policy permission statement will look very similar to the last one, except for the actions we will allow. Since we need the function to be able to get an entry from a table and then update it, the actions available must include `"dynamodb:GetItem"` and `"dynamodb:UpdateItem"`.
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:UpdateItem",
+		"dynamodb:GetItem"
+            ],
+            "Resource":[
+	    	"Table’s ARN goes here"
+            ]
+        }
+    ]
+}
+```
+
+We're going to create a Lambda function that uses event parameters of an id and a movie name. The `event.id` is used to get the table entry we're changing, and `event.name` will be what we want to change the entry's name to. We'll again start our Lambda function by requiring the AWS SDK and creating a DynamoDB DocumentClient instance with the table's region.
+
+```javascript
+const AWS = require('aws-sdk');
+
+exports.handler = function(event, context, callback) {
+	const DocumentClient = new AWS.DynamoDB.DocumentClient({
+		region: 'us-west-2'
+	});
+};
+```
+
+Now inside our handler, we're going to create an object containing the info the `DocumentClient.get()` function needs to get the right entry from the right table. Along with the table's name, these params must include a `Key` property with one of the table's keys.
+
+```javascript
+const tableParams = {
+    TableName: 'movies',
+    Key: {
+        id: event.id
+    }
+ };
+```
+
+We'll be building a Promise chain to first get the table entry by its id, then update the table entry once the first Promise resolves. The first step in this plan is to make a Promise out of the DocumentClient's `get()` function with our `tableParams` object.
+
+```javascript
+const getEntryPromise = DocumentClient.get(tableParams).promise();
+```
+
+Next we create the function that updates the table entry.
+
+```javascript
+const updateEntryPromise = function(tableEntry, tableInfo) {
+}
+```
+
+At the end of this function we'll return a Promise of the `DocumentClient.update()` function. The parameters of `DocumentClient.update()` must be an object in the particular format specified in the AWS SDK [docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#update-property). The object should look something like this:
+
+```javascript
+{
+	TableName: /table name/,
+	Key: {
+		id: /entry id/
+	},
+	AttributeUpdates: {
+		/name of property being changed/: {
+			Action: /must be one of these: "ADD", "PUT", "DELETE"/,
+			Value: /updated value/
+		}
+	}
+};
+```
+
+Let's construct such an object in our `updateEntryPromise()` function and pass it into the `DocumentClient.update()` Promise that we return.
+
+```javascript
+const updateEntryPromise = function(tableInfo) {
+	const item = {
+		TableName: tableInfo.TableName,
+		Key: {
+			id: event.id
+		},
+		AttributeUpdates: {
+			name: {
+				Action: 'PUT',
+				Value: event.name
+			}
+		}
+	};
+	return DocumentClient.update(item).promise();
+};
+```
+
+Now we're ready to build our promise chain. First we get the table entry with `getEntryPromise`, then we return our function that returns the `DocumentClient.update()` promise.
+
+```javascript
+getEntryPromise.then(function() {
+	return updateEntryPromise(tableParams);
+})
+```
+Note that our `then()` block has no parameters. This is because in this example we're not actually getting any new info out of `getEntryPromise()` to pass into `updateEntryPromise()`. However, the first Promise is still necessary as we have to get the table entry before we can update it.
+
+We finish the promise chain by calling back a string to notify us everything has resolved, or an error if there are any in a `.catch()` block.
+
+```javascript
+getEntryPromise.then(function() {
+	updateEntryPromise(tableParams);
+	callback(null, 'Finished');
+}).catch(function(err){
+	callback(err, null);
+});
+```
+
+Here is the completed Lambda function in its entirety:
+
+```javascript
+const AWS = require('aws-sdk');
+
+exports.handler = function(event, context, callback) {
+	const DocumentClient = new AWS.DynamoDB.DocumentClient({
+		region: 'us-west-2'
+	});
+	const tableParams = {
+        	TableName: 'movies',
+		Key: {
+			id: event.id
+		}
+	};
+	const getEntryPromise = DocumentClient.get(tableParams).promise();
+	const updateEntryPromise = function(tableInfo) {
+		const item = {
+			TableName: tableInfo.TableName,
+			Key: {
+				id: event.id
+			},
+			AttributeUpdates: {
+				name: {
+					Action: 'PUT',
+					Value: event.name
+				}
+			}
+		};
+		return DocumentClient.update(item).promise();
+	};
+
+	getEntryPromise.then(function() {
+	    updateEntryPromise(tableParams);
+	    callback(null, 'Finished');
+	}).catch(function(err){
+	    callback(err, null);
+	});
+};
+```
+
+Let's run the function. Here are the params we'll pass in as an event object for our test:
+
+```json
+{
+  "id": "1",
+  "name": "The Postman"
+}
+```
+
+![alt text](images/5.png)
+
+We're getting no errors when we run the test, so let's check the table.
+
+![alt text](images/6.png)
