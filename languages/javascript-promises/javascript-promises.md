@@ -2,7 +2,7 @@
 
 ## General Explanation
 
-“Sometimes people don't understand the promises they're making when they make them." --John Green, _The Fault in Our Stars_
+"Sometimes people don't understand the promises they're making when they make them." --John Green, _The Fault in Our Stars_
 
 Promises are constructs which were introduced to reduce the complexity of asynchronous JavaScript code. They can be a little difficult for a novice coder to understand and utilize effectively. This chapter is meant to clarify what Promises are and how you should use them.
 
