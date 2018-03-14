@@ -11,3 +11,8 @@ Look at the design of a UI and pick out similar elements. Rather than creating v
 border, font, colors, etc, create groups of similar elements. Ask yourself: if the user changes this property for this
 element, are they likely to make the same change for other elements (to maintain consistent visuals)? If the answer is
 yes, then group all of those elements and use the same variable.
+
+## Understanding `margin` and `padding`
+
+* [When to use margins and padding](https://cssnewbie.com/margins-and-padding-use/)
+* [Prefer padding](http://www.cssmojo.com/padding_versus_margin/)
