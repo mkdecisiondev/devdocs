@@ -34,11 +34,11 @@ The first way is more simple, but cannot include attachments in the email, so MI
 
 ```javascript
 const aws = require('aws-sdk');
-const ses = new aws.SES({
-   region: 'us-west-2'
-});
 
 exports.handler = function(event, context) {
+    const ses = new aws.SES({
+        region: 'us-west-2'
+    });
     console.log("Incoming: ", event);
 
     let params = {
