@@ -16,7 +16,7 @@ If you need to learn HTML from scratch, refer to these resources:
 1. If you have a *very compelling* reason to do it:
 	1. Compose the HTML in your editor, pay attention to linting messages and ensure it's valid HTML
 		* Invalid HTML can break the build process in confusing ways
-	1. Paste your HTML in [Code Beautify](https://codebeautify.org/htmlviewer/) and click the "Minify" button
+	1. Paste your HTML in [Code Beautify](https://codebeautify.org/htmlviewer/) or [HTML Minifier](https://kangax.github.io/html-minifier/) and click the "Minify" button
 	1. Copy/paste the result into your JavaScript string
 	1. [Validate](https://validator.w3.org/) the final built page
 1. If you are updating HTML, you can paste it in [Code Beautify](https://codebeautify.org/htmlviewer/) and click the "Beautify" button, copy/paste the results to your editor, make changes, then bring it back and minify it
