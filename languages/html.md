@@ -20,3 +20,7 @@ If you need to learn HTML from scratch, refer to these resources:
 	1. Copy/paste the result into your JavaScript string
 	1. [Validate](https://validator.w3.org/) the final built page
 1. If you are updating HTML, you can paste it in [Code Beautify](https://codebeautify.org/htmlviewer/) and click the "Beautify" button, copy/paste the results to your editor, make changes, then bring it back and minify it
+
+### Favicons
+
+* [favicons](https://mobiforge.com/design-development/adding-favicons-in-a-multi-browser-multi-platform-world)
