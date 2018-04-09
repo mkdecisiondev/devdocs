@@ -19,3 +19,65 @@ Data formatting should always be clearly communicated to the user - this means t
 1. Disruption: formatting should not disrupt input. Inserting information ahead of where a user is typing is disruptive. Inserting information behind where a user is typing can also be
 disruptive and should be done with care. Formatting is ideally done after a field loses focus; with care it can sometimes be done as a user types.
 1. Communication: the desired format should be clearly displayed. Other formats in common use should be accepted while typing, but formatted to the desired format.
+
+## Applying these guidelines to some common field types
+
+### Date
+
+Date and time values should use rich widgets that assist in selecting a value (`input type=[date|datetime-local|month|time|week]`). On platforms that don't support these (Internet Explorer), a 3rd-party widget should be used if possible. If not, then a text input with appropriate formatting and validation can be used.
+
+#### Formatting
+
+The date format should conform to the user's locale.
+
+* US: MM-DD-YYYY
+* The sane world: YYYY-MM-DD
+
+The field should be somewhat flexible in the input it accepts: numbers, dashes, and forward slash.
+
+* 10/10/2010
+* 10-10-2010
+
+Behavior:
+
+* If only numbers are entered, add dashes in real-time BEHIND the user's typing
+* If slashes are entered, replace with dashes BEHIND the user's typing
+
+#### Validation
+
+Minimum and maximum constraints (`min/max` attributes) should be supported. If validation fails the reason for failure should clearly be communicated for each case:
+
+* The date is required but no value was entered
+* The entered value is not a valid date
+* The entered value is below the minimum acceptable value
+* The entered value is above the maximum acceptable value
+
+### Phone number
+
+*NOTE:* This section currently only describes US phone numbers.
+
+#### Formatting
+
+XXX-XXX-XXXX
+
+The field should accept input of: numbers, dashes, periods, parentheses, and spaces.
+
+* 555-434-6000
+* 555.434.6000
+* (555) 434-6000
+
+Behavior:
+
+* If only numbers are entered, add dashes in real-time BEHIND the user's typing
+* If periods are entered (in lieu of dashes), replace with dashes in real-time BEHIND the user's typing
+* If parentheses or spaces are entered, delete AFTER typing is complete (and insert dashes where appropriate)
+
+### Social Security Number
+
+#### Formatting
+
+XXX-XX-XXXX
+
+The field should accept input of: numbers and dashes
+
+* If only numbers are entered, add dashes in real-time BEHIND the user's typing
