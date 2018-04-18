@@ -17,6 +17,7 @@
 	1. [Using SES and Lambda to Send Emails](aws/lambda-with-other-services/ses-lambda/ses-lambda.md)
 	1. [Using SNS and Lambda to Send a Random 6 Digit Number Via Text Message](aws/lambda-with-other-services/send-sms-code-with-sns/send-sms-code-with-sns.md)
 	1. [Using SNS to Send an Email Alert of Lambda Error](aws/lambda-with-other-services/sns-error-alert/sns-error-alert.md)
+	1. [Using an SNS Topic to Trigger a Lambda Function on SES Email Bounce](aws/lambda-with-other-services/lambda-ses-bounce/lambda-ses-bounce.md)
 1. Advanced Topics
 	1. [Mock Testing the AWS SDK](aws/advanced-topics/aws-sdk-mock/aws-sdk-mock.md)
 	1. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
