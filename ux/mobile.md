@@ -15,3 +15,7 @@
 ### Tooltips
 
 The small screens and touch interface of mobile devices tend to provide a poor experience for tooltips. A dialog should be used instead, with increased size and a large, clear "Close" button.
+
+### Forms
+
+* [`autocapitalize`](https://developers.google.com/web/updates/2015/04/autocapitalize)
