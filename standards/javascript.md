@@ -14,8 +14,7 @@ some differences in our ESLint configuration, in that case those take precedence
 1. Module names should be camel cased
 1. Modules that primarily export a class should have the same name as the class (which should be CamelCase)
 1. Modules that do not export a class should have a descriptive name starting with lower case (camelCase)
-1. Modules should use named exports instead of default exports, e.g.:
-	1. [further reading](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad)
+1. Modules should use named exports instead of default exports ([further reading](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad)), e.g.:
 
 ```javascript
 class MyClass {}
