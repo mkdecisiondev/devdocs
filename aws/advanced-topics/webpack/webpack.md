@@ -24,4 +24,8 @@ var greet = function greet(name) {
 };
 ```
 
-All of the newer features we initially used, such as const and arrow functions, have been replaced with the pre-ES6 conventions. Babel has translated our newer-style code into JavaScript that can be run even in environments and browsers that don't support ES6.
+All of the newer features we initially used, such as const and arrow functions, have been replaced with the pre-ES6 conventions. Babel has translated our newer-style code into JavaScript that can be run even in environments and browsers that don't support ES6. Not only is this useful for client-side JavaScript, it also can be used for AWS Lambda, as at any given time AWS may not support the most up-to-date version of JavaScript.
+
+## Webpack
+
+Webpack is a module builder that can be used to bundle a project. It will create a build directory, that, in the case of Lambda functions, will bundle every handler function and all its dependencies into a single file. This file can then be deployed to Lambda. When used alongside Babel, Webpack will also transpile the function and the module it builds will be compatiple with environments that are not compatible with ES6.
