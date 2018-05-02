@@ -6,7 +6,7 @@ When using AWS, it is useful to write functions and designate resources in a loc
 
 Node.js has had improvements, features, and flavors added over the years, such as with ES6, the version of JavaScript released in 2015. It can also be customized to have additional features via the addition of libraries, such as TypeScript, which we will use in this tutorial.
 
-Depending on where code is run (such as in a browser), its environment may not understand the newer features provided by ES6 or libraries such as TypeScript. This will cause the code to fail to execute properly.
+Depending on where Javascript is run (such as in a browser), its environment may not understand the newer features provided by ES6 or libraries such as TypeScript. This will cause the code to fail to execute properly.
 
 This problem can be solved via the use of transpilers, such as Babel.js. This allows code using newer features and/or external libraries to be translated into language that its environment can handle. Let's look at an example, using Babel's [web console](https://babeljs.io/repl/):
 
