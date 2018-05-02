@@ -36,16 +36,49 @@ We'll start by initializing a repository using pnpm, the package manager of choi
 
 Create a project directory, and in it, using the command line run `$ pnpm init `. Follow the prompts (you can use the default values for all of the setup questions if desired). You will now have a package.json file.
 
-Let's install some dependencies. Our example repository will use [TypeScript](https://www.typescriptlang.org/), as this adds useful features to JavaScript and is especially helpful for keeping track of complicated data structures. TypeScript is not required for using any of the other tools covered in this guide, but if you intend to use TypeScript on a project, it is a good idea to set it up early. To install TypeScript, use the command `pnpm install typescript --save` (you can also use `i` as an abbreviation for `install`).
+In the project directory, add a folder called `services`. This will be where we write our handler functions. In that folder also create a subfolder called `lib`, where we will write helper functions that are used by the handlers. These will be bundled together with the handlers that import them when Webpack runs.
 
-The other dependency that is required for production is Source Map Support. This is important for Webpack, and setting it up will be a necessary configuration step. Install it with `pnpm i source-map-support --save`.
+Let's install some dependencies. Our example repository will use [TypeScript](https://www.typescriptlang.org/), as this adds useful features to JavaScript and is especially helpful for keeping track of complicated data structures. TypeScript is not required for using any of the other tools covered in this guide, but if you intend to use TypeScript on a project, it is a good idea to set it up early. To install TypeScript, use the command `$ pnpm install typescript --save` (you can also use `i` as an abbreviation for `install`). If you are not planning to use Typescript, use `.js` as a file extension any time this guide uses `.ts`.
+
+The other dependency that is required for production is Source Map Support. This is important for Webpack, and setting it up will be a necessary configuration step. Install it with `$ pnpm i source-map-support --save`.
 
 All other dependencies we install, including all of the ones we need for Webpack and Babel, are dev dependencies. None of these tools will actually be used when the code is in production, but many of them are important to get it to production status.
 
-We must install a number of types so that Typescript recognizes some of the tools we will use and does not throw errors when we are writing our code or running webpack to create our build. One command will install most of the ones that should be necessary: `pnpm i @types/body-parser @types/cors @types/dotenv @types/es6-promisify @types/node --save-dev`. If you are planning to write tests using Jest, you should also install `@types/jest` in the same way.
+We must install a number of types so that Typescript recognizes some of the tools we will use and does not throw errors when we are writing our code or running webpack to create our build. One command will install most of the ones that should be necessary: `$ pnpm i @types/body-parser @types/cors @types/dotenv @types/es6-promisify @types/node --save-dev`. If you are planning to write tests using Jest, you should also install `@types/jest` in the same way.
 
-Next we'll install Webpack and its command line interface so we can write scripts using it: `pnpm i webpack webpack-cli --save-dev`.
+Next we'll install Webpack and its command line interface so we can write scripts using it: `$ pnpm i webpack webpack-cli --save-dev`.
 
-ts-loader allows TypeScript to interact properly with Webpack: `pnpm i ts-loader --save-dev`.
+ts-loader allows TypeScript to interact properly with Webpack: `$ pnpm i ts-loader --save-dev`.
 
-Finally let's install all the dev dependencies we'll need for Babel: `pnpm i babel-core babel-loader babel-plugin-transform-async-to-generator babel-plugin-transform-es2015-modules-commonjs babel-preset-env --save-dev`.
+Finally let's install all the dev dependencies we'll need for Babel: `$ pnpm i babel-core babel-loader babel-plugin-transform-async-to-generator babel-plugin-transform-es2015-modules-commonjs babel-preset-env --save-dev`.
+
+## Setting Up Babel and Webpack
+
+In the main project directory, create a file called `.babelrc`. This is where we configure the settings for Babel. Here is what we'll have in that file:
+
+```json
+{
+	"presets": [
+		[
+			"env",
+			{
+				"targets": {
+					"node": 8
+				}
+			}
+		]
+	],
+	"plugins": [
+		"transform-async-to-generator"
+	]
+}
+```
+
+There are a couple of important things to note: the `"node": 8` line indicates that we'll be transpiling our JavaScript into Node version 8. As of May 2018, this is the latest version of Node that Lambda supports.
+
+The `transform-async-to-generator` plugin that we installed earlier is being used here. Async functions are an extremely convenient, but very recently added, tool to write asynchronous code. This plugin ensures that any instances of async functions will be transpiled into an older syntax.
+
+We also need to add a configuration file for the source-map-support dependency. in `/services/lib/`, add a file called sourceMapSupports.ts. This file only needs one line:
+```javascript
+require('source-map-support').install();
+```
