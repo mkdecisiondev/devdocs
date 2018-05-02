@@ -145,7 +145,7 @@ The important part of this code to look at is the entryPoints object near the to
 
 ## Scripts
 
-Earlier we installed the Webpack CLI to this project. This allows us to create our build from the command line. Let's create some scripts to streamline this process.
+Earlier we installed the Webpack CLI to this project. This allows us to create our build from the command line. Let's create some scripts in our `package.json` to streamline this process.
 
 ```json
 "scripts": {
