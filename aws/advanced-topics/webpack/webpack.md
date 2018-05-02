@@ -1,6 +1,6 @@
 # Setting Up Webpack in a Repository
 
-When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Babel and Webpack.
+When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Babel and Webpack. This tutorial will cover just the steps to set up Webpack. Setting up CloudFormation to actually deploy to Lambda will be the subject of a future guide.
 
 ## Babel
 
@@ -141,7 +141,7 @@ module.exports = {
 	},
 };
 ```
-The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points so Webpack knows to bundle it.
+The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points so it is bundled when we run Webpack.
 
 ## Scripts
 
@@ -154,15 +154,83 @@ Earlier we installed the Webpack CLI to this project. This allows us to create o
   },
 ```
 
-The first script creates a build of the site and prints any errors to the console. The second one is just a shortcut for the first one. This way, we can type nothing more than `$ pnpm run build` into the terminal, and it will bundle the handlers and display any errors.
+The first script creates a build of the site and prints any errors to the console. The second one is just a shortcut for the first one. This way, we can type nothing more than `$ pnpm run build` into the terminal, and Webpack will bundle the handlers and display any errors.
 
 ## Handler
 
 It's finally time to write a handler function. In `/services/`, create a file called `contact.ts`. We'll keep it very simple for the time being:
 
 ```javascript
+import * as AWS from 'aws-sdk';
+
 export default async function handler(event: any, context: any, callback: any) {
-	console.log('hello there!');
+	callback(null, 'hello there');
 };
 ```
-For those unfamiliar with TypeScript: the use of `any` to describe each of the handler's arguments is telling TypeScript that these parameters may be of any type. Of course, the point of TypeScript is that these descriptors should be made more specific as the function is fleshed out more. For instance, if you're expecting the `event` parameter to be an object, this can be specified. This can make it easier to find errors in larger projects, as trying to assign the wrong type to something will immediately be rejected.
+As always with any Lambda handler we must import the AWS SDK (or just any parts we are planning to use) at the top of the file. For those unfamiliar with TypeScript, the use of `any` to describe each of the handler's arguments is declaring that these parameters may be of any type. Of course, the point of TypeScript is that these descriptors should be made more specific as the function is fleshed out more. For instance, if you're expecting the `event` parameter to be an object, this can be specified. This can make it easier to find errors in larger projects, as trying to assign the wrong type to something will immediately be rejected.
+
+As a reminder, a Lambda callback function returns its first parameter as an error, and the second parameter as a non-error.
+
+We have now set up all the tools we need for Webpack to create a bundle of this funciton, so let's run our script and try it: in the terminal run the script created earlier: `$ pnpm run build`.
+
+If there are any errors, they will be displayed in the terminal. When using TypeScript in conjunction with Webpack, one possible source of errors is if one of the dev dependencies is missing, particularly one of the ones involving types.
+
+However, if everything goes well there should be no errors, and we can see that our directory now has a `build` folder with a `contact.js` file in it: this is what Webpack has built, and what we will eventually get deployed to Lambda once we have CloudFormation scripts set up to deploy from the command line.
+
+## A Quick and Easy Way to Run Handlers Locally
+
+For projects involving the use of external API's such as the AWS SDK, the best practice is to test functions locally by mocking the API. While this is very advisable for projects of any size, it does require a bit of setup. It may be useful to have an easier way to run these functions locally before deploying to AWS, even in the absence of testing suites and mocks of AWS services.
+
+Let's create a file called `index.js`. Here is the code we'll write there:
+
+```javascript
+const contact = require('./build/contact.js').default;
+
+contact({}, {}, function(err, data) {
+	if (err) console.log(err)
+	else console.log(data)
+ })
+```
+This is a very simple setup: it imports the build file we've created by running the Webpack script. It then runs the handler function in that file that was built from the one we wrote in `contact.ts`, and logs the result to the console.
+
+We can then run this file directly from the command line with `$ node index.js`. The handler's output should be logged directly to the terminal:
+
+```
+hello world
+```
+
+Many handler functions use parameters passed in from the triggering event. Let's change our handler to show an example of this so we can test it:
+
+```javascript
+import * as AWS from 'aws-sdk';
+
+export default async function handler(event: any, context: any, callback: any) {
+	try {
+		const name = event.name
+		callback(null, 'hello ' + name);
+	} catch (err) {
+		callback(err, null);
+	}
+};
+```
+
+Now we can alter `index.js` to pass in an event object of our choosing:
+
+```javascript
+const contact = require('./build/contact.js').default;
+
+const event = {
+	name: 'Joe',
+}
+
+contact(event, {}, function(err, data) {
+	if (err) console.log(err)
+	else console.log(data)
+ })
+```
+
+Once we create the build and run `$ node index.js` again we can see the result:
+
+```
+hello Joe
+```
