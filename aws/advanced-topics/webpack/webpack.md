@@ -1,10 +1,17 @@
 # Setting Up Webpack in a Repository
 
-When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Babel and Webpack. This tutorial will cover just the steps to set up Webpack. Setting up CloudFormation to actually deploy to Lambda will be the subject of a future guide.
+When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Webpack with a Babel loader. This tutorial will cover the steps to do that. Setting up CloudFormation to actually deploy to Lambda will be the subject of a future guide.
 
 ## Babel
 
-JavaScript has had improvements and new features added over the years, such as with ES6, the version of JavaScript released in 2015. However, depending on where the code is run (such as in a browser), its environment may not understand these newer features, and the code will not run properly. This problem can be solved via the use of transpilers, such as Babel.js. This allows the newer code to be translated into language that its environment can handle. Let's look at an example, using Babel's [web console](https://babeljs.io/repl/):
+Node.js has had improvements, features, and flavors added over the years, such as with ES6, the version of JavaScript released in 2015.
+
+Furthermore, JavaScript can be further customized to have additional features via the addition of libraries. For instance, this guide will be making use of TypeScript.
+
+Depending on where code is run (such as in a browser), its environment may not understand the newer features provided by ES6 or libraries such as TypeScript. This will cause the code to fail to execute properly.
+
+This problem can be solved via the use of transpilers, such as Babel.js. This allows code using newer features and/or external libraries to be translated into language that its environment can handle. Let's look at an example, using Babel's [web console](https://babeljs.io/repl/):
+
 
 We will write a very simple function, but use ES6 syntax:
 
@@ -14,7 +21,9 @@ const greet = (name) => {
 }
 ```
 
-If we put this into Babel, here's what we get:
+If we put this into the Babel web console, here's what we get:
+
+![alt text](images/1.png)
 
 ```javascript
 'use strict';
@@ -24,11 +33,11 @@ var greet = function greet(name) {
 };
 ```
 
-All of the newer features we initially used, such as const and arrow functions, have been replaced with the pre-ES6 conventions. Babel has translated our newer-style code into JavaScript that can be run even in environments and browsers that don't support ES6. Not only is this useful for client-side JavaScript, it also can be used for AWS Lambda, as at any given time AWS may not support the most up-to-date version of JavaScript.
+All of the newer features we initially used, such as const and arrow functions, have been replaced with the pre-ES6 conventions. Babel has translated our newer-style code into JavaScript that can be run even in environments and browsers that don't support ES6. Not only is this useful for client-side JavaScript, it also can be used for AWS Lambda, as at any given time AWS Lambda may not support the most up-to-date version of Node.js.
 
 ## Webpack
 
-Webpack is a module builder that can be used to bundle a project. It will create a build directory, that, in the case of Lambda functions, will bundle every handler function and all its dependencies into a single file. This file can then be deployed to Lambda. When used alongside Babel, Webpack will also transpile the function and the module it builds will be compatiple with environments that are not compatible with ES6.
+Webpack is a module builder that can be used to bundle a project. It will bundle every handler function and all its sources into a single file. We will configure it to create a build directory containing the bundled version of each handler. These built handler files can then be deployed to Lambda. When used alongside Babel, Webpack will also transpile the function and the module it builds will be compatible with environments that are not compatible with ES6 and/or TypeScript.
 
 ## Setting Up Repository and Adding Dependencies
 
@@ -154,7 +163,7 @@ Earlier we installed the Webpack CLI to this project. This allows us to create o
   },
 ```
 
-The first script creates a build of the site and prints any errors to the console. The second one is just a shortcut for the first one. This way, we can type nothing more than `$ pnpm run build` into the terminal, and Webpack will bundle the handlers and display any errors.
+The first script creates a build of the site and prints any errors to the console. For now, the second one is just a shortcut for the first one. We can type nothing more than `$ pnpm run build` into the terminal, and Webpack will bundle the handlers and display any errors. An additional reason we've created a second script for this purpose as once we start using CloudFormation, it may be useful to add scripts to execute other build commands (for example, build:template might relate to creating a CloudFormation template).
 
 ## Handler
 
@@ -163,11 +172,25 @@ It's finally time to write a handler function. In `/services/`, create a file ca
 ```javascript
 import * as AWS from 'aws-sdk';
 
-export default async function handler(event: any, context: any, callback: any) {
-	callback(null, 'hello there');
+export default async function handler(event, context, callback) {
+	callback(null, 'hello world');
 };
 ```
-As always with any Lambda handler we must import the AWS SDK (or just any parts we are planning to use) above the handler function. For those unfamiliar with TypeScript, the use of `any` to describe each of the handler's arguments is declaring that these parameters may be of any type. Of course, the point of TypeScript is that these descriptors should be made more specific as the function is fleshed out more. For instance, if you're expecting the `event` parameter to be an object, this can be specified. This can make it easier to find errors in larger projects, as trying to assign the wrong type to something will immediately be rejected.
+
+This is how one might write such a handler using vanilla Node.js with ES6 syntax. As always with any Lambda handler we must import the AWS SDK (or just any parts we are planning to use) above the handler function. Let's add some TypeScript features and syntax:
+
+```javascript
+import * as AWS from 'aws-sdk';
+
+let handler: any;
+handler = async function handler(event: any, context: any, callback: any) {
+    callback(null, 'hello world');
+}
+
+export { handler };
+```
+
+ For those unfamiliar with TypeScript, the use of `any` to describe each of the handler's arguments is declaring that these parameters may be of any type. Of course, the point of TypeScript is that these descriptors should be made more specific as the function is fleshed out more. For instance, if you're expecting the `event` parameter to be an object, this can be specified. This can make it easier to find errors in larger projects.
 
 As a reminder, a Lambda callback function returns its first parameter as an error, and the second parameter as a non-error.
 
@@ -184,7 +207,7 @@ For projects involving the use of external API's such as the AWS SDK, the best p
 Let's create a file called `index.js`. Here is the code we'll write there:
 
 ```javascript
-const contact = require('./build/contact.js').default;
+const contact = require('./build/contact.js').handler;
 
 contact({}, {}, function(err, data) {
 	if (err) console.log(err)
@@ -229,7 +252,15 @@ contact(event, {}, function(err, data) {
  })
 ```
 
-Once we create the build and run `$ node index.js` again we can see the result:
+Once we run `$ node index.js` again we can see the result:
+
+```
+hello world
+```
+
+This is not what we expected. Why isn't the handler using the name we've set as the input?
+
+We've forgotten one crucial factor about how our index function works: it doesn't import our function from the code we've just written, but from the version that was built when we ran `$ pnpm run build`. In our case, that file is still the one built from the old version of the handler. That means every time we make a change to the handler, we have to run the command to build it again so `index.js` has access to the most up-to-date version. Here's what happens when we run `$ pnpm run build && node index.js` so Webpack creates a build and it is executed immediately:
 
 ```
 hello Joe
