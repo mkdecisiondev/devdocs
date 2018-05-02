@@ -32,13 +32,13 @@ Webpack is a module builder that can be used to bundle a project. It will create
 
 ## Setting Up Repository and Adding Dependencies
 
-We'll start by initializing a repository using pnpm, the package manager of choice for MK Decision. This guide will assume that pnpm is already installed globally.
+We'll start by initializing a repository using pnpm, the package manager of choice for MK Decision. This guide will assume that node and pnpm are already installed globally.
 
 Create a project directory, and in it, using the command line run `$ pnpm init `. Follow the prompts (you can use the default values for all of the setup questions if desired). You will now have a package.json file.
 
-In the project directory, add a folder called `services`. This will be where we write our handler functions. In that folder also create a subfolder called `lib`, where we will write helper functions that are used by the handlers. These will be bundled together with the handlers that import them when Webpack runs.
+In the project directory, add a folder called `services`. This will be where we write our handler functions. In that folder also create a subfolder called `lib`, where we can eventually write helper functions that are used by the handlers. These will be bundled together with the handlers that import them when Webpack runs.
 
-Let's install some dependencies. Our example repository will use [TypeScript](https://www.typescriptlang.org/), as this adds useful features to JavaScript and is especially helpful for keeping track of complicated data structures. TypeScript is not required for using any of the other tools covered in this guide, but if you intend to use TypeScript on a project, it is a good idea to set it up early. To install TypeScript, use the command `$ pnpm install typescript --save` (you can also use `i` as an abbreviation for `install`). If you are not planning to use Typescript, use `.js` as a file extension any time this guide uses `.ts`.
+Let's install some dependencies. Our example repository will use [TypeScript](https://www.typescriptlang.org/). This adds useful features to JavaScript. One of things it assists with is keeping track of complicated data structures, which makes it ideal for use on the backend. TypeScript is not required for using any of the other tools covered in this guide, but if you intend to use TypeScript on a project, it is a very good idea to set it up early. To install TypeScript, use the command `$ pnpm install typescript --save` (you can also use `i` as an abbreviation for `install`). If you are not planning to use Typescript, use `.js` as a file extension any time this guide uses `.ts`.
 
 The other dependency that is required for production is Source Map Support. This is important for Webpack, and setting it up will be a necessary configuration step. Install it with `$ pnpm i source-map-support --save`.
 
@@ -52,7 +52,7 @@ ts-loader allows TypeScript to interact properly with Webpack: `$ pnpm i ts-load
 
 Let's install all the dev dependencies we'll need for Babel: `$ pnpm i babel-core babel-loader babel-plugin-transform-async-to-generator babel-plugin-transform-es2015-modules-commonjs babel-preset-env --save-dev`.
 
-Finally, let's add the AWS SDK. We don't need this as a dependency in production, as any function uploaded to Lambda automatically has access to the entire SDK. However, since this is not the case in a dev environment, let's install it with `pnpm i aws-sdk` so we can use AWS functions when testing (though normally API's such as this should be mocked when testing).
+Finally, let's add the AWS SDK. We don't need this as a dependency in production, as any function uploaded to Lambda automatically has access to the entire SDK. However, since this is not the case in a dev environment, let's install it with `pnpm i aws-sdk --save-dev` so we can use AWS functions when testing (though normally API's such as this should be mocked when testing).
 
 ## Setting Up Babel and Webpack
 
@@ -76,9 +76,9 @@ In the main project directory, create a file called `.babelrc`. This is where we
 }
 ```
 
-There are a couple of important things to note: the `"node": 8` line indicates that we'll be transpiling our JavaScript into Node version 8. As of May 2018, this is the latest version of Node that Lambda supports.
+There are a couple of important things to note: the `"node": 8` line indicates that we'll be transpiling our JavaScript into Node version 8. As of May 2018, this is the latest version of Node.js that Lambda supports.
 
-The `transform-async-to-generator` plugin that we installed earlier is being used here. Async functions are an extremely convenient, but very recently added, tool to write asynchronous code. This plugin ensures that any instances of async functions will be transpiled into an older syntax.
+The `transform-async-to-generator` plugin that we installed earlier is being used here. Async functions are an extremely convenient, but very recently added, tool to write asynchronous JavaScript. This plugin ensures that any instances of async functions will be transpiled into an older syntax.
 
 We also need to add a configuration file for the source-map-support dependency. in `/services/lib/`, add a file called sourceMapSupports.ts. This file only needs one line:
 ```javascript
@@ -141,7 +141,7 @@ module.exports = {
 	},
 };
 ```
-The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points so it is bundled when we run Webpack.
+The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add to the project momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points in this way so it is bundled when we run Webpack.
 
 ## Scripts
 
@@ -167,7 +167,7 @@ export default async function handler(event: any, context: any, callback: any) {
 	callback(null, 'hello there');
 };
 ```
-As always with any Lambda handler we must import the AWS SDK (or just any parts we are planning to use) at the top of the file. For those unfamiliar with TypeScript, the use of `any` to describe each of the handler's arguments is declaring that these parameters may be of any type. Of course, the point of TypeScript is that these descriptors should be made more specific as the function is fleshed out more. For instance, if you're expecting the `event` parameter to be an object, this can be specified. This can make it easier to find errors in larger projects, as trying to assign the wrong type to something will immediately be rejected.
+As always with any Lambda handler we must import the AWS SDK (or just any parts we are planning to use) above the handler function. For those unfamiliar with TypeScript, the use of `any` to describe each of the handler's arguments is declaring that these parameters may be of any type. Of course, the point of TypeScript is that these descriptors should be made more specific as the function is fleshed out more. For instance, if you're expecting the `event` parameter to be an object, this can be specified. This can make it easier to find errors in larger projects, as trying to assign the wrong type to something will immediately be rejected.
 
 As a reminder, a Lambda callback function returns its first parameter as an error, and the second parameter as a non-error.
 
@@ -206,7 +206,7 @@ import * as AWS from 'aws-sdk';
 
 export default async function handler(event: any, context: any, callback: any) {
 	try {
-		const name = event.name
+		const name: string = event.name
 		callback(null, 'hello ' + name);
 	} catch (err) {
 		callback(err, null);
@@ -234,3 +234,5 @@ Once we create the build and run `$ node index.js` again we can see the result:
 ```
 hello Joe
 ```
+
+Now that we see that our build is working correctly, we are ready to set up CloudFormation and deploy our code to AWS. As mentioned before, the steps to do this will be covered in a future guide.
