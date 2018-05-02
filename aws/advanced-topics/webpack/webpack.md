@@ -1,12 +1,10 @@
 # Setting Up Webpack in a Repository
 
-When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Webpack with a Babel loader. This tutorial will cover the steps to do that. Setting up CloudFormation to actually deploy to Lambda will be the subject of a future guide.
+When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Webpack with a Babel loader. This tutorial will cover the steps to do that. Setting up CloudFormation to actually deploy to Lambda will be the subject of a future tutorial.
 
 ## Babel
 
-Node.js has had improvements, features, and flavors added over the years, such as with ES6, the version of JavaScript released in 2015.
-
-Furthermore, JavaScript can be further customized to have additional features via the addition of libraries. For instance, this guide will be making use of TypeScript.
+Node.js has had improvements, features, and flavors added over the years, such as with ES6, the version of JavaScript released in 2015. It can also be customized to have additional features via the addition of libraries, such as TypeScript, which we will use in this tutorial.
 
 Depending on where code is run (such as in a browser), its environment may not understand the newer features provided by ES6 or libraries such as TypeScript. This will cause the code to fail to execute properly.
 
