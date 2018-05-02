@@ -82,3 +82,61 @@ We also need to add a configuration file for the source-map-support dependency. 
 ```javascript
 require('source-map-support').install();
 ```
+
+One more configuration file is needed for Webpack. In the top level of the project, create the file `webpack.config.js`.
+
+Here is the code we'll be using for this file:
+
+```javascript
+const path = require('path');
+const webpack = require('webpack');
+
+const entryPoints = {
+	contact: [
+        './services/lib/sourceMapSupport.ts',
+        './services/contact.ts'
+    ]
+}
+
+module.exports = {
+	entry: entryPoints,
+	output: {
+		libraryTarget: 'commonjs',
+		path: path.resolve(__dirname, 'build'),
+		filename: '[name].js',
+	},
+	mode: 'development',
+	target: 'node',
+	externals: { 'aws-sdk': { commonjs: 'aws-sdk' } },
+	stats: {
+		all: false,
+		assets: true,
+		timings: true,
+	},
+	devtool: 'inline-source-map',
+
+	resolve: {
+		extensions: ['.ts', '.js', '.d.ts'],
+	},
+
+	plugins: [
+		new webpack.SourceMapDevToolPlugin({
+			exclude: /node_modules/,
+		}),
+	],
+
+	module: {
+		rules: [
+			{
+				test: /\.ts$/,
+				exclude: /node_modules/,
+				use: [
+					'babel-loader',
+					'ts-loader',
+				],
+			},
+		],
+	},
+};
+```
+The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points so Webpack knows to bundle it.
