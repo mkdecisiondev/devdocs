@@ -50,7 +50,9 @@ Next we'll install Webpack and its command line interface so we can write script
 
 ts-loader allows TypeScript to interact properly with Webpack: `$ pnpm i ts-loader --save-dev`.
 
-Finally let's install all the dev dependencies we'll need for Babel: `$ pnpm i babel-core babel-loader babel-plugin-transform-async-to-generator babel-plugin-transform-es2015-modules-commonjs babel-preset-env --save-dev`.
+Let's install all the dev dependencies we'll need for Babel: `$ pnpm i babel-core babel-loader babel-plugin-transform-async-to-generator babel-plugin-transform-es2015-modules-commonjs babel-preset-env --save-dev`.
+
+Finally, let's add the AWS SDK. We don't need this as a dependency in production, as any function uploaded to Lambda automatically has access to the entire SDK. However, since this is not the case in a dev environment, let's install it with `pnpm i aws-sdk` so we can use AWS functions when testing (though normally API's such as this should be mocked when testing).
 
 ## Setting Up Babel and Webpack
 
@@ -140,3 +142,14 @@ module.exports = {
 };
 ```
 The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points so Webpack knows to bundle it.
+
+## Handler
+
+It's finally time to write a handler function. In `/services/`, create a file called `contact.ts`. We'll keep it very simple for the time being:
+
+```javascript
+export default async function handler(event: any, context: any, callback: any) {
+	console.log('hello there!');
+};
+```
+For those unfamiliar with TypeScript: the use of `any` to describe each of the handler's arguments is telling TypeScript that these parameters may be of any type. Of course, the point of TypeScript is that these descriptors should be made more specific as the function is fleshed out more. For instance, if you're expecting the `event` parameter to be an object, this can be specified. This can make it easier to find errors in larger projects, as trying to assign the wrong type to something will immediately be rejected.
