@@ -61,7 +61,7 @@ Let's install all the dev dependencies we'll need for Babel: `$ pnpm i babel-cor
 
 Finally, let's add the AWS SDK. We don't need this as a dependency in production, as any function uploaded to Lambda automatically has access to the entire SDK. However, since this is not the case in a dev environment, let's install it with `pnpm i aws-sdk --save-dev` so we can use AWS functions when testing (though normally API's such as this should be mocked when testing).
 
-## Setting Up Babel and Webpack
+## Configuring Babel, Webpack and TypeScript
 
 In the main project directory, create a file called `.babelrc`. This is where we configure the settings for Babel. Here is what we'll have in that file:
 
@@ -149,6 +149,38 @@ module.exports = {
 };
 ```
 The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add to the project momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points in this way so it is bundled when we run Webpack.
+
+The last configuration file we need to create is for TypeScript. In the top level of the project directory, create a file called `tsconfig.json`. Using this code in that file will provide all the settings necessary for TypeScript to work with this repository:
+
+```json
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es5",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "lib": [
+            "es6"
+        ],
+        "typeRoots": [
+            "./node_modules/@types",
+            "./typings"
+        ]
+    },
+    "include": [
+        "data/**/*",
+        "server/**/*",
+        "services/**/*",
+        "typings/**/*",
+        "scripts/**/*",
+        "*"
+    ]
+}
+```
 
 ## Scripts
 
