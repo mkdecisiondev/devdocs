@@ -1,6 +1,6 @@
 # Setting Up Webpack in a Repository
 
-When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface. However, before you can use CloudFormation in this way, it is important to have the repository set up to use Babel and Webpack.
+When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Babel and Webpack.
 
 ## Babel
 
@@ -46,7 +46,7 @@ All other dependencies we install, including all of the ones we need for Webpack
 
 We must install a number of types so that Typescript recognizes some of the tools we will use and does not throw errors when we are writing our code or running webpack to create our build. One command will install most of the ones that should be necessary: `$ pnpm i @types/body-parser @types/cors @types/dotenv @types/es6-promisify @types/node --save-dev`. If you are planning to write tests using Jest, you should also install `@types/jest` in the same way.
 
-Next we'll install Webpack and its command line interface so we can write scripts using it: `$ pnpm i webpack webpack-cli --save-dev`.
+Next we'll install Webpack and its CLI so we can write scripts using it: `$ pnpm i webpack webpack-cli --save-dev`.
 
 ts-loader allows TypeScript to interact properly with Webpack: `$ pnpm i ts-loader --save-dev`.
 
@@ -142,6 +142,19 @@ module.exports = {
 };
 ```
 The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points so Webpack knows to bundle it.
+
+## Scripts
+
+Earlier we installed the Webpack CLI to this project. This allows us to create our build from the command line. Let's create some scripts to streamline this process.
+
+```json
+"scripts": {
+    "build:webpack": "webpack --display errors-only",
+    "build": "npm run build:webpack",
+  },
+```
+
+The first script creates a build of the site and prints any errors to the console. The second one is just a shortcut for the first one. This way, we can type nothing more than `$ pnpm run build` into the terminal, and it will bundle the handlers and display any errors.
 
 ## Handler
 
