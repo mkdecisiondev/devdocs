@@ -38,13 +38,16 @@ Resources:
       CodeUri: ./build/contact.js
       Timeout: 3
       MemorySize: 128
-      Role: role-ARN-goes-here
+      Role: arn:aws:iam::963067304288:role/tfe-lambda-role
       Events:
         RootPost:
           Type: Api
           Properties:
             Path: /contact
             Method: post
+      Environment:
+        Variables:
+          SITE_EMAIL: 'test@example.com'
 ```
 
 Let's break down these properties:
@@ -72,6 +75,8 @@ Let's break down these properties:
 * `Role`: The value of this property should be the ARN of the role that will be assigned to the function.
 
 * `Events`: in the SAM model, this is where we specify the API endpoint that will be triggering this function. The `RootPost` property and the `post` value for the `Method` property are being used because the API will be set to trigger this function on post requests. `/contact` is the name of the API resource to which the post method will be assigned.
+
+* `Environment: Variables: SITE_EMAIL`. This allows us to set environmental variables that will be made available to the function. The value set here can be called in the function with `process.env.SITE_EMAIL`. These variables can even be used by other AWS resources, by having that resource's environmental variable section reference this one.
 
 For now, the Lambda function is the only resource we will be creating. However, if we wanted to set up other resources such as an S3 Bucket or DynamoDB table, we would place each one under the `Resources` properly. For example, the SDK documentation for SAM also shows how to create a simple DynamoDB table on deployment [here](https://docs.aws.amazon.com/lambda/latest/dg/serverless_app.html#simpletable).
 
