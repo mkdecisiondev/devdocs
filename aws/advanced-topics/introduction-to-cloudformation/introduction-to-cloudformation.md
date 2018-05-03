@@ -1,4 +1,4 @@
-# Introduction to CloudFormation
+# Introduction to CloudFormation with Node.js
 
 Note: this guide will pick up where the [guide on Webpack](../webpack/webpack.md) left off. It is highly advisable to read and implement the steps covered in that guide before moving on to this one. This guide will also assume that the AWS command line interface (CLI) is installed globally and all necessary credentials are already set up. See [this guide](../../introduction-to-aws/credentials-setup/credentials-setup.md) for more info on AWS credentials.
 
@@ -169,5 +169,7 @@ When we open the function, we can see that it already has an environmental varia
 And if we open API Gateway, we can see that an API with the name of our stack has been created, with a resource called `/contact` and a post method, both of which we specified in our deploy template.
 
 ![alt text](images/4.png)
+
+Not only have we created all of these resources with nothing more than two command line scripts and a deploy template, but we can also make changes this way if desired. If we keep all the config and deploy settings the same, making changes to our code and re-packaging/re-deploying will not create a new set of resources if the ones in the template already exist, but will instead update the ones that we have already created.
 
 There is a lot more to CloudFormation than what's been covered here, but this guide and the previous one on Webpack should give a new developer enough information to create a Node.js repository from scratch and set up a few scripts to easily deploy resources to AWS.
