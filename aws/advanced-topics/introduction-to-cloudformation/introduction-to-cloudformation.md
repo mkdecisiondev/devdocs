@@ -104,7 +104,7 @@ The first script we will write is the one to package the repository and upload i
 }
  ```
 
-There are two main actions going on with this script, separated by `&&`. The first thing that is happening is that our build script is being run. This means that the transpiled bundled code in the `build` folder will be updated.
+There are two main actions going on with this script, separated by `&&`. The first thing that is happening is that our build script is being run. This means that the transpiled bundled code in the `build` folder will be updated by Webpack.
 
 The second action is an AWS CLI command `cloudformation package`. AWS SDK Documentation for this command can be found [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/package.html). This command takes some flags:
 
