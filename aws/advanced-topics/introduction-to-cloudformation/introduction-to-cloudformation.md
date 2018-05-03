@@ -71,4 +71,8 @@ Let's break down these properties:
 
 * `Role`: The value of this property should be the ARN of the role that will be assigned to the function.
 
-* `Events`: in the SAM model, this is where we specify the API endpoint that will be triggering this function. The `RootPost` property and the `post` value for the `Method` property are being used because the API will be set to trigger this function on post requests. `/contact` is the name of the resource to which the post method will be assigned.
+* `Events`: in the SAM model, this is where we specify the API endpoint that will be triggering this function. The `RootPost` property and the `post` value for the `Method` property are being used because the API will be set to trigger this function on post requests. `/contact` is the name of the API resource to which the post method will be assigned.
+
+For now, the Lambda function is the only resource we will be creating. However, if we wanted to set up other resources such as an S3 Bucket or DynamoDB table, we would place each one under the `Resources` properly. For example, the SDK documentation for SAM also shows how to create a simple DynamoDB table on deployment [here](https://docs.aws.amazon.com/lambda/latest/dg/serverless_app.html#simpletable).
+
+## Scripts
