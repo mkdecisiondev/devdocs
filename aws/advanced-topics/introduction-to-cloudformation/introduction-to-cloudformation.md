@@ -156,7 +156,7 @@ This script runs the aws command `cloudformation deploy` with a number of flags.
 * --`capabilities CAPABILITY_IAM` is described in the SDK documentation [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy/index.html). This is declaring that when we deploy, the stack has the ability to make changes to the IAM
 settings in your AWS account. This allows you to set your deploy template to, for example, create new IAM users if needed.
 
-Since we've already run our package script, let's run `pnpm run deploy` to finish the process of creating our resources.
+Since we've already run our package script, let's run `$ pnpm run deploy` to finish the process of creating our resources.
 
 Looking in the Lambda web console, our function has been created. Its name consists of the stack name, followed by the handler name specified in the deploy template, followed by a random string.
 
