@@ -22,4 +22,5 @@
 	1. [How to Pass a File Through API Gateway](aws/advanced-topics/pass-file-through-API-gateway/pass-file-through-API-gateway.md)
 	1. [Getting a Signed S3 URL from Lambda and Uploading from the Front End](aws/advanced-topics/s3-signed-url/s3-signed-url.md)
 	1. [Setting Up a Repository with Webpack](aws/advanced-topics/webpack/webpack.md)
+	1. [Introduction to CloudFormation](aws/advanced-topics/introduction-to-cloudformation/introduction-to-cloudformation.md)
 	1. Deployment Strategies

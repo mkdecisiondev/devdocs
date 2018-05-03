@@ -1,6 +1,6 @@
-# Setting Up Webpack in a Repository
+# Setting Up Webpack in a Node.js Repository
 
-When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Webpack with a Babel loader. This tutorial will cover the steps to do that. Setting up CloudFormation to actually deploy to Lambda will be the subject of a future tutorial.
+When using AWS, it is useful to write functions and designate resources in a local repository, then to use a command line script to deploy functions and set up the resources with the relevant AWS services all at once. This can be done with AWS's CloudFormation service via the AWS command line interface (CLI). However, before you can use CloudFormation in this way, it is important to have the repository set up to use Webpack with a Babel loader. This tutorial will cover the steps to do that in Node.js. Setting up CloudFormation scripts to actually deploy to Lambda will be covered in [this](../introduction-to-cloudformation/introduction-to-cloudformation.md) guide.
 
 ## Babel
 
@@ -31,7 +31,7 @@ var greet = function greet(name) {
 };
 ```
 
-All of the newer features we initially used, such as const and arrow functions, have been replaced with the pre-ES6 conventions. Babel has translated our newer-style code into JavaScript that can be run even in environments and browsers that don't support ES6. Not only is this useful for client-side JavaScript, it also can be used for AWS Lambda, as at any given time AWS Lambda may not support the most up-to-date version of Node.js.
+All of the newer features we initially used, such as const and arrow functions, have been replaced with the pre-ES6 conventions. Babel has translated our newer-style code into JavaScript that can be run even in environments and browsers that don't support ES6. Not only is this useful for client-side JavaScript, it also can be used for AWS Lambda, as at any given time Lambda may not support the most up-to-date version of Node.js.
 
 ## Webpack
 
@@ -61,7 +61,7 @@ Let's install all the dev dependencies we'll need for Babel: `$ pnpm i babel-cor
 
 Finally, let's add the AWS SDK. We don't need this as a dependency in production, as any function uploaded to Lambda automatically has access to the entire SDK. However, since this is not the case in a dev environment, let's install it with `pnpm i aws-sdk --save-dev` so we can use AWS functions when testing (though normally API's such as this should be mocked when testing).
 
-## Setting Up Babel and Webpack
+## Configuring Babel, Webpack and TypeScript
 
 In the main project directory, create a file called `.babelrc`. This is where we configure the settings for Babel. Here is what we'll have in that file:
 
@@ -150,6 +150,38 @@ module.exports = {
 ```
 The important part of this code to look at is the entryPoints object near the top. Let's say we want to create a Lambda function called `contact`. This is what tells Webpack to bundle the handler and all its dependencies. We create a property of entryPoints which is an array with the name of the handler. The array contains the path of the handler itself, which we will add to the project momentarily, and the sourceMapSupport file that we created. Any time a new handler is created in this repository, it must be added to Webpack's entry points in this way so it is bundled when we run Webpack.
 
+The last configuration file we need to create is for TypeScript. In the top level of the project directory, create a file called `tsconfig.json`. Using this code in that file will provide all the settings necessary for TypeScript to work with this repository:
+
+```json
+{
+	"compilerOptions": {
+		"outDir": "./dist/",
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"module": "commonjs",
+		"target": "es5",
+		"moduleResolution": "node",
+    	"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"lib": [
+			"es6"
+		],
+		"typeRoots": [
+			"./node_modules/@types",
+			"./typings"
+		]
+	},
+	"include": [
+		"data/**/*",
+		"server/**/*",
+		"services/**/*",
+		"typings/**/*",
+		"scripts/**/*",
+		"*"
+	]
+}
+```
+
 ## Scripts
 
 Earlier we installed the Webpack CLI to this project. This allows us to create our build from the command line. Let's create some scripts in our `package.json` to streamline this process.
@@ -192,7 +224,7 @@ export { handler };
 
 As a reminder, a Lambda callback function returns its first parameter as an error, and the second parameter as a non-error.
 
-We have now set up all the tools we need for Webpack to create a bundle of this funciton, so let's run our script and try it: in the terminal run the script created earlier: `$ pnpm run build`.
+We have now set up all the tools we need for Webpack to create a bundle of this function, so let's run our script and try it: in the terminal run the script created earlier: `$ pnpm run build`.
 
 If there are any errors, they will be displayed in the terminal. When using TypeScript in conjunction with Webpack, one possible source of errors is if one of the dev dependencies is missing, particularly one of the ones involving types.
 
@@ -264,4 +296,4 @@ We've forgotten one crucial factor about how our index function works: it doesn'
 hello Joe
 ```
 
-Now that we see that our build is working correctly, we are ready to set up CloudFormation and deploy our code to AWS. As mentioned before, the steps to do this will be covered in a future guide.
+Now that we see that our build is working correctly, we are ready to set up CloudFormation and deploy our code to AWS. As mentioned before, the steps to do this will be covered [here](../introduction-to-cloudformation/introduction-to-cloudformation.md).
