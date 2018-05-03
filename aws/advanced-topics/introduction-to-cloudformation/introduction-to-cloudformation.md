@@ -14,11 +14,11 @@ This is where AWS CloudFormation comes into play. With CloudFormation, it is pos
 
 There are multiple ways to set up a project and have the various AWS resources interact with each other. The API created in this demonstration will follow the Serverless Application Model (SAM). The deploy template created here will be following this model. Information for SAM provided by the AWS team can be found [here](https://github.com/awslabs/serverless-application-model), as well as the official SDK documentation located [here](https://docs.aws.amazon.com/lambda/latest/dg/serverless_app.html) While this repository has little in the way of descriptive documentation, the readme does link to examples of projects built around this model with an accompanying deploy template for each one. This can be a very useful resource for developers creating their own templates from scratch.
 
-If you intend to use a model other than SAM, it is important to research that model thoroughly to make sure the format of the template is correct. Information about templates for other models can be found in the official AWS SDK documentation located [here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-reference.html).
+If you intend to use a vanilla CloudFormation template without or in addition to SAM, it is important to research that template type thoroughly to make sure the format of the template is correct. Information about templates for other models can be found in the official AWS SDK documentation located [here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-reference.html).
 
 ## The Deploy Template
 
-In your project directory, create a file called `deploy.yml`. This will be our template where we specify all the resources we want to create when we deploy.
+In your project directory, create a file called `deploy.yml`. This will be our template where we specify all the resources we want to create when we deploy. It is also possible to create these templates in JSON format rather than YAML, but at MK Decision YAML is preferred as it is more human-readable.
 
 Recall that in the project we set up in the Webpack documentation, we've created a handler called `contact`. We are going to write our template to automatically deploy this function to Lambda whenever we enter the relevant script in the terminal.
 
@@ -80,7 +80,7 @@ Let's break down these properties:
 
 For now, the Lambda function is the only resource we will be creating. However, if we wanted to set up other resources such as an S3 Bucket or DynamoDB table, we would place each one under the `Resources` properly. For example, the SDK documentation for SAM also shows how to create a simple DynamoDB table on deployment [here](https://docs.aws.amazon.com/lambda/latest/dg/serverless_app.html#simpletable).
 
-Keep in mind that with `.yml` files, spacing and tabbing are syntactically important. If you are experiencing errors when running your scripts, check and make sure the template is formatted correctly.
+Keep in mind that with YAML files, spacing and tabbing are syntactically important. If you are experiencing errors when running your scripts, check and make sure the template is formatted correctly.
 
 ## Scripts
 
@@ -108,8 +108,8 @@ There are two main actions going on with this script, separated by `&&`. The fir
 
 The second action is an AWS CLI command `cloudformation package`. AWS SDK Documentation for this command can be found [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/package.html). This command takes some flags:
 
-* `--template-file /.deploy.yml`: this tells AWS to base its packaging off of the template.
-* `--output-template-file: cloudform-deploy.yml`: The deploy template we wrote is very human-readable and easy to modify. However, it is not in the optimal format for AWS to read. This part of the script creates a new file, `cloudform-deploy.yml`, when it is run. This file will contain all of the same information that `deploy.yml` does, but it will be in a syntax more readable for AWS. This new template will also contain the information of the S3 bucket where the packaged code will be uploaded.
+* `--template-file ./deploy.yml`: this tells AWS to base its packaging off of the template.
+* `--output-template-file cloudform-deploy.yml`: The deploy template we wrote is very human-readable and easy to modify. However, it is not in the optimal format for AWS to read. This part of the script creates a new file, `cloudform-deploy.yml`, when it is run. This file will contain all of the same information that `deploy.yml` does, but it will be in a syntax more readable for AWS. This new template will also contain the information of the S3 bucket where the packaged code will be uploaded.
 * `--s3-bucket $npm_package_config_code_bucket"`: This tells AWS to find the bucket whose name we specified earlier in our config settings, and upload the code to this bucket.
 
 Let's run this script with `$ pnpm run package` and see what happens.
@@ -171,5 +171,7 @@ And if we open API Gateway, we can see that an API with the name of our stack ha
 ![alt text](images/4.png)
 
 Not only have we created all of these resources with nothing more than two command line scripts and a deploy template, but we can also make changes this way if desired. If we keep all the config and deploy settings the same, making changes to our code and re-packaging/re-deploying will not create a new set of resources if the ones in the template already exist, but will instead update the ones that we have already created.
+
+Keep in mind that if you delete a resource manually, CloudFormation will not make it again automatically. If you want to re-create the resource, though, you can comment out that section in your deploy.yml, run `$ pnpm run package && pnpm run deploy`, then go back to deploy.yml, uncomment the section, and `$ run pnpm run package && pnpm run deploy` once more.
 
 There is a lot more to CloudFormation than what's been covered here, but this guide and the previous one on Webpack should give a new developer enough information to create a Node.js repository from scratch and set up a few scripts to easily deploy resources to AWS.
