@@ -143,3 +143,27 @@ Most of the information here is exactly the same as was in the template we creat
 ![alt text](images/1.png)
 
 As we can see, an item has been added to the bucket. Let's create one more script, this one to deploy our code from the bucket to create the Lambda function and any other resources we have specified.
+
+```json
+ "deploy": "aws cloudformation deploy --template-file cloudform-deploy.yml --stack-name $npm_package_config_stack_name --capabilities CAPABILITY_IAM",
+ ```
+
+This script runs the aws command `cloudformation deploy` with a number of flags.
+* The `--template-file` is set to the new `cloudform-deploy.yml` file that was created when we ran the package script.
+* The `--stack-name` provides the settings that were assigned to that stack when we ran the package command. This lets the CLI know to take the code from the bucket that we specified when we packaged.
+* --`capabilities CAPABILITY_IAM` is described in the SDK documentation [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy/index.html). This is declaring that when we deploy, the stack has the ability to make changes to the IAM
+settings in your AWS account. This allows you to set your deploy template to, for example, create new IAM users if needed.
+
+Since we've already run our package script, let's run `pnpm run deploy` to finish the process of creating our resources.
+
+Looking in the Lambda web console, our function has been created. Its name consists of the stack name, followed by the handler name specified in the deploy template, followed by a random string.
+
+![alt text](images/2.png)
+
+When we open the function, we can see that it already has an environmental variable set to what we entered in our deploy template.
+
+![alt text](images/3.png)
+
+And if we open API Gateway, we can see that an API with the name of our stack has been created, with a resource called `/contact` and a post method, both of which we specified in our deploy template.
+
+There is a lot more to CloudFormation, but this guide and the previous one on Webpack should give a new developer enough information to create a Node.js repository from scratch and set up a few scripts to easily deploy to AWS.
