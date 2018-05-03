@@ -3,6 +3,7 @@
 ## External resources
 
 1. [Google Developers - Mobile UX](https://developers.google.com/web/fundamentals/design-and-ux/principles/)
+1. [Numeric inputs](https://css-tricks.com/finger-friendly-numerical-inputs-with-inputmode/)
 
 ## Guidelines
 
