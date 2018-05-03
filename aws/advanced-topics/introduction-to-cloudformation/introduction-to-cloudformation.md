@@ -80,6 +80,8 @@ Let's break down these properties:
 
 For now, the Lambda function is the only resource we will be creating. However, if we wanted to set up other resources such as an S3 Bucket or DynamoDB table, we would place each one under the `Resources` properly. For example, the SDK documentation for SAM also shows how to create a simple DynamoDB table on deployment [here](https://docs.aws.amazon.com/lambda/latest/dg/serverless_app.html#simpletable).
 
+Keep in mind that with `.yml` files, spacing and tabbing are syntactically important. If you are experiencing errors when running your scripts, check and make sure the template is formatted correctly.
+
 ## Scripts
 
 As stated above, all AWS resources for this project will be created programatically once we run the scripts we've written to package and deploy. There is one exception, however, that we must create first: the S3 bucket to store the built site before it is deployed to Lambda. This can be done in the web console. We have named our bucket `cloudform-deploy-test`.
@@ -107,7 +109,7 @@ There are two main actions going on with this script, separated by `&&`. The fir
 The second action is an AWS CLI command `cloudformation package`. AWS SDK Documentation for this command can be found [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/package.html). This command takes some flags:
 
 * `--template-file /.deploy.yml`: this tells AWS to base its packaging off of the template.
-* `--output-template-file: cloudform-deploy.yml`: The deploy template we wrote is very human-readable and easy to modify. However, it is not in the optimal format for AWS to read. This part of the script creates a new file, `cloudform-deploy.yml`, when it is run. This file will contain all of the same information that `deploy.yml` does, but it will be in a syntax more readable for AWS.
+* `--output-template-file: cloudform-deploy.yml`: The deploy template we wrote is very human-readable and easy to modify. However, it is not in the optimal format for AWS to read. This part of the script creates a new file, `cloudform-deploy.yml`, when it is run. This file will contain all of the same information that `deploy.yml` does, but it will be in a syntax more readable for AWS. This new template will also contain the information of the S3 bucket where the packaged code will be uploaded.
 * `--s3-bucket $npm_package_config_code_bucket"`: This tells AWS to find the bucket whose name we specified earlier in our config settings, and upload the code to this bucket.
 
 Let's run this script with `$ pnpm run package` and see what happens.
@@ -149,8 +151,8 @@ As we can see, an item has been added to the bucket. Let's create one more scrip
  ```
 
 This script runs the aws command `cloudformation deploy` with a number of flags.
-* The `--template-file` is set to the new `cloudform-deploy.yml` file that was created when we ran the package script.
-* The `--stack-name` provides the settings that were assigned to that stack when we ran the package command. This lets the CLI know to take the code from the bucket that we specified when we packaged.
+* The `--template-file` is set to the new `cloudform-deploy.yml` file that was created when we ran the package script, which contains the info of the S3 bucket where the code is.
+* The `--stack-name` will be added to the names of all resources created by this deployment.
 * --`capabilities CAPABILITY_IAM` is described in the SDK documentation [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy/index.html). This is declaring that when we deploy, the stack has the ability to make changes to the IAM
 settings in your AWS account. This allows you to set your deploy template to, for example, create new IAM users if needed.
 
@@ -166,4 +168,4 @@ When we open the function, we can see that it already has an environmental varia
 
 And if we open API Gateway, we can see that an API with the name of our stack has been created, with a resource called `/contact` and a post method, both of which we specified in our deploy template.
 
-There is a lot more to CloudFormation, but this guide and the previous one on Webpack should give a new developer enough information to create a Node.js repository from scratch and set up a few scripts to easily deploy to AWS.
+There is a lot more to CloudFormation than what's been covered here, but this guide and the previous one on Webpack should give a new developer enough information to create a Node.js repository from scratch and set up a few scripts to easily deploy to AWS.
