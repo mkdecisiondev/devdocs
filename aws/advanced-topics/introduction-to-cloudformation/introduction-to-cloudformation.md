@@ -2,7 +2,7 @@
 
 Note: this guide will pick up where the [guide on Webpack](../webpack/webpack.md) left off. It is highly advisable to read and implement the steps covered in that guide before moving on to this one. This guide will also assume that the AWS command line interface (CLI) is installed globally and all necessary credentials are already set up. See [this guide](../../introduction-to-aws/credentials-setup/credentials-setup.md) for more info on AWS credentials.
 
-Before beginning this guide, it is important to tell your console which AWS profile to use. Once you have opened the terminal window you will be using for this project, run `$ export AWS_PROFILE=your-profile-name-here` with the actual name of the AWS profile substituted after the equals sign.
+Before beginning the tasks in this guide, it is important to tell your console which AWS profile to use. Once you have opened the terminal window you will be using for this project, run `$ export AWS_PROFILE=your-profile-name-here` with the actual name of the AWS profile substituted after the equals sign.
 
 ## What Is CloudFormation?
 
@@ -93,3 +93,53 @@ Open `package.json`. Before we actually write the scripts, we have to write some
 },
 ```
 The `code_bucket` value is the bucket we have just created to store the code. The `stack_name` will be applied to the title of all resources that are created when we are deployed.
+
+The first script we will write is the one to package the repository and upload it to our code bucket.
+
+```json
+"scripts": {
+	"package": "npm run build && aws cloudformation package --template-file ./deploy.yml --output-template-file cloudform-deploy.yml --s3-bucket $npm_package_config_code_bucket",
+}
+ ```
+
+There are two main actions going on with this script, separated by `&&`. The first thing that is happening is that our build script is being run. This means that the transpiled bundled code in the `build` folder will be updated.
+
+The second action is an AWS CLI command `cloudformation package`. AWS SDK Documentation for this command can be found [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/package.html). This command takes some flags:
+
+* `--template-file /.deploy.yml`: this tells AWS to base its packaging off of the template.
+* `--output-template-file: cloudform-deploy.yml`: The deploy template we wrote is very human-readable and easy to modify. However, it is not in the optimal format for AWS to read. This part of the script creates a new file, `cloudform-deploy.yml`, when it is run. This file will contain all of the same information that `deploy.yml` does, but it will be in a syntax more readable for AWS.
+* `--s3-bucket $npm_package_config_code_bucket"`: This tells AWS to find the bucket whose name we specified earlier in our config settings, and upload the code to this bucket.
+
+Let's run this script with `$ pnpm run package` and see what happens.
+
+A `cloudform-deploy.yml` file has appeared in our repository:
+
+```yml
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  Contact:
+    Properties:
+      CodeUri: s3://cloudform-deploy-test/b8db7aebae95317ed60e763458e3ea44
+      Environment:
+        Variables:
+          SITEEMAIL: test@example.com
+      Events:
+        RootPost:
+          Properties:
+            Method: post
+            Path: /contact
+          Type: Api
+      Handler: contact.handler
+      MemorySize: 128
+      Role: arn:aws:iam::963067304288:role/tfe-lambda-role
+      Runtime: nodejs8.10
+      Timeout: 3
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
+```
+
+Most of the information here is exactly the same as was in the template we created. One thing that has changed is the CodeUri under the handler's properties. This is now pointing to the S3 bucket we specified as the `code_bucket` in our config. Let's check that bucket now in the web console.
+
+![alt text](images/1.png)
+
+As we can see, an item has been added to the bucket. Let's create one more script, this one to deploy our code from the bucket to create the Lambda function and any other resources we have specified.
