@@ -81,3 +81,15 @@ Let's break down these properties:
 For now, the Lambda function is the only resource we will be creating. However, if we wanted to set up other resources such as an S3 Bucket or DynamoDB table, we would place each one under the `Resources` properly. For example, the SDK documentation for SAM also shows how to create a simple DynamoDB table on deployment [here](https://docs.aws.amazon.com/lambda/latest/dg/serverless_app.html#simpletable).
 
 ## Scripts
+
+As stated above, all AWS resources for this project will be created programatically once we run the scripts we've written to package and deploy. There is one exception, however, that we must create first: the S3 bucket to store the built site before it is deployed to Lambda. This can be done in the web console. We have named our bucket `cloudform-deploy-test`.
+
+Open `package.json`. Before we actually write the scripts, we have to write some configuration to provide information to those scripts.
+
+```json
+"config": {
+	"code_bucket": "cloudform-deploy-test",
+	"stack_name": "cloudformation-deploy-test"
+},
+```
+The `code_bucket` value is the bucket we have just created to store the code. The `stack_name` will be applied to the title of all resources that are created when we are deployed.
