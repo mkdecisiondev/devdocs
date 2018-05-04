@@ -46,7 +46,7 @@ Name the account whatever you like, and tap "Done". On the next page, you will s
 
 ![alt text](images/7.png)
 
-Click Finish. Congratulations. You've set up MFA on AWS! To verify, log out of AWS and log back in. Enter your credentials again, and you'll be directed to this page:
+Click Finish. Congratulations. You've set up MFA on AWS! Now, this is important: __YOU MUST LOG OUT__. If you do not do this, you will not have the permissions you need to continue. Log out, enter your credentials again, and you'll be directed to this page:
 
 ![alt text](images/8.png)
 
