@@ -41,6 +41,7 @@ You can press `Ctrl + ,` to open User Settings and paste the following in the ri
 ```json
 {
     "editor.insertSpaces": false,
+	"eslint.enable": true,
     "files.encoding": "utf8",
     "files.eol": "\n",
     "files.insertFinalNewline": true,
