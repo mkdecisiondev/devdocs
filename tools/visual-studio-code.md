@@ -13,6 +13,25 @@ It's important to know how to use your editor effectively and take advantage of 
 1. Go to 'Help' -> 'Keyboard Shortcut Reference'
 1. [VS Code documentation](https://code.visualstudio.com/docs/)
 
+## Helpful configuration options
+
+You should have all the options specified in the [code editor](code-editor.md#configuration) section. It's also recommended to configure the following settings:
+
+```json
+{
+	"editor.renderIndentGuides": true,
+	"editor.rulers": [
+		120
+	],
+	"editor.tabSize": 4,
+	"html.format.enable": true,
+	"html.format.endWithNewline": true,
+	"html.suggest.angular1": false,
+	"html.suggest.ionic": false,
+	"window.newWindowDimensions": "inherit",
+}
+```
+
 ## Install a color theme
 
 1. Click the gear icon at the bottom left and click "Color Theme"
