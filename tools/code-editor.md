@@ -58,3 +58,7 @@ Click the extensions icon (bottom one of the 5 icons at the top left) and instal
 1. HTMLHint
 1. Path Intellisense
 1. Git Blame
+
+## If you fail to follow these instructions
+
+![Dishonor on you and your cow](https://media.giphy.com/media/TVscbqW3JSnL2/giphy.gif)
