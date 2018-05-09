@@ -23,6 +23,7 @@
 		1. Use the same e-mail address associated with your GitHub account
 	1. `git config --global gui.encoding utf-8`
 	1. `git config --global core.autocrlf false`
+	1. `git config --global core.ignorecase false`
 	1. `git config --global core.safecrlf false`
 	1. `git config --global pull.rebase true`
 	1. `git config --global branch.autosetuprebase always`
