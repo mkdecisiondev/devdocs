@@ -69,6 +69,6 @@ When you get Bash installed, type `which bash` in your Bash console. This tells 
 
 ## Working With Credentials
 
-At this point you can use credentials in your projects. To make them available, type `export AWS_PROFILE=TFEWorkspace`. This will allow you to run `pnpm run package` and `pnpm run deploy` in backend repositories. You can also use AWS SDK functions in your code base.
+At this point you can use credentials in your projects. To make them available, type `export AWS_PROFILE=TFEWorkspace` if you are using Linux or OSX or `set AWS_PROFILE=TFEWorkspace` if you are using Windows. This will allow you to run `pnpm run package` and `pnpm run deploy` scripts in backend repositories. You can also use AWS SDK functions in your code base.
 
 Note that whenever you open a new terminal window you will need to run `export AWS_PROFILE=TFEWorkspace`, so if you're not able to package or deploy this is the first thing you should do.
