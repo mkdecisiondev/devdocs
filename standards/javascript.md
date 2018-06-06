@@ -20,3 +20,14 @@ some differences in our ESLint configuration, in that case those take precedence
 class MyClass {}
 export { MyClass };
 ```
+
+### Import order
+
+Module imports should be grouped:
+
+1. External dependencies (packages from Node.js or `node_modules`)
+1. Project dependencies outside the current folder (`../**`)
+1. Project dependencies from within the current folder (`./**`)
+1. CSS imports (`import './MyModule.css';`)
+
+Sorting within each group should be by package path and name, case-insensitive, and ignoring leading `@`
