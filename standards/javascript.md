@@ -15,13 +15,20 @@ some differences in our ESLint configuration, in that case those take precedence
 1. Modules that primarily export a class should have the same name as the class (which should be CamelCase)
 1. Modules that do not export a class should have a descriptive name starting with lower case (camelCase)
 1. Modules should use named exports instead of default exports ([further reading](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad)), e.g.:
-	* Functions and variables can be exported at time of declaration:
+	* Functions and variables should be included in the final export:
 
 ```javascript
-export function classHelper () {}
+function classHelper () {}
 class MyClass {}
 export { MyClass };
+// or
+export {
+	classHelper,
+	MyClass,
+};
 ```
+
+This export style makes it very easy to see in one place all exports from a module.
 
 ### Import order
 
