@@ -6,6 +6,7 @@
 	1. [Configuration](tools/code-editor.md#installation-and-configuration)
 1. Programming languages
 	1. [JavaScript](languages/javascript.md)
+	1. [TypeScript](languages/typescript.md)
 	1. [JSON](languages/json.md)
 	1. [Markdown](languages/markdown.md)
 1. Development tools

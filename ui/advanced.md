@@ -11,7 +11,8 @@
 
 ## Tools and frameworks
 
-1. [Spike](spike.md)
+1. [React](react.md)
+1. [~~Spike~~](spike.md) (deprecated)
 1. [Shoelace](shoelace.md)
 1. [Apache HTTP server](http://httpd.apache.org/)
 1. [nginx HTTP server](https://nginx.org/en/)
