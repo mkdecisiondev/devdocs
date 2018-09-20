@@ -15,3 +15,7 @@ implementation of Google's Material Design. React is used in [Gatsby](https://ww
 1. If the component meets the needs then you are done!
 1. If you need to fetch or calculate data, manipulate props, or manage state, rename your module to `MyModuleTemplate`
 1. Now create a new `MyModule` and add all necessary logic, passing props and handlers to `MyModuleTemplate`
+1. Determine module state: *do not* store derived values in state, calculate them as needed from other state or props
+1. Determine which module state is temporary and which needs to persist
+	1. When a component disappears from view, transitory state is lost
+	1. State that needs to persist when a component is not visible needs to either be lifted up to a higher component or stored (e.g. in redux)
