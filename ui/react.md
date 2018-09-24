@@ -8,6 +8,7 @@ implementation of Google's Material Design. React is used in [Gatsby](https://ww
 
 * [Official docs](https://reactjs.org/docs/hello-world.html) (read at least Main Concepts and Advanced Guides)
 * [Redux](https://redux.js.org/basics) (read Basics and Advanced)
+* [React TypeScript cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet)
 
 ## Component design
 
