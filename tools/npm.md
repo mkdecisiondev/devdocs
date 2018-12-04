@@ -1,23 +1,34 @@
 # npm
 
-:poop: npm is the default package manager for Node.js. It is not well designed so [pnpm](https://pnpm.js.org/) should typically be used instead:
-```
-npm install --global pnpm
+:poop: npm is the default package manager for Node.js. It is not as optimized as
+alternative package managers, we use [Yarn](https://yarnpkg.com/en/). There are
+many ways to install yarn on different systems, but the easiest is through npm:
+
+```bash
+npm install -g yarn
 ```
 
-Once pnpm is installed you should use it in place of `npm` - any time you would use `npm`, type `pnpm` instead. The exception is for global modules - when you are installing something globally ([eslint](https://www.npmjs.com/package/eslint), [htmlhint](https://www.npmjs.com/package/htmlhint), [http-serve](https://www.npmjs.com/package/http-serve)) you should use `npm i -g <module>` to install or update it (this includes pnpm - use npm to update pnpm).
+You should use Yarn in any place you would use npm. You should node these differences:
+`npm install` is `yarn add`, and to install global packages you should use
+`yarn global add [package]`
 
-# MK npm registry
+## MK npm registry
 
 We have a private npm registry used to host packages from our private repositories. To access
-this registry you'll need to configure npm to use and log in to it. It uses your
-GitHub username and password to authenticate you.
+this registry you'll need to configure npm to use and log in to it. It uses Github
+to authenticate you
 
-Use the command below to log in to the registry. You'll use your GitHub username
-and password when prompted. If you use [two-factor authentication](https://help.github.com/articles/about-two-factor-authentication/) you'll
-need to specify your username like: `username.123456` where the numbers are a current
-2FA code.
+Go to https://registry.mkdecision.com and hit Login at the top right. Once you've
+authorized the Github app, you'll be redirected back to the main page where you'll
+see two commands in the header like below:
 
+![import-gradle.png](img/npm-registry-header.png)
+
+Enter those commands in a console followed by this last command:
+
+```bash
+npm config set registry https://registry.mkdecision.com
 ```
-npm login --scope=@mkdecision --registry=https://registry.mkdecision.com
-```
+
+The first two commands will configure authentication with the registry so that
+you can access it. The last will set it as your default repository.

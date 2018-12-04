@@ -5,7 +5,7 @@
 1. [Install git](tools/git.md)
 1. [Install brew](tools/brew.md) (Mac OS X only)
 1. [Install Node.js](tools/nodejs.md)
-1. [Install pnpm](tools/npm.md)
+1. [Install Yarn](tools/npm.md)
 1. [Install Visual Studio Code](tools/code-editor.md#installation-and-configuration)
 1. :construction: TODO: System setup / authy
 
